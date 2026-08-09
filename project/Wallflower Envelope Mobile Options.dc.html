@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet data-dc-atomics>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    body{margin:0;background:#EFEAE0;font-family:'Nunito',sans-serif;}
+    a{color:#6b7d5c;}
+    a:hover{color:#54613f;}
+    .dv-turn{padding:40px 44px 60px;}
+    .dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 24px;}
+    .dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none;}
+    .dv-tname{font:600 14px/1.2 'Nunito',sans-serif;color:#1a1a1a;}
+    .dv-opts{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;}
+    .dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;}
+    .dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none;}
+    .dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 12px/1.3 'Nunito',sans-serif;color:rgba(0,0,0,.55);}
+    .dv-phone{width:375px;height:760px;background:#F7EFDD;border-radius:36px;box-shadow:0 20px 50px rgba(60,45,25,0.22);overflow:hidden;position:relative;border:8px solid #2b2620;}
+    .dv-screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+    .dv-screen::-webkit-scrollbar{display:none;}
+    .dv-next{margin:20px 0 0;font:12px/1.6 'Nunito',sans-serif;color:rgba(0,0,0,.55);}
+  </style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Envelope builder — mobile-first, two flow options</span></div>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Stepped flow — one focus per screen</div>
+      <div class="dv-phone">
+        <div class="dv-screen">
+          <div style="min-height:100%;display:flex;flex-direction:column;color:#4a3d2c;">
+            <div style="display:flex;align-items:center;gap:10px;padding:16px 18px 10px;">
+              <sc-if value="{{ aCanBack }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ aBack }}" style="background:none;border:none;padding:4px;font-size:20px;color:#7c6a4e;cursor:pointer;">‹</button>
+              </sc-if>
+              <div style="display:flex;gap:6px;flex:1;justify-content:center;">
+                <sc-for list="{{ aDots }}" as="d" hint-placeholder-count="3">
+                  <div style="{{ d.style }}"></div>
+                </sc-for>
+              </div>
+              <div style="width:24px;"></div>
+            </div>
+
+            <sc-if value="{{ aStepIs1 }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:4px 22px 20px;text-align:center;">
+                <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#4a3d2c;">Choose your flowers</div>
+                <div style="font-size:13px;color:#7c6a4e;margin-top:2px;">for {{ recipientName }}'s {{ occasionText }}</div>
+              </div>
+              <div style="position:relative;height:190px;margin:0 24px 16px;background:#FBF6E9;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(122,100,70,0.12);overflow:hidden;">
+                <sc-for list="{{ aGreeneryViews }}" as="lf" hint-placeholder-count="0">
+                  <svg viewBox="0 0 34 100" style="{{ lf.style }}"><path d="M17 100 C17 70 17 40 17 8" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="10" cy="85" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(-35 10 85)"/><ellipse cx="24" cy="75" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(35 24 75)"/><ellipse cx="9" cy="63" rx="5.5" ry="3" fill="#96a583" transform="rotate(-30 9 63)"/><ellipse cx="25" cy="53" rx="5.5" ry="3" fill="#96a583" transform="rotate(30 25 53)"/></svg>
+                </sc-for>
+                <sc-for list="{{ aStemViews }}" as="st" hint-placeholder-count="0">
+                  <img src="{{ st.src }}" style="{{ st.style }}" />
+                </sc-for>
+                <div style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:190px;height:96px;">
+                  <svg width="190" height="96" viewBox="0 0 280 150"><rect x="0" y="30" width="280" height="120" rx="6" fill="#EAD9B8"/><path d="M0,30 L140,110 L280,30 Z" fill="#F3E6C9" stroke="#D8C29B" stroke-width="1.5"/><path d="M0,30 L140,110 L280,30" fill="none" stroke="#C9AF80" stroke-width="1.5"/><path d="M136,104 C132,98 128,100 130,106 C124,104 124,110 130,111 C128,116 134,118 137,112 C140,118 146,116 144,111 C150,110 150,104 144,106 C146,100 142,98 138,104 C137,102 137,102 136,104 Z" fill="#a45a52"/></svg>
+                </div>
+                <sc-if value="{{ aHasNoStems }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#a8977a;font-family:'Caveat',cursive;font-size:18px;">tap flowers below</div>
+                </sc-if>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0 24px 8px;font-size:12px;color:#7c6a4e;">
+                <span>{{ aStemCount }} / {{ maxStems }} stems</span>
+                <button onClick="{{ aClearAll }}" style="background:none;border:none;color:#8a6a45;font-size:12px;text-decoration:underline;padding:0;">clear</button>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 20px 24px;">
+                <sc-for list="{{ aFlowerButtons }}" as="f" hint-placeholder-count="8">
+                  <button onClick="{{ f.onClick }}" style="{{ f.style }}"><img src="{{ f.src }}" style="height:38px;width:auto;pointer-events:none;" /></button>
+                </sc-for>
+              </div>
+              <div style="flex:1;"></div>
+              <div style="padding:14px 20px 20px;">
+                <button onClick="{{ aGoStep2 }}" disabled="{{ aHasNoStems }}" style="{{ aStep1CtaStyle }}">Continue</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ aStepIs2 }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:12px 22px 20px;text-align:center;">
+                <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#4a3d2c;">Write your note</div>
+              </div>
+              <div style="flex:1;padding:0 22px;">
+                <div style="font-family:'Caveat',cursive;font-size:19px;color:#7c6a4e;margin-bottom:4px;">To {{ recipientName }},</div>
+                <textarea value="{{ aNote }}" onChange="{{ aOnNoteChange }}" placeholder="Write your note here..." style="width:100%;min-height:220px;border:none;outline:none;resize:none;background:transparent;background-image:repeating-linear-gradient(to bottom, transparent 0px, transparent 29px, rgba(122,100,70,0.28) 30px);font-family:'Caveat',cursive;font-size:19px;line-height:30px;color:#4a3d2c;padding:0;"></textarea>
+                <input value="{{ aName }}" onChange="{{ aOnNameChange }}" placeholder="Your name" style="width:100%;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-size:14px;outline:none;color:#4a3d2c;margin-top:8px;box-sizing:border-box;" />
+              </div>
+              <div style="padding:14px 20px 20px;">
+                <button onClick="{{ aGoStep3 }}" disabled="{{ aNoteEmpty }}" style="{{ aStep2CtaStyle }}">Continue</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ aStepIs3 }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ aSubmitted }}" hint-placeholder-val="{{ false }}">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 30px;text-align:center;">
+                  <div style="width:140px;height:96px;position:relative;margin-bottom:20px;">
+                    <svg width="140" height="96" viewBox="0 0 280 150"><rect x="0" y="30" width="280" height="120" rx="6" fill="#EAD9B8"/><path d="M0,30 L140,110 L280,30 Z" fill="#F3E6C9" stroke="#D8C29B" stroke-width="1.5"/><path d="M0,30 L140,110 L280,30" fill="none" stroke="#C9AF80" stroke-width="1.5"/><path d="M136,104 C132,98 128,100 130,106 C124,104 124,110 130,111 C128,116 134,118 137,112 C140,118 146,116 144,111 C150,110 150,104 144,106 C146,100 142,98 138,104 C137,102 137,102 136,104 Z" fill="#a45a52"/></svg>
+                  </div>
+                  <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#6b7d5c;">Sealed &amp; sent</div>
+                  <p style="color:#7c6a4e;font-size:14px;line-height:1.5;margin-top:8px;">It's tucked away until {{ recipientName }}'s reveal.</p>
+                </div>
+              </sc-if>
+              <sc-if value="{{ aReviewing }}" hint-placeholder-val="{{ true }}">
+                <div style="padding:12px 22px 4px;text-align:center;">
+                  <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#4a3d2c;">Ready to send?</div>
+                </div>
+                <div style="position:relative;height:180px;margin:10px 24px;">
+                  <svg width="100%" height="180" viewBox="0 0 280 150" style="position:absolute;left:0;top:0;"><rect x="0" y="30" width="280" height="120" rx="6" fill="#EAD9B8"/><path d="M0,30 L140,110 L280,30 Z" fill="#F3E6C9" stroke="#D8C29B" stroke-width="1.5"/><path d="M0,30 L140,110 L280,30" fill="none" stroke="#C9AF80" stroke-width="1.5"/><path d="M136,104 C132,98 128,100 130,106 C124,104 124,110 130,111 C128,116 134,118 137,112 C140,118 146,116 144,111 C150,110 150,104 144,106 C146,100 142,98 138,104 C137,102 137,102 136,104 Z" fill="#a45a52"/></svg>
+                </div>
+                <div style="margin:0 24px;background:rgba(255,255,255,0.5);border-radius:10px;padding:12px 14px;font-family:'Caveat',cursive;font-size:16px;color:#4a3d2c;line-height:1.4;max-height:70px;overflow:hidden;">{{ aNotePreview }}</div>
+                <div style="flex:1;"></div>
+                <div style="padding:14px 20px 20px;">
+                  <button onClick="{{ aSubmit }}" style="{{ aSubmitStyle }}">Send bouquet</button>
+                </div>
+              </sc-if>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Live canvas — one scroll, envelope always visible</div>
+      <div class="dv-phone">
+        <div class="dv-screen">
+          <div style="min-height:100%;display:flex;flex-direction:column;color:#4a3d2c;">
+            <div style="text-align:center;padding:20px 24px 6px;">
+              <div style="font-family:'Caveat',cursive;font-weight:700;font-size:24px;color:#4a3d2c;">For {{ recipientName }}'s {{ occasionText }}</div>
+            </div>
+            <div style="position:relative;height:220px;margin:6px 26px 4px;background:#FBF6E9;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(122,100,70,0.12);overflow:hidden;">
+              <sc-for list="{{ bGreeneryViews }}" as="lf" hint-placeholder-count="0">
+                <svg viewBox="0 0 34 100" style="{{ lf.style }}"><path d="M17 100 C17 70 17 40 17 8" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="10" cy="85" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(-35 10 85)"/><ellipse cx="24" cy="75" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(35 24 75)"/><ellipse cx="9" cy="63" rx="5.5" ry="3" fill="#96a583" transform="rotate(-30 9 63)"/><ellipse cx="25" cy="53" rx="5.5" ry="3" fill="#96a583" transform="rotate(30 25 53)"/></svg>
+              </sc-for>
+              <sc-for list="{{ bStemViews }}" as="st" hint-placeholder-count="0">
+                <img src="{{ st.src }}" style="{{ st.style }}" />
+              </sc-for>
+              <div style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:220px;height:110px;">
+                <svg width="220" height="110" viewBox="0 0 280 150"><rect x="0" y="30" width="280" height="120" rx="6" fill="#EAD9B8"/><path d="M0,30 L140,110 L280,30 Z" fill="#F3E6C9" stroke="#D8C29B" stroke-width="1.5"/><path d="M0,30 L140,110 L280,30" fill="none" stroke="#C9AF80" stroke-width="1.5"/><path d="M136,104 C132,98 128,100 130,106 C124,104 124,110 130,111 C128,116 134,118 137,112 C140,118 146,116 144,111 C150,110 150,104 144,106 C146,100 142,98 138,104 C137,102 137,102 136,104 Z" fill="#a45a52"/></svg>
+              </div>
+              <sc-if value="{{ bHasNoStems }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#a8977a;font-family:'Caveat',cursive;font-size:18px;">tap flowers below to begin</div>
+              </sc-if>
+              <sc-if value="{{ bSubmitted }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;background:rgba(247,239,221,0.94);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Caveat',cursive;font-size:20px;color:#6b7d5c;text-align:center;padding:0 20px;">Sealed &amp; sent — tucked away for the reveal.</div>
+              </sc-if>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 26px;font-size:12px;color:#7c6a4e;">
+              <span>{{ bStemCount }} / {{ maxStems }} stems</span>
+              <button onClick="{{ bClearAll }}" style="background:none;border:none;color:#8a6a45;font-size:12px;text-decoration:underline;padding:0;">clear</button>
+            </div>
+            <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 26px 18px;">
+              <sc-for list="{{ bFlowerButtons }}" as="f" hint-placeholder-count="8">
+                <button onClick="{{ f.onClick }}" style="{{ f.style }}"><img src="{{ f.src }}" style="height:40px;width:auto;pointer-events:none;" /></button>
+              </sc-for>
+            </div>
+            <div style="margin:0 26px 6px;height:1px;background:rgba(122,100,70,0.15);"></div>
+            <div style="padding:10px 26px 0;">
+              <div style="font-family:'Caveat',cursive;font-size:19px;color:#7c6a4e;margin-bottom:4px;">To {{ recipientName }},</div>
+              <textarea value="{{ bNote }}" onChange="{{ bOnNoteChange }}" placeholder="Write your note here..." style="width:100%;min-height:140px;border:none;outline:none;resize:none;background:transparent;background-image:repeating-linear-gradient(to bottom, transparent 0px, transparent 29px, rgba(122,100,70,0.28) 30px);font-family:'Caveat',cursive;font-size:19px;line-height:30px;color:#4a3d2c;padding:0;box-sizing:border-box;"></textarea>
+              <input value="{{ bName }}" onChange="{{ bOnNameChange }}" placeholder="Your name" style="width:100%;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-size:14px;outline:none;color:#4a3d2c;margin-top:6px;box-sizing:border-box;" />
+            </div>
+            <div style="flex:1;min-height:16px;"></div>
+            <div style="position:sticky;bottom:0;background:linear-gradient(to top, #F7EFDD 60%, rgba(247,239,221,0));padding:18px 26px 22px;">
+              <button onClick="{{ bSubmit }}" disabled="{{ bCantSend }}" style="{{ bSubmitStyle }}">Send bouquet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "combine <a class="dv-oid" href="#1a">1a</a>'s step flow with <a class="dv-oid" href="#1b">1b</a>'s always-visible envelope" · "make <a class="dv-oid" href="#1b">1b</a> the sticky-envelope version instead" · "pick one to build out"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  flowers = [
+    {id:'sunflower', src:'assets/flowers/sunflower.png'},
+    {id:'daisy', src:'assets/flowers/coneflower.png'},
+    {id:'peony', src:'assets/flowers/daisy-pink.png'},
+    {id:'tulip', src:'assets/flowers/tulip-purple.png'},
+    {id:'poppy', src:'assets/flowers/poppy-pink.png'},
+    {id:'lavender', src:'assets/flowers/aster-purple.png'},
+    {id:'sprig', src:'assets/flowers/sprig-pink-branch.png'},
+    {id:'berry', src:'assets/flowers/berries-red.png'},
+  ];
+
+  state = {
+    a: { step: 1, stems: [], greenery: [], note: '', name: '', submitted: false },
+    b: { stems: [], greenery: [], note: '', name: '', submitted: false },
+  };
+
+  constructor(props) {
+    super(props);
+    this.flowerMap = {};
+    this.flowers.forEach(f => this.flowerMap[f.id] = f);
+    this.uidCounter = 0;
+    this.maxStems = props.maxStems || 6;
+  }
+
+  generateGreenery(count) {
+    const n = Math.max(3, Math.min(6, count + 1));
+    const arr = [];
+    for (let i = 0; i < n; i++) {
+      const centered = n === 1 ? 0 : (i - (n - 1) / 2 + 0.5);
+      const dx = centered * 5 + (Math.random() - 0.5) * 5;
+      const dy = -(4 + Math.random() * 30);
+      const rot = centered * 3 + (Math.random() - 0.5) * 8;
+      arr.push({ uid: 'g' + (this.uidCounter++), dx, dy, rot, scale: 0.72 + Math.random() * 0.3, z: Math.floor(Math.random() * 3) + 1 });
+    }
+    return arr;
+  }
+  makeStemObj(fid) {
+    return { uid: 's' + (this.uidCounter++), flowerId: fid, src: this.flowerMap[fid].src, jr: (Math.random() - 0.5) * 2, jd: Math.random(), sc: 0.86 + Math.random() * 0.22 };
+  }
+  tightTransform(stem, i, n) {
+    const centered = n === 1 ? 0 : (i - (n - 1) / 2);
+    const dx = centered * 4.5 + stem.jr * 3.5;
+    const dy = -(16 + stem.jd * 22 + Math.abs(centered) * 9);
+    const rot = centered * 2.5 + stem.jr * 3;
+    return { dx, dy, rot, scale: stem.sc, z: Math.round(120 - Math.abs(dy)) };
+  }
+
+  addFlower(key, fid) {
+    const cur = this.state[key];
+    if (cur.stems.length >= this.maxStems) return;
+    const stems = [...cur.stems, this.makeStemObj(fid)];
+    this.setState({ [key]: { ...cur, stems, greenery: this.generateGreenery(stems.length) } });
+  }
+  clearAll(key) {
+    const cur = this.state[key];
+    this.setState({ [key]: { ...cur, stems: [], greenery: [] } });
+  }
+
+  buildStemViews(stems, opts) {
+    const n = stems.length;
+    return stems.map((st, i) => {
+      const t = this.tightTransform(st, i, n);
+      return { ...st, style: { position: 'absolute', left: '50%', bottom: opts.bottom, height: opts.height, width: 'auto', transform: `translate(-50%,0) translate(${t.dx * opts.spread}px, ${t.dy * opts.spread}px) rotate(${t.rot}deg) scale(${t.scale})`, transformOrigin: 'bottom center', zIndex: t.z, filter: 'drop-shadow(0 4px 6px rgba(90,70,40,0.12))', transition: 'transform 0.5s cubic-bezier(.3,.7,.2,1)' } };
+    });
+  }
+  buildGreeneryViews(greenery, opts) {
+    return greenery.map(lf => ({ ...lf, style: { position: 'absolute', left: '50%', bottom: opts.bottom, width: opts.width, height: 'auto', transform: `translate(-50%,0) translate(${lf.dx * opts.spread}px, ${lf.dy * opts.spread}px) rotate(${lf.rot}deg) scale(${lf.scale})`, transformOrigin: 'bottom center', zIndex: lf.z, pointerEvents: 'none' } }));
+  }
+
+  flowerButtonsFor(key) {
+    const cur = this.state[key];
+    const disabled = cur.stems.length >= this.maxStems;
+    return this.flowers.map(f => ({
+      ...f,
+      onClick: () => this.addFlower(key, f.id),
+      style: { background: '#FBF6E9', border: '1px solid rgba(122,100,70,0.2)', borderRadius: '10px', padding: '8px 6px', cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.4 : 1, flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+    }));
+  }
+
+  ctaStyle(enabled) {
+    return { width: '100%', background: enabled ? '#6b7d5c' : '#c9c2ac', color: '#FBF6E9', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '15px', fontWeight: 700, fontFamily: "'Nunito',sans-serif", cursor: enabled ? 'pointer' : 'not-allowed' };
+  }
+
+  renderVals() {
+    const a = this.state.a, b = this.state.b;
+    const recipientName = this.props.recipientName || 'Laksh';
+    const occasionText = this.props.occasionText || '18th Birthday';
+
+    const dotStyle = (active) => ({ width: '7px', height: '7px', borderRadius: '50%', background: active ? '#6b7d5c' : 'rgba(122,100,70,0.25)' });
+    const aDots = [1, 2, 3].map(step => ({ style: dotStyle(a.step === step) }));
+
+    const aStemOpts = { bottom: '90px', height: '82px', spread: 0.32 };
+    const aGreeneryOpts = { bottom: '90px', width: '30px', spread: 0.32 };
+    const bStemOpts = { bottom: '104px', height: '100px', spread: 0.38 };
+    const bGreeneryOpts = { bottom: '104px', width: '36px', spread: 0.38 };
+
+    return {
+      recipientName, occasionText, maxStems: this.maxStems,
+
+      aCanBack: a.step > 1,
+      aBack: () => this.setState({ a: { ...a, step: a.step - 1 } }),
+      aDots, aStepIs1: a.step === 1, aStepIs2: a.step === 2, aStepIs3: a.step === 3,
+      aStemViews: this.buildStemViews(a.stems, aStemOpts),
+      aGreeneryViews: this.buildGreeneryViews(a.greenery, aGreeneryOpts),
+      aHasNoStems: a.stems.length === 0, aStemCount: a.stems.length,
+      aClearAll: () => this.clearAll('a'),
+      aFlowerButtons: this.flowerButtonsFor('a'),
+      aGoStep2: () => a.stems.length && this.setState({ a: { ...a, step: 2 } }),
+      aStep1CtaStyle: this.ctaStyle(a.stems.length > 0),
+      aNote: a.note, aOnNoteChange: (e) => this.setState({ a: { ...a, note: e.target.value } }),
+      aName: a.name, aOnNameChange: (e) => this.setState({ a: { ...a, name: e.target.value } }),
+      aNoteEmpty: !a.note.trim(),
+      aGoStep3: () => a.note.trim() && this.setState({ a: { ...a, step: 3 } }),
+      aStep2CtaStyle: this.ctaStyle(!!a.note.trim()),
+      aReviewing: !a.submitted, aSubmitted: a.submitted,
+      aNotePreview: a.note || '(no note yet)',
+      aSubmit: () => this.setState({ a: { ...a, submitted: true } }),
+      aSubmitStyle: this.ctaStyle(true),
+
+      bStemViews: this.buildStemViews(b.stems, bStemOpts),
+      bGreeneryViews: this.buildGreeneryViews(b.greenery, bGreeneryOpts),
+      bHasNoStems: b.stems.length === 0, bStemCount: b.stems.length,
+      bClearAll: () => this.clearAll('b'),
+      bFlowerButtons: this.flowerButtonsFor('b'),
+      bNote: b.note, bOnNoteChange: (e) => this.setState({ b: { ...b, note: e.target.value } }),
+      bName: b.name, bOnNameChange: (e) => this.setState({ b: { ...b, name: e.target.value } }),
+      bSubmitted: b.submitted,
+      bCantSend: !(b.stems.length && b.note.trim()),
+      bSubmit: () => (b.stems.length && b.note.trim()) && this.setState({ b: { ...b, submitted: true } }),
+      bSubmitStyle: this.ctaStyle(!(!(b.stems.length && b.note.trim()))),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

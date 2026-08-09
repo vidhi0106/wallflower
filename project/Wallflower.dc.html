@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; }
+    a { color:#6b7d5c; }
+    a:hover { color:#54613f; }
+  </style>
+</helmet>
+<div style="position:relative;min-height:100vh;background-color:#F7EFDD;background-image:radial-gradient(circle at 15% 10%, rgba(255,255,255,0.5), transparent 55%), repeating-linear-gradient(45deg, rgba(120,100,70,0.025) 0px, rgba(120,100,70,0.025) 1px, transparent 1px, transparent 3px);font-family:'Nunito',sans-serif;color:#4a3d2c;overflow:hidden;">
+
+  <sc-if value="{{ isWall }}" hint-placeholder-val="{{ false }}">
+    <img src="assets/vine-leaves.png" style="position:absolute;top:0;left:0;width:100%;height:130px;object-fit:cover;object-position:top center;pointer-events:none;z-index:1;opacity:0.55;" />
+  </sc-if>
+
+  <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(16px,4vw,44px) 0;flex-wrap:wrap;gap:10px;background:{{ headerScrim }};">
+    <div style="font-family:'Caveat',cursive;font-weight:700;font-size:30px;color:#6b7d5c;text-shadow:0 1px 6px rgba(247,239,221,0.9);">Wallflower</div>
+    <div style="display:flex;gap:6px;background:rgba(255,255,255,0.75);border:1px solid rgba(122,100,70,0.25);border-radius:999px;padding:4px;">
+      <button onClick="{{ setBuilderView }}" style="{{ builderTabStyle }}">Bouquet Builder</button>
+      <button onClick="{{ setWallView }}" style="{{ wallTabStyle }}">Reveal Wall</button>
+    </div>
+  </div>
+
+  <sc-if value="{{ isBuilder }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative;z-index:2;max-width:1220px;margin:0 auto;padding:18px clamp(16px,4vw,44px) 70px;">
+    <div style="text-align:center;margin-bottom:30px;">
+      <h1 style="font-family:'Caveat',cursive;font-weight:700;font-size:clamp(30px,5.5vw,46px);margin:0 0 4px;color:#4a3d2c;">Add your bouquet for {{ recipientName }}'s {{ occasionText }}</h1>
+      <p style="margin:0;color:#7c6a4e;font-size:16px;">Pick your flowers, tie it off, and leave a note — it stays hidden until the big reveal.</p>
+    </div>
+
+    <div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="flex:1 1 480px;min-width:340px;">
+
+        <div style="position:relative;background:#FBF6E9;border-radius:10px;box-shadow:0 10px 28px rgba(90,70,40,0.14);height:440px;overflow:hidden;">
+          <sc-for list="{{ greeneryViews }}" as="lf" hint-placeholder-count="0">
+            <svg viewBox="0 0 34 100" style="{{ lf.style }}">
+              <path d="M17 100 C17 70 17 40 17 8" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="10" cy="85" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(-35 10 85)"/>
+              <ellipse cx="24" cy="75" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(35 24 75)"/>
+              <ellipse cx="9" cy="63" rx="5.5" ry="3" fill="#96a583" transform="rotate(-30 9 63)"/>
+              <ellipse cx="25" cy="53" rx="5.5" ry="3" fill="#96a583" transform="rotate(30 25 53)"/>
+              <ellipse cx="11" cy="41" rx="5" ry="2.8" fill="#a3b08f" transform="rotate(-25 11 41)"/>
+              <ellipse cx="23" cy="32" rx="5" ry="2.8" fill="#a3b08f" transform="rotate(25 23 32)"/>
+              <path d="M17 8 C13 2 21 -2 17 8 Z" fill="#a8b592"/>
+            </svg>
+          </sc-for>
+          <sc-for list="{{ stemViews }}" as="st" hint-placeholder-count="0">
+            <img src="{{ st.src }}" style="{{ st.style }}" onPointerDown="{{ st.onPointerDown }}" draggable="false" />
+          </sc-for>
+          <svg width="168" height="126" viewBox="0 0 140 100" style="{{ bowWrapperStyle }}">
+            <path d="M8,48 C40,40 100,40 132,48" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round" style="{{ bowWrapStyle }}"/>
+            <path d="M8,48 C40,40 100,40 132,48" fill="none" stroke="#d9b183" stroke-width="4" stroke-linecap="round" style="{{ bowWrapStyle }}"/>
+            <path d="M67,45 C44,10 6,16 18,46 C26,66 54,62 67,45 Z" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" style="{{ bowLoopLStyle }}"/>
+            <path d="M67,45 C44,10 6,16 18,46 C26,66 54,62 67,45 Z" fill="none" stroke="#d9b183" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="{{ bowLoopLStyle }}"/>
+            <path d="M73,45 C96,10 134,16 122,46 C114,66 86,62 73,45 Z" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" style="{{ bowLoopRStyle }}"/>
+            <path d="M73,45 C96,10 134,16 122,46 C114,66 86,62 73,45 Z" fill="none" stroke="#d9b183" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="{{ bowLoopRStyle }}"/>
+            <path d="M62,52 C40,68 12,84 4,102 C1,109 8,112 13,105" fill="none" stroke="#b5895c" stroke-width="7" stroke-linecap="round" style="{{ bowTailLStyle }}"/>
+            <path d="M62,52 C40,68 12,84 4,102 C1,109 8,112 13,105" fill="none" stroke="#d9b183" stroke-width="3" stroke-linecap="round" style="{{ bowTailLStyle }}"/>
+            <path d="M78,52 C100,68 128,84 136,102 C139,109 132,112 127,105" fill="none" stroke="#b5895c" stroke-width="7" stroke-linecap="round" style="{{ bowTailRStyle }}"/>
+            <path d="M78,52 C100,68 128,84 136,102 C139,109 132,112 127,105" fill="none" stroke="#d9b183" stroke-width="3" stroke-linecap="round" style="{{ bowTailRStyle }}"/>
+            <g stroke="#7a5a3a" stroke-width="1.6" style="{{ bowHatchStyle }}">
+              <line x1="30" y1="28" x2="35" y2="33"/><line x1="45" y1="20" x2="50" y2="25"/><line x1="95" y1="20" x2="90" y2="25"/><line x1="110" y1="28" x2="105" y2="33"/>
+              <line x1="22" y1="50" x2="28" y2="46"/><line x1="118" y1="50" x2="112" y2="46"/>
+              <line x1="45" y1="48" x2="52" y2="43"/><line x1="95" y1="48" x2="88" y2="43"/>
+              <line x1="30" y1="70" x2="35" y2="75"/><line x1="110" y1="70" x2="105" y2="75"/>
+            </g>
+            <circle cx="70" cy="47" r="9" fill="#8a6a45" style="{{ bowKnotStyle }}"/>
+            <circle cx="70" cy="47" r="4" fill="#6b4f31" style="{{ bowKnotStyle }}"/>
+          </svg>
+          <sc-if value="{{ hasNoStems }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#a8977a;font-family:'Caveat',cursive;font-size:24px;">tap a flower below to begin</div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 2px 8px;">
+          <span style="font-size:14px;color:#7c6a4e;">{{ stemCount }} / {{ maxStems }} stems</span>
+          <div style="display:flex;gap:14px;">
+            <button onClick="{{ removeLast }}" style="background:none;border:none;color:#8a6a45;font-size:14px;cursor:pointer;text-decoration:underline;padding:0;">undo last</button>
+            <button onClick="{{ clearAll }}" style="background:none;border:none;color:#8a6a45;font-size:14px;cursor:pointer;text-decoration:underline;padding:0;">clear all</button>
+          </div>
+        </div>
+        <sc-if value="{{ hasStems }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ tieBouquet }}" style="width:100%;background:#8a6a45;color:#FBF6E9;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:4px;">{{ tieLabel }}</button>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;">
+          <sc-for list="{{ flowerButtons }}" as="f" hint-placeholder-count="8">
+            <button onClick="{{ f.onClick }}" style="{{ f.style }}">
+              <img src="{{ f.src }}" style="height:52px;width:auto;pointer-events:none;" />
+              <span style="font-size:12px;color:#5c4d38;">{{ f.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:22px;">
+          <div style="font-size:13px;color:#7c6a4e;margin-bottom:8px;">Not feeling it? Start from a ready-made bouquet:</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <sc-for list="{{ presetButtons }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1 1 340px;min-width:300px;background:#FBF6E9;border-radius:10px;box-shadow:0 10px 28px rgba(90,70,40,0.14);padding:28px 30px;position:relative;">
+        <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family:'Caveat',cursive;font-size:22px;color:#7c6a4e;margin-bottom:4px;">To {{ recipientName }},</div>
+          <textarea value="{{ note }}" onChange="{{ onNoteChange }}" placeholder="Write your note here..." style="width:100%;min-height:210px;border:none;outline:none;resize:none;background-image:repeating-linear-gradient(to bottom, transparent 0px, transparent 33px, rgba(122,100,70,0.28) 34px);background-position-y:6px;font-family:'Caveat',cursive;font-size:22px;line-height:34px;color:#4a3d2c;padding:0;"></textarea>
+          <div style="display:flex;gap:12px;margin-top:18px;">
+            <input value="{{ cName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="flex:1;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;color:#4a3d2c;" />
+            <input value="{{ cEmail }}" onChange="{{ onEmailChange }}" placeholder="Your email" style="flex:1;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;color:#4a3d2c;" />
+          </div>
+          <button onClick="{{ submit }}" style="{{ submitStyle }}">Submit bouquet</button>
+          <div style="font-size:12px;color:#a8977a;margin-top:10px;text-align:center;">One bouquet per email. You'll get an edit link by email either way.</div>
+        </sc-if>
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:60px 10px;">
+            <div style="font-family:'Caveat',cursive;font-size:30px;color:#6b7d5c;margin-bottom:10px;">Bouquet sent!</div>
+            <p style="color:#7c6a4e;font-size:15px;line-height:1.5;">It's tucked away until {{ recipientName }}'s reveal. Check your email for a private link if you ever want to make changes.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isWall }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:70px 44px 80px;">
+    <div style="text-align:center;margin-bottom:8px;">
+      <h1 style="font-family:'Caveat',cursive;font-weight:700;font-size:50px;margin:0 0 4px;color:#4a3d2c;">{{ recipientName }}'s Garden</h1>
+      <p style="margin:0 0 6px;color:#7c6a4e;font-size:16px;">{{ occasionText }} · {{ sampleViewCount }} blooms have arrived</p>
+      <span style="display:inline-block;background:#e9dfc4;color:#7c6a4e;font-size:12px;padding:4px 12px;border-radius:999px;margin-top:4px;">2 new since your last visit</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:28px;margin-top:34px;">
+      <sc-for list="{{ sampleViews }}" as="b" hint-placeholder-count="14">
+        <div style="aspect-ratio:0.8;cursor:pointer;position:relative;" onClick="{{ b.onClick }}">
+          <div style="position:relative;width:100%;height:100%;">
+            <div style="{{ b.frontStyle }}">
+              <div style="position:relative;flex:1;">
+                <sc-for list="{{ b.greeneryViews }}" as="lf" hint-placeholder-count="0">
+                  <svg viewBox="0 0 34 100" style="{{ lf.style }}">
+                    <path d="M17 100 C17 70 17 40 17 8" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="10" cy="85" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(-35 10 85)"/>
+                    <ellipse cx="24" cy="75" rx="6" ry="3.2" fill="#8b9a77" transform="rotate(35 24 75)"/>
+                    <ellipse cx="9" cy="63" rx="5.5" ry="3" fill="#96a583" transform="rotate(-30 9 63)"/>
+                    <ellipse cx="25" cy="53" rx="5.5" ry="3" fill="#96a583" transform="rotate(30 25 53)"/>
+                  </svg>
+                </sc-for>
+                <sc-for list="{{ b.stemViews }}" as="st" hint-placeholder-count="0">
+                  <img src="{{ st.src }}" style="{{ st.style }}" draggable="false" />
+                </sc-for>
+                <svg width="86" height="62" viewBox="0 0 140 100" style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;">
+                  <path d="M8,48 C40,40 100,40 132,48" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M8,48 C40,40 100,40 132,48" fill="none" stroke="#d9b183" stroke-width="4" stroke-linecap="round"/>
+                  <path d="M67,45 C44,10 6,16 18,46 C26,66 54,62 67,45 Z" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M67,45 C44,10 6,16 18,46 C26,66 54,62 67,45 Z" fill="none" stroke="#d9b183" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M73,45 C96,10 134,16 122,46 C114,66 86,62 73,45 Z" fill="none" stroke="#b5895c" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M73,45 C96,10 134,16 122,46 C114,66 86,62 73,45 Z" fill="none" stroke="#d9b183" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <g stroke="#7a5a3a" stroke-width="1.6">
+                    <line x1="30" y1="28" x2="35" y2="33"/><line x1="45" y1="20" x2="50" y2="25"/><line x1="95" y1="20" x2="90" y2="25"/><line x1="110" y1="28" x2="105" y2="33"/>
+                  </g>
+                  <circle cx="70" cy="47" r="9" fill="#8a6a45"/>
+                  <circle cx="70" cy="47" r="4" fill="#6b4f31"/>
+                </svg>
+              </div>
+              <div style="text-align:center;padding:10px 8px 14px;font-family:'Caveat',cursive;font-size:19px;color:#7c6a4e;border-top:1px solid rgba(122,100,70,0.15);">— {{ b.name }}</div>
+            </div>
+            <div style="{{ b.backStyle }}">
+              <div style="font-family:'Caveat',cursive;font-weight:700;font-size:28px;color:#4a3d2c;margin-bottom:10px;">{{ b.name }}</div>
+              <div style="font-family:'Caveat',cursive;font-size:20px;line-height:1.4;color:#4a3d2c;">{{ b.note }}</div>
+              <div style="font-size:11px;color:#a8977a;margin-top:16px;">{{ b.recap }} · brown wrap</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 1000},
+  &quot;initialView&quot;: {&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;builder&quot;,&quot;options&quot;:[&quot;builder&quot;,&quot;wall&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},
+  &quot;maxStems&quot;: {&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6,&quot;min&quot;:3,&quot;max&quot;:10,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},
+  &quot;sampleCount&quot;: {&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:14,&quot;min&quot;:6,&quot;max&quot;:24,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},
+  &quot;recipientName&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Laksh&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},
+  &quot;occasionText&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;18th Birthday&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}
+}">
+class Component extends DCLogic {
+  flowers = [
+    {id:'sunflower', label:'Sunflower', src:'assets/flowers/sunflower.png'},
+    {id:'daisy', label:'Daisy', src:'assets/flowers/coneflower.png'},
+    {id:'peony', label:'Peony', src:'assets/flowers/daisy-pink.png'},
+    {id:'tulip', label:'Tulip', src:'assets/flowers/tulip-purple.png'},
+    {id:'poppy', label:'Poppy', src:'assets/flowers/poppy-pink.png'},
+    {id:'lavender', label:'Lavender', src:'assets/flowers/aster-purple.png'},
+    {id:'sprig', label:'Wildflower Sprig', src:'assets/flowers/sprig-pink-branch.png'},
+    {id:'berry', label:'Berry Sprig', src:'assets/flowers/berries-red.png'},
+  ];
+  presets = [
+    {id:'sunny', label:'Sunny Meadow', flowerIds:['sunflower','daisy','sprig','berry']},
+    {id:'blush', label:'Soft Blush', flowerIds:['peony','poppy','tulip','sprig']},
+    {id:'wild', label:'Wildflower Mix', flowerIds:['lavender','daisy','berry','poppy','sprig']},
+  ];
+  sampleData = [
+    {name:'Priya', note:"Happy 18th, Laksh! Can't believe we're old enough to say that. So proud of who you're becoming.", flowerIds:['sunflower','daisy','sprig']},
+    {name:'Rohan', note:"18 and already the funniest person I know. Love you, man.", flowerIds:['tulip','berry']},
+    {name:'Meera', note:"Watching you grow up has been one of my favorite things. Happy birthday, kiddo.", flowerIds:['peony','lavender','sprig']},
+    {name:'Dev', note:"Here's to late night talks and terrible video game strategies. Happy 18th!", flowerIds:['poppy','daisy','berry']},
+    {name:'Ananya', note:"You make everyone around you better. Hope your birthday is as bright as you are.", flowerIds:['sunflower','tulip','peony','sprig']},
+    {name:'Kabir', note:"Legal adult now, still the same troublemaker. Love you, happy birthday!", flowerIds:['lavender','berry']},
+    {name:'Simran', note:"So many good memories and so many more to come. Happy birthday, Laksh.", flowerIds:['daisy','poppy','sprig']},
+    {name:'Vikram', note:"Proud of the person you've become. Enjoy every second of today.", flowerIds:['sunflower','berry','lavender']},
+    {name:'Neha', note:"Can't wait to see what you do next. Happy 18th birthday!", flowerIds:['peony','tulip']},
+    {name:'Tanvi', note:"You've got the best laugh in the family. Never change. Happy birthday!", flowerIds:['poppy','sprig','daisy']},
+    {name:'Ishaan', note:"18 looks good on you. Let's celebrate properly this weekend.", flowerIds:['lavender','sunflower','berry']},
+    {name:'Ritu', note:"Sending you all my love on your big day. So happy for you.", flowerIds:['tulip','peony','sprig']},
+    {name:'Farah', note:"From little kid to 18 — where did the time go? Happy birthday!", flowerIds:['daisy','berry','lavender']},
+    {name:'Sam', note:"Cheers to you, Laksh. This year's going to be a great one.", flowerIds:['sunflower','poppy']},
+  ];
+
+  state = {
+    view: 'builder', stems: [], greenery: [], arranged: false, note: '', cName: '', cEmail: '',
+    submitted: false, activePresetId: null, flippedIds: {},
+  };
+
+  constructor(props) {
+    super(props);
+    this.flowerMap = {};
+    this.flowers.forEach(f => this.flowerMap[f.id] = f);
+    this.uidCounter = 0;
+    this.dragState = null;
+    this.maxStems = props.maxStems || 6;
+    this.state.view = props.initialView || 'builder';
+    this.sampleBouquets = this.sampleData.map((s, i) => {
+      const rawStems = this.generateStems(s.flowerIds);
+      const n = rawStems.length;
+      const stems = rawStems.map((st, si) => ({ ...st, ...this.tightTransform(st, si, n) }));
+      return { ...s, id: 'sb' + i, stems, greenery: this.generateGreenery(s.flowerIds.length, 50) };
+    });
+    this._onMove = this.handlePointerMove.bind(this);
+    this._onUp = this.handlePointerUp.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('pointermove', this._onMove);
+    window.addEventListener('pointerup', this._onUp);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('pointermove', this._onMove);
+    window.removeEventListener('pointerup', this._onUp);
+  }
+
+  generateGreenery(count) {
+    const n = Math.max(3, Math.min(6, count + 1));
+    const arr = [];
+    for (let i = 0; i < n; i++) {
+      const centered = n === 1 ? 0 : (i - (n - 1) / 2 + 0.5);
+      const dx = centered * 5 + (Math.random() - 0.5) * 5;
+      const dy = -(4 + Math.random() * 34);
+      const rot = centered * 3 + (Math.random() - 0.5) * 8;
+      arr.push({ uid: 'g' + (this.uidCounter++), dx, dy, rot, scale: 0.72 + Math.random() * 0.32, z: Math.floor(Math.random() * 3) + 1 });
+    }
+    return arr;
+  }
+
+  makeStemObj(fid) {
+    return { uid: 's' + (this.uidCounter++), flowerId: fid, src: this.flowerMap[fid].src, jr: (Math.random() - 0.5) * 2, jd: Math.random(), sc: 0.86 + Math.random() * 0.24, manualDx: 0, manualDy: 0 };
+  }
+  generateStems(flowerIds) { return flowerIds.map(fid => this.makeStemObj(fid)); }
+
+  looseTransform(stem, i, n) {
+    const dx = (i - (n - 1) / 2) * 46 + stem.jr * 10;
+    const dy = -(14 + stem.jd * 16);
+    const rot = stem.jr * 14;
+    return { dx, dy, rot, scale: stem.sc, z: 10 + i };
+  }
+  tightTransform(stem, i, n) {
+    const centered = n === 1 ? 0 : (i - (n - 1) / 2);
+    const dx = centered * 5.5 + stem.jr * 4 + (stem.manualDx || 0);
+    const dy = -(22 + stem.jd * 30 + Math.abs(centered) * 12) + (stem.manualDy || 0);
+    const rot = centered * 2.5 + stem.jr * 3;
+    return { dx, dy, rot, scale: stem.sc, z: Math.round(120 - Math.abs(dy)) };
+  }
+
+  addFlower(fid) {
+    if (this.state.stems.length >= this.maxStems) return;
+    const newStem = this.makeStemObj(fid);
+    this.setState(s => ({ stems: [...s.stems, newStem], arranged: false, greenery: [], activePresetId: null }));
+  }
+  removeLast() {
+    this.setState(s => ({ stems: s.stems.slice(0, -1), arranged: false, greenery: [] }));
+  }
+  clearAll() { this.setState({ stems: [], greenery: [], arranged: false, activePresetId: null }); }
+  applyPreset(preset) {
+    const stems = this.generateStems(preset.flowerIds);
+    this.setState({ stems, greenery: this.generateGreenery(stems.length, 70), arranged: true, activePresetId: preset.id });
+  }
+  tieBouquet() {
+    this.setState(s => {
+      if (!s.arranged) return { arranged: true, greenery: this.generateGreenery(s.stems.length, 70) };
+      const stems = s.stems.map(st => ({ ...st, jr: (Math.random() - 0.5) * 2, jd: Math.random(), sc: 0.86 + Math.random() * 0.24, manualDx: 0, manualDy: 0 }));
+      return { stems, greenery: this.generateGreenery(stems.length, 70) };
+    });
+  }
+
+  handlePointerDownStem(uid, e) {
+    if (!this.state.arranged) return;
+    e.preventDefault();
+    const stem = this.state.stems.find(s => s.uid === uid);
+    if (!stem) return;
+    this.dragState = { uid, startX: e.clientX, startY: e.clientY, origDx: stem.manualDx || 0, origDy: stem.manualDy || 0 };
+  }
+  handlePointerMove(e) {
+    if (!this.dragState) return;
+    const { uid, startX, startY, origDx, origDy } = this.dragState;
+    const manualDx = origDx + (e.clientX - startX);
+    const manualDy = origDy + (e.clientY - startY);
+    this.setState(s => ({ stems: s.stems.map(st => st.uid === uid ? { ...st, manualDx, manualDy } : st) }));
+  }
+  handlePointerUp() { this.dragState = null; }
+
+  submit() {
+    if (!this.state.stems.length || !this.state.cName || !this.state.cEmail) return;
+    this.setState({ submitted: true });
+  }
+  flipCard(id) { this.setState(s => ({ flippedIds: { ...s.flippedIds, [id]: !s.flippedIds[id] } })); }
+
+  renderVals() {
+    const s = this.state;
+    const tabBase = { border: 'none', borderRadius: '999px', padding: '8px 18px', fontSize: '14px', fontFamily: "'Nunito',sans-serif", fontWeight: 700, cursor: 'pointer' };
+    const activeTab = { ...tabBase, background: '#6b7d5c', color: '#FBF6E9' };
+    const inactiveTab = { ...tabBase, background: 'transparent', color: '#7c6a4e' };
+
+    const flowerButtons = this.flowers.map(f => {
+      const disabled = s.stems.length >= this.maxStems;
+      return {
+        ...f,
+        onClick: () => this.addFlower(f.id),
+        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', background: '#FBF6E9', border: '1px solid rgba(122,100,70,0.2)', borderRadius: '8px', padding: '10px 6px', cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.4 : 1 },
+      };
+    });
+    const presetButtons = this.presets.map(p => ({
+      ...p, onClick: () => this.applyPreset(p),
+      style: { border: '1px solid ' + (s.activePresetId === p.id ? '#6b7d5c' : 'rgba(122,100,70,0.3)'), background: s.activePresetId === p.id ? '#6b7d5c' : 'transparent', color: s.activePresetId === p.id ? '#FBF6E9' : '#7c6a4e', borderRadius: '999px', padding: '7px 16px', fontSize: '13px', cursor: 'pointer', fontFamily: "'Nunito',sans-serif" },
+    }));
+    const n = s.stems.length;
+    const stemViews = s.stems.map((st, i) => {
+      const t = s.arranged ? this.tightTransform(st, i, n) : this.looseTransform(st, i, n);
+      return {
+        ...st,
+        style: { position: 'absolute', left: '50%', bottom: '86px', height: '190px', width: 'auto', transform: `translate(-50%,0) translate(${t.dx}px, ${t.dy}px) rotate(${t.rot}deg) scale(${t.scale})`, transformOrigin: 'bottom center', zIndex: t.z, cursor: s.arranged ? 'grab' : 'default', touchAction: 'none', filter: 'drop-shadow(0 6px 8px rgba(90,70,40,0.12))', transition: 'transform 0.9s cubic-bezier(.3,.7,.2,1)' },
+        onPointerDown: (e) => this.handlePointerDownStem(st.uid, e),
+      };
+    });
+    const bowWrapperStyle = { position: 'absolute', left: '50%', bottom: '56px', transform: 'translateX(-50%)', zIndex: 60, pointerEvents: 'none' };
+    const drawLen = '260';
+    const mkDraw = (delay) => ({ strokeDasharray: drawLen, strokeDashoffset: s.arranged ? '0' : drawLen, transition: `stroke-dashoffset 0.55s ease ${delay}s` });
+    const bowWrapStyle = mkDraw(0.02);
+    const bowLoopLStyle = mkDraw(0.3);
+    const bowLoopRStyle = mkDraw(0.3);
+    const bowTailLStyle = mkDraw(0.7);
+    const bowTailRStyle = mkDraw(0.7);
+    const bowKnotStyle = { opacity: s.arranged ? 1 : 0, transform: `scale(${s.arranged ? 1 : 0.2})`, transformOrigin: '70px 46px', transition: 'opacity 0.25s ease 0.28s, transform 0.25s ease 0.28s' };
+    const bowHatchStyle = { opacity: s.arranged ? 1 : 0, transition: 'opacity 0.3s ease 0.95s' };
+    const greeneryViews = s.greenery.map(lf => ({
+      ...lf,
+      style: { position: 'absolute', left: '50%', bottom: '86px', width: '54px', height: 'auto', transform: `translate(-50%,0) translate(${lf.dx}px, ${lf.dy}px) rotate(${lf.rot}deg) scale(${lf.scale})`, transformOrigin: 'bottom center', zIndex: lf.z, pointerEvents: 'none' },
+    }));
+
+    const sampleAll = this.sampleBouquets.slice(0, this.props.sampleCount || 14);
+    const sampleViews = sampleAll.map(b => {
+      const flipped = !!s.flippedIds[b.id];
+      return {
+        ...b,
+        onClick: () => this.flipCard(b.id),
+        recap: b.flowerIds.map(fid => this.flowerMap[fid].label).join(' · '),
+        frontStyle: { position: 'absolute', inset: 0, background: '#FBF6E9', borderRadius: '8px', boxShadow: '0 8px 20px rgba(90,70,40,0.14)', display: 'flex', flexDirection: 'column', overflow: 'hidden', opacity: flipped ? 0 : 1, transform: flipped ? 'scale(0.94)' : 'scale(1)', pointerEvents: flipped ? 'none' : 'auto', transition: 'opacity 0.35s ease, transform 0.35s ease' },
+        backStyle: { position: 'absolute', inset: 0, background: '#FBF6E9', borderRadius: '8px', boxShadow: '0 8px 20px rgba(90,70,40,0.14)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '22px', opacity: flipped ? 1 : 0, transform: flipped ? 'scale(1)' : 'scale(0.94)', pointerEvents: flipped ? 'auto' : 'none', transition: 'opacity 0.35s ease, transform 0.35s ease' },
+        stemViews: b.stems.map(st => ({ ...st, style: { position: 'absolute', left: '50%', bottom: '38px', height: '100px', width: 'auto', transform: `translate(-50%,0) translate(${st.dx * 0.55}px, ${st.dy * 0.55}px) rotate(${st.rot}deg) scale(${st.scale})`, transformOrigin: 'bottom center', zIndex: st.z } })),
+        greeneryViews: b.greenery.map(lf => ({ ...lf, style: { position: 'absolute', left: '50%', bottom: '38px', width: '30px', height: 'auto', transform: `translate(-50%,0) translate(${lf.dx * 0.55}px, ${lf.dy * 0.55}px) rotate(${lf.rot}deg) scale(${lf.scale})`, transformOrigin: 'bottom center', zIndex: lf.z, pointerEvents: 'none' } })),
+      };
+    });
+
+    return {
+      isBuilder: s.view === 'builder', isWall: s.view === 'wall',
+      setBuilderView: () => this.setState({ view: 'builder' }),
+      setWallView: () => this.setState({ view: 'wall' }),
+      builderTabStyle: s.view === 'builder' ? activeTab : inactiveTab,
+      wallTabStyle: s.view === 'wall' ? activeTab : inactiveTab,
+      headerScrim: s.view === 'wall' ? 'linear-gradient(to bottom, rgba(247,239,221,0.85), rgba(247,239,221,0))' : 'transparent',
+      recipientName: this.props.recipientName || 'Laksh',
+      occasionText: this.props.occasionText || '18th Birthday',
+      flowerButtons, presetButtons, stemViews, greeneryViews,
+      bowWrapperStyle, bowWrapStyle, bowLoopLStyle, bowLoopRStyle, bowTailLStyle, bowTailRStyle, bowKnotStyle, bowHatchStyle,
+      hasNoStems: s.stems.length === 0, hasStems: s.stems.length > 0,
+      tieBouquet: () => this.tieBouquet(), tieLabel: s.arranged ? 'Rearrange' : 'Tie the bouquet',
+      stemCount: s.stems.length, maxStems: this.maxStems,
+      removeLast: () => this.removeLast(), clearAll: () => this.clearAll(),
+      note: s.note, onNoteChange: (e) => this.setState({ note: e.target.value }),
+      cName: s.cName, onNameChange: (e) => this.setState({ cName: e.target.value }),
+      cEmail: s.cEmail, onEmailChange: (e) => this.setState({ cEmail: e.target.value }),
+      submitted: s.submitted, showForm: !s.submitted, submit: () => this.submit(),
+      submitStyle: { width: '100%', marginTop: '18px', background: '#6b7d5c', color: '#FBF6E9', border: 'none', borderRadius: '8px', padding: '13px', fontSize: '15px', fontWeight: 700, fontFamily: "'Nunito',sans-serif", cursor: 'pointer' },
+      sampleViews, sampleViewCount: sampleAll.length,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

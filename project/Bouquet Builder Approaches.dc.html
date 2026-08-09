@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#efeadd;font-family:'Nunito',sans-serif}
+    .dv-turn{padding:40px 44px 32px}
+    .dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 22px}
+    .dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#4a3d2c;color:#fff;border-radius:4px;text-decoration:none}
+    .dv-tname{font:600 14px/1.2 'Nunito',sans-serif;color:#4a3d2c}
+    .dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+    .dv-opt{flex:none;display:flex;flex-direction:column;gap:10px}
+    .dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(74,61,44,.1);color:#4a3d2c;border-radius:5px;text-decoration:none}
+    .dv-olabel{display:flex;align-items:baseline;gap:8px;font:600 13px/1.3 'Nunito',sans-serif;color:#4a3d2c}
+    .dv-next{margin:22px 0 0;font:13px/1.6 'Nunito',sans-serif;color:rgba(74,61,44,.6)}
+    button{font-family:'Nunito',sans-serif}
+  </style>
+</helmet>
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Mobile bouquet-builder approaches</span></div>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Bottom tray — flowers always in thumb reach</div>
+      <div style="width:380px;height:720px;position:relative;overflow:hidden;background:#F7EFDD;border-radius:30px;box-shadow:0 14px 34px rgba(90,70,40,0.22);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 18px 8px;">
+          <span style="font-size:13px;color:#7c6a4e;">{{ aCount }} / 6 stems</span>
+          <button onClick="{{ aClear }}" style="background:none;border:none;color:#8a6a45;font-size:13px;text-decoration:underline;cursor:pointer;">clear</button>
+        </div>
+        <div style="position:relative;height:466px;margin:0 14px;background:#FBF6E9;border-radius:16px;overflow:hidden;">
+          <sc-for list="{{ aGreenery }}" as="lf" hint-placeholder-count="0">
+            <svg viewBox="0 0 40 90" style="{{ lf.style }}"><path d="M20 90 C18 60 10 45 2 30 M20 90 C16 55 26 40 34 22 M20 90 C20 50 20 30 20 5" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M2 30 C6 24 12 24 14 30 C10 34 4 34 2 30 Z" fill="#8b9a77"/><path d="M34 22 C38 16 44 17 45 23 C40 27 35 27 34 22 Z" fill="#8b9a77"/></svg>
+          </sc-for>
+          <sc-for list="{{ aStems }}" as="st" hint-placeholder-count="0">
+            <img src="{{ st.src }}" style="{{ st.style }}" draggable="false" />
+          </sc-for>
+          <svg width="60" height="40" viewBox="0 0 70 46" style="position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;">
+            <path d="M10 20 C 0 5, 25 0, 30 18 C 35 0, 60 5, 50 20 C 60 25, 55 40, 35 30 C 15 40, 10 25, 20 20 Z" fill="none" stroke="#8a6a45" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="35" cy="20" r="4" fill="#8a6a45"/>
+          </svg>
+          <sc-if value="{{ aEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#a8977a;font-family:'Caveat',cursive;font-size:20px;">tap a flower below</div>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 16px 0;overflow-x:auto;">
+          <span style="font-size:10.5px;color:#a8977a;flex:none;">or use:</span>
+          <sc-for list="{{ presetsA }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:130px;background:#FBF6E9;border-top:1px solid rgba(122,100,70,0.18);display:flex;align-items:center;gap:12px;padding:0 16px;overflow-x:auto;">
+          <sc-for list="{{ flowerBtns }}" as="f" hint-placeholder-count="8">
+            <button onClick="{{ f.onA }}" style="flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:none;padding:6px;">
+              <img src="{{ f.src }}" style="height:56px;width:auto;" />
+              <span style="font-size:10px;color:#5c4d38;">{{ f.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Guided one-at-a-time picker</div>
+      <div style="width:380px;height:720px;position:relative;overflow:hidden;background:#F7EFDD;border-radius:30px;box-shadow:0 14px 34px rgba(90,70,40,0.22);display:flex;flex-direction:column;">
+        <sc-if value="{{ bNotDone }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 18px 4px;">
+            <span style="font-size:13px;color:#7c6a4e;">{{ bCount }} stems so far</span>
+            <button onClick="{{ bFinish }}" style="background:#6b7d5c;color:#FBF6E9;border:none;border-radius:999px;padding:6px 14px;font-size:12px;cursor:pointer;">Finish</button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:10px 30px;">
+            <div style="font-family:'Caveat',cursive;font-size:24px;color:#7c6a4e;text-align:center;">Add a {{ bFlower.label }} to your bouquet?</div>
+            <div style="height:220px;display:flex;align-items:center;justify-content:center;">
+              <img src="{{ bFlower.src }}" style="height:210px;width:auto;filter:drop-shadow(0 8px 12px rgba(90,70,40,0.18));" />
+            </div>
+            <div style="display:flex;gap:14px;">
+              <button onClick="{{ bSkip }}" style="background:transparent;border:1px solid rgba(122,100,70,0.35);color:#7c6a4e;border-radius:999px;padding:12px 24px;font-size:14px;cursor:pointer;">Skip</button>
+              <button onClick="{{ bAdd }}" style="background:#6b7d5c;border:none;color:#FBF6E9;border-radius:999px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;">Add it</button>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+              <sc-for list="{{ bDots }}" as="d" hint-placeholder-count="8">
+                <span style="{{ d.style }}"></span>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:8px;">
+              <span style="font-size:10.5px;color:#a8977a;">not in the mood to pick? use a ready-made bouquet:</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+                <sc-for list="{{ presetsB }}" as="p" hint-placeholder-count="3">
+                  <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ bDone }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;flex:1;margin:16px;background:#FBF6E9;border-radius:16px;overflow:hidden;">
+            <sc-for list="{{ bGreenery }}" as="lf" hint-placeholder-count="0">
+              <svg viewBox="0 0 40 90" style="{{ lf.style }}"><path d="M20 90 C18 60 10 45 2 30 M20 90 C16 55 26 40 34 22 M20 90 C20 50 20 30 20 5" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            </sc-for>
+            <sc-for list="{{ bStems }}" as="st" hint-placeholder-count="0">
+              <img src="{{ st.src }}" style="{{ st.style }}" draggable="false" />
+            </sc-for>
+            <svg width="60" height="40" viewBox="0 0 70 46" style="position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;"><path d="M10 20 C 0 5, 25 0, 30 18 C 35 0, 60 5, 50 20 C 60 25, 55 40, 35 30 C 15 40, 10 25, 20 20 Z" fill="none" stroke="#8a6a45" stroke-width="3" stroke-linecap="round"/><circle cx="35" cy="20" r="4" fill="#8a6a45"/></svg>
+          </div>
+          <div style="padding:0 16px 20px;">
+            <button onClick="{{ bRestart }}" style="width:100%;background:transparent;border:1px solid rgba(122,100,70,0.35);color:#7c6a4e;border-radius:999px;padding:12px;font-size:14px;cursor:pointer;">Start over</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div class="dv-opt" id="1c">
+      <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Slide-up drawer — full canvas by default</div>
+      <div style="width:380px;height:720px;position:relative;overflow:hidden;background:#F7EFDD;border-radius:30px;box-shadow:0 14px 34px rgba(90,70,40,0.22);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 18px 0;position:relative;z-index:5;">
+          <span style="font-size:13px;color:#7c6a4e;">{{ cCount }} / 6 stems</span>
+          <button onClick="{{ cClear }}" style="background:none;border:none;color:#8a6a45;font-size:13px;text-decoration:underline;cursor:pointer;">clear</button>
+        </div>
+        <div style="position:absolute;inset:0;">
+          <sc-for list="{{ cGreenery }}" as="lf" hint-placeholder-count="0">
+            <svg viewBox="0 0 40 90" style="{{ lf.style }}"><path d="M20 90 C18 60 10 45 2 30 M20 90 C16 55 26 40 34 22 M20 90 C20 50 20 30 20 5" stroke="#7c8a6b" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M2 30 C6 24 12 24 14 30 C10 34 4 34 2 30 Z" fill="#8b9a77"/><path d="M34 22 C38 16 44 17 45 23 C40 27 35 27 34 22 Z" fill="#8b9a77"/></svg>
+          </sc-for>
+          <sc-for list="{{ cStems }}" as="st" hint-placeholder-count="0">
+            <img src="{{ st.src }}" style="{{ st.style }}" draggable="false" />
+          </sc-for>
+          <svg width="60" height="40" viewBox="0 0 70 46" style="position:absolute;left:50%;bottom:130px;transform:translateX(-50%);z-index:60;"><path d="M10 20 C 0 5, 25 0, 30 18 C 35 0, 60 5, 50 20 C 60 25, 55 40, 35 30 C 15 40, 10 25, 20 20 Z" fill="none" stroke="#8a6a45" stroke-width="3" stroke-linecap="round"/><circle cx="35" cy="20" r="4" fill="#8a6a45"/></svg>
+        </div>
+        <div style="{{ cDrawerStyle }}">
+          <button onClick="{{ cToggle }}" style="width:100%;background:none;border:none;padding:12px 0 8px;cursor:pointer;color:#7c6a4e;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <span style="width:36px;height:4px;background:rgba(122,100,70,0.35);border-radius:2px;"></span>
+            <span>{{ cHandleLabel }}</span>
+          </button>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 16px 10px;">
+            <sc-for list="{{ flowerBtns }}" as="f" hint-placeholder-count="8">
+              <button onClick="{{ f.onC }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:#F7EFDD;border:1px solid rgba(122,100,70,0.15);border-radius:10px;padding:8px 4px;">
+                <img src="{{ f.src }}" style="height:44px;width:auto;" />
+                <span style="font-size:9.5px;color:#5c4d38;">{{ f.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:0 16px 18px;overflow-x:auto;">
+            <span style="font-size:10.5px;color:#a8977a;flex:none;">or use:</span>
+            <sc-for list="{{ presetsC }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "make <a class="dv-oid" href="#1a">1a</a>'s tray collapsible too" · "combine <a class="dv-oid" href="#1b">1b</a>'s guided flow with <a class="dv-oid" href="#1c">1c</a>'s full canvas" · "pick one for the real build"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  flowers = [
+    {id:'sunflower', label:'Sunflower', src:'assets/flowers/sunflower.png'},
+    {id:'daisy', label:'Daisy', src:'assets/flowers/coneflower.png'},
+    {id:'peony', label:'Peony', src:'assets/flowers/daisy-pink.png'},
+    {id:'tulip', label:'Tulip', src:'assets/flowers/tulip-purple.png'},
+    {id:'poppy', label:'Poppy', src:'assets/flowers/poppy-pink.png'},
+    {id:'lavender', label:'Lavender', src:'assets/flowers/aster-purple.png'},
+    {id:'sprig', label:'Wildflower Sprig', src:'assets/flowers/sprig-pink-branch.png'},
+    {id:'berry', label:'Berry Sprig', src:'assets/flowers/berries-red.png'},
+  ];
+  presets = [
+    {id:'sunny', label:'Sunny Meadow', flowerIds:['sunflower','daisy','sprig','berry']},
+    {id:'blush', label:'Soft Blush', flowerIds:['peony','poppy','tulip','sprig']},
+    {id:'wild', label:'Wildflower Mix', flowerIds:['lavender','daisy','berry','poppy','sprig']},
+  ];
+
+  state = {
+    a: { stems: [], greenery: [] },
+    b: { stems: [], greenery: [], stepIndex: 0, done: false },
+    c: { stems: [], greenery: [], drawerOpen: false },
+  };
+
+  constructor(props) {
+    super(props);
+    this.flowerMap = {};
+    this.flowers.forEach(f => this.flowerMap[f.id] = f);
+    this.uidCounter = 0;
+  }
+
+  generateGreenery(count, spread) {
+    const n = Math.max(2, Math.min(5, count));
+    const arr = [];
+    for (let i = 0; i < n; i++) {
+      const angle = (Math.random() - 0.5) * (spread || 60);
+      arr.push({ uid: 'g' + (this.uidCounter++), dx: angle * 1.1, dy: -(6 + Math.random() * 28), rot: angle * 0.6 + (Math.random() - 0.5) * 10, scale: 0.68 + Math.random() * 0.35, z: Math.floor(Math.random() * 3) + 1 });
+    }
+    return arr;
+  }
+  generateStems(flowerIds) {
+    const n = flowerIds.length;
+    const order = flowerIds.map((fid, i) => ({ fid, i })).sort(() => Math.random() - 0.5);
+    return order.map(({ fid, i }) => {
+      const centered = n === 1 ? 0 : (i - (n - 1) / 2);
+      const dx = centered * 8 + (Math.random() - 0.5) * 6;
+      const dy = -(20 + Math.random() * 34 + Math.abs(centered) * 18);
+      const rot = centered * 5 + (Math.random() - 0.5) * 6;
+      const scale = 0.84 + Math.random() * 0.22;
+      return { uid: 's' + (this.uidCounter++), flowerId: fid, src: this.flowerMap[fid].src, dx, dy, rot, scale, z: Math.round(120 - Math.abs(dy)) };
+    });
+  }
+
+  addA(fid) {
+    this.setState(s => {
+      if (s.a.stems.length >= 6) return s;
+      const stems = [...s.a.stems, ...this.generateStems([fid])];
+      return { a: { stems, greenery: this.generateGreenery(stems.length, 60) } };
+    });
+  }
+  clearA() { this.setState({ a: { stems: [], greenery: [] } }); }
+  applyPresetA(preset) { const stems = this.generateStems(preset.flowerIds); this.setState({ a: { stems, greenery: this.generateGreenery(stems.length, 55) } }); }
+  applyPresetB(preset) { const stems = this.generateStems(preset.flowerIds); this.setState(s => ({ b: { ...s.b, stems, greenery: this.generateGreenery(stems.length, 55), done: true } })); }
+  applyPresetC(preset) { const stems = this.generateStems(preset.flowerIds); this.setState(s => ({ c: { ...s.c, stems, greenery: this.generateGreenery(stems.length, 55) } })); }
+
+  bAdd() {
+    this.setState(s => {
+      const fid = this.flowers[s.b.stepIndex % this.flowers.length].id;
+      const stems = [...s.b.stems, ...this.generateStems([fid])];
+      return { b: { ...s.b, stems, greenery: this.generateGreenery(stems.length, 60), stepIndex: s.b.stepIndex + 1 } };
+    });
+  }
+  bSkip() { this.setState(s => ({ b: { ...s.b, stepIndex: s.b.stepIndex + 1 } })); }
+  bFinish() { this.setState(s => ({ b: { ...s.b, done: true } })); }
+  bRestart() { this.setState({ b: { stems: [], greenery: [], stepIndex: 0, done: false } }); }
+
+  addC(fid) {
+    this.setState(s => {
+      if (s.c.stems.length >= 6) return s;
+      const stems = [...s.c.stems, ...this.generateStems([fid])];
+      return { c: { ...s.c, stems, greenery: this.generateGreenery(stems.length, 60) } };
+    });
+  }
+  clearC() { this.setState(s => ({ c: { ...s.c, stems: [], greenery: [] } })); }
+  toggleC() { this.setState(s => ({ c: { ...s.c, drawerOpen: !s.c.drawerOpen } })); }
+
+  stemStyleFrom(st, bottom, height) {
+    return { position: 'absolute', left: '50%', bottom, height, width: 'auto', transform: `translate(-50%,0) translate(${st.dx}px, ${st.dy}px) rotate(${st.rot}deg) scale(${st.scale})`, transformOrigin: 'bottom center', zIndex: st.z, filter: 'drop-shadow(0 5px 7px rgba(90,70,40,0.12))' };
+  }
+  leafStyleFrom(lf, bottom, width) {
+    return { position: 'absolute', left: '50%', bottom, width, height: 'auto', transform: `translate(-50%,0) translate(${lf.dx}px, ${lf.dy}px) rotate(${lf.rot}deg) scale(${lf.scale})`, transformOrigin: 'bottom center', zIndex: lf.z, pointerEvents: 'none' };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const flowerBtns = this.flowers.map(f => ({ ...f, onA: () => this.addA(f.id), onC: () => this.addC(f.id) }));
+    const presetBtnStyle = { border: '1px solid rgba(122,100,70,0.3)', background: 'transparent', color: '#7c6a4e', borderRadius: '999px', padding: '5px 12px', fontSize: '11px', cursor: 'pointer' };
+    const presetsA = this.presets.map(p => ({ ...p, onClick: () => this.applyPresetA(p), style: presetBtnStyle }));
+    const presetsB = this.presets.map(p => ({ ...p, onClick: () => this.applyPresetB(p), style: presetBtnStyle }));
+    const presetsC = this.presets.map(p => ({ ...p, onClick: () => this.applyPresetC(p), style: presetBtnStyle }));
+
+    const bFlower = this.flowers[s.b.stepIndex % this.flowers.length];
+    const bDots = this.flowers.map((f, i) => ({ style: { width: '6px', height: '6px', borderRadius: '50%', background: i === (s.b.stepIndex % this.flowers.length) ? '#6b7d5c' : 'rgba(122,100,70,0.25)' } }));
+
+    return {
+      flowerBtns,
+      aStems: s.a.stems.map(st => ({ ...st, style: this.stemStyleFrom(st, '56px', '170px') })),
+      aGreenery: s.a.greenery.map(lf => ({ ...lf, style: this.leafStyleFrom(lf, '56px', '46px') })),
+      aCount: s.a.stems.length, aEmpty: s.a.stems.length === 0, aClear: () => this.clearA(), presetsA,
+
+      bNotDone: !s.b.done, bDone: s.b.done,
+      bFlower, bCount: s.b.stems.length, bDots,
+      bAdd: () => this.bAdd(), bSkip: () => this.bSkip(), bFinish: () => this.bFinish(), bRestart: () => this.bRestart(), presetsB,
+      bStems: s.b.stems.map(st => ({ ...st, style: this.stemStyleFrom(st, '56px', '170px') })),
+      bGreenery: s.b.greenery.map(lf => ({ ...lf, style: this.leafStyleFrom(lf, '56px', '46px') })),
+
+      cStems: s.c.stems.map(st => ({ ...st, style: this.stemStyleFrom(st, '150px', '190px') })),
+      cGreenery: s.c.greenery.map(lf => ({ ...lf, style: this.leafStyleFrom(lf, '150px', '50px') })),
+      cCount: s.c.stems.length, cClear: () => this.clearC(), cToggle: () => this.toggleC(), presetsC,
+      cHandleLabel: s.c.drawerOpen ? 'hide flowers' : 'add flowers',
+      cDrawerStyle: { position: 'absolute', left: 0, right: 0, bottom: 0, background: '#FBF6E9', borderTopLeftRadius: '22px', borderTopRightRadius: '22px', boxShadow: '0 -8px 24px rgba(90,70,40,0.16)', transform: s.c.drawerOpen ? 'translateY(0)' : 'translateY(158px)', transition: 'transform 0.35s cubic-bezier(.2,.8,.2,1)', zIndex: 10 },
+    };
+  }
+}
+
+</script>
+</body>
+</html>

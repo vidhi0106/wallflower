@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#EFEAE0;}
+    a{color:#6b7d5c;}
+    a:hover{color:#54613f;}
+    .wf-shell{width:100%;max-width:420px;background:#F7EFDD;min-height:100vh;display:flex;flex-direction:column;}
+    .wf-builder-grid{display:flex;flex-direction:column;flex:1;}
+    .wf-form-col{display:flex;flex-direction:column;flex:1;}
+    @media (min-width:860px){
+      .wf-shell{max-width:960px;}
+      .wf-builder-grid{display:grid;grid-template-columns:360px 1fr;gap:56px;align-items:start;padding:8px 40px 0;}
+      .wf-envelope-col{position:sticky;top:24px;}
+      .wf-form-col{min-height:560px;}
+    }
+  </style>
+</helmet>
+<div style="min-height:100vh;background:#EFEAE0;font-family:'Nunito',sans-serif;color:#4a3d2c;display:flex;justify-content:center;">
+  <div class="wf-shell">
+
+    <div style="text-align:center;padding:22px 24px 4px;">
+      <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#4a3d2c;">For {{ recipientName }}'s {{ occasionText }}</div>
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:8px;padding:2px 24px 10px;">
+      <button onClick="{{ setBuilderView }}" style="{{ builderTabStyle }}">Add a Bouquet</button>
+      <button onClick="{{ setWallView }}" style="{{ wallTabStyle }}">Reveal Wall</button>
+    </div>
+
+    <sc-if value="{{ isBuilder }}" hint-placeholder-val="{{ true }}">
+    <div class="wf-builder-grid">
+    <div class="wf-envelope-col">
+    <div style="text-align:center;font-size:12px;color:#a8977a;padding:0 24px 4px;">Choose your envelope color</div>
+    <div style="display:flex;gap:10px;justify-content:center;padding:2px 24px 8px;">
+      <sc-for list="{{ colorButtons }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.onClick }}" style="{{ c.style }}"></button>
+      </sc-for>
+    </div>
+
+    <div style="position:relative;width:100%;max-width:320px;height:460px;margin:-10px auto 0;">
+      <img src="{{ envelopeBackSrc }}" style="position:absolute;left:50%;bottom:0;width:100%;transform:translateX(-50%);z-index:1;" />
+
+      <sc-for list="{{ stemViews }}" as="st" hint-placeholder-count="0">
+        <img src="{{ st.src }}" style="{{ st.style }}" />
+      </sc-for>
+
+      <div style="position:absolute;left:50%;bottom:56px;width:72%;transform:translateX(-50%);z-index:3;">
+        <img src="assets/envelope2/note.png" style="width:100%;display:block;" />
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:20% 14% 0;text-align:center;overflow:hidden;">
+            <div style="font-family:'Caveat',cursive;font-size:20px;line-height:1.35;color:#4a3d2c;">From {{ cName }}</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <img src="{{ envelopeFrontSrc }}" style="position:absolute;left:50%;bottom:0;width:100%;transform:translateX(-50%);z-index:4;" />
+
+      <sc-if value="{{ hasNoStems }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;right:0;bottom:180px;text-align:center;color:#a8977a;font-family:'Caveat',cursive;font-size:18px;z-index:5;">tap flowers below to begin</div>
+      </sc-if>
+    </div>
+
+    </div>
+    <div class="wf-form-col">
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;justify-content:space-between;padding:8px 26px 2px;font-size:12px;color:#7c6a4e;max-width:320px;width:100%;margin:0 auto;box-sizing:border-box;">
+      <span>{{ stemCount }} / {{ maxStems }} stems</span>
+      <button onClick="{{ clearAll }}" style="background:none;border:none;color:#8a6a45;font-size:12px;text-decoration:underline;padding:0;cursor:pointer;">clear</button>
+    </div>
+
+    <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 24px 16px;">
+      <sc-for list="{{ flowerButtons }}" as="f" hint-placeholder-count="8">
+        <button onClick="{{ f.onClick }}" style="{{ f.style }}"><img src="{{ f.src }}" style="height:44px;width:auto;pointer-events:none;" /></button>
+      </sc-for>
+    </div>
+
+    <div style="margin:0 24px 8px;height:1px;background:rgba(122,100,70,0.15);"></div>
+
+    <div style="padding:8px 24px 0;">
+      <div style="background-image:url('assets/envelope2/note-writing-bg.png');background-size:100% 100%;padding:20px 20px 16px;">
+        <div style="font-family:'Caveat',cursive;font-size:19px;color:#7c6a4e;margin-bottom:4px;">To {{ recipientName }},</div>
+        <textarea value="{{ note }}" onChange="{{ onNoteChange }}" placeholder="Write your note here..." style="width:100%;min-height:150px;border:none;outline:none;resize:none;background:transparent;font-family:'Caveat',cursive;font-size:19px;line-height:30px;color:#4a3d2c;padding:0;box-sizing:border-box;"></textarea>
+        <input value="{{ cName }}" onChange="{{ onNameChange }}" placeholder="Your name" style="width:100%;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-family:'Caveat',cursive;font-size:19px;outline:none;color:#4a3d2c;margin-top:6px;box-sizing:border-box;" />
+        <input value="{{ cEmail }}" onChange="{{ onEmailChange }}" placeholder="Your email" style="width:100%;border:none;border-bottom:1px solid rgba(122,100,70,0.35);background:transparent;padding:8px 2px;font-family:'Caveat',cursive;font-size:19px;outline:none;color:#4a3d2c;margin-top:6px;box-sizing:border-box;" />
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+    <div style="text-align:center;padding:36px 30px;">
+      <div style="font-family:'Caveat',cursive;font-weight:700;font-size:24px;color:#6b7d5c;">Sealed &amp; sent</div>
+      <p style="margin:10px 0 0;color:#7c6a4e;font-size:14px;line-height:1.5;">Your note will be delivered to {{ recipientName }} in {{ countdownText }}.</p>
+    </div>
+    </sc-if>
+
+    <div style="flex:1;min-height:16px;"></div>
+    <div style="position:sticky;bottom:0;background:linear-gradient(to top, #F7EFDD 65%, rgba(247,239,221,0));padding:18px 24px 22px;">
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ submit }}" disabled="{{ cantSend }}" style="{{ submitStyle }}">Send bouquet</button>
+      </sc-if>
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ editNote }}" style="{{ editButtonStyle }}">Edit your note</button>
+      </sc-if>
+    </div>
+    </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isWall }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:6px 20px 40px;">
+      <div style="text-align:center;margin:2px 0 16px;">
+        <div style="font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:#4a3d2c;">{{ recipientName }}'s Garden</div>
+        <div style="font-size:13px;color:#7c6a4e;margin-top:2px;">{{ occasionText }} · {{ wallCount }} bouquets tucked in</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:16px;">
+        <sc-for list="{{ wallCards }}" as="b" hint-placeholder-count="8">
+          <div style="position:relative;height:225px;cursor:pointer;" onClick="{{ b.onClick }}">
+            <div style="{{ b.frontStyle }}">
+              <img src="{{ b.backSrc }}" style="position:absolute;left:50%;bottom:0;width:100%;transform:translateX(-50%);z-index:1;" />
+              <sc-for list="{{ b.stemViews }}" as="st" hint-placeholder-count="0">
+                <img src="{{ st.src }}" style="{{ st.style }}" />
+              </sc-for>
+              <div style="position:absolute;left:50%;bottom:27px;width:72%;transform:translateX(-50%);z-index:3;">
+                <img src="assets/envelope2/note.png" style="width:100%;display:block;" />
+                <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:20% 10% 0;text-align:center;overflow:hidden;">
+                  <div style="font-family:'Caveat',cursive;font-size:11px;line-height:1.2;color:#4a3d2c;">From {{ b.name }}</div>
+                </div>
+              </div>
+              <img src="{{ b.frontSrc }}" style="position:absolute;left:50%;bottom:0;width:100%;transform:translateX(-50%);z-index:4;" />
+            </div>
+            <div style="{{ b.backCardStyle }}">
+              <div style="font-family:'Caveat',cursive;font-weight:700;font-size:17px;color:#4a3d2c;">{{ b.name }}</div>
+              <div style="font-family:'Caveat',cursive;font-size:13px;color:#4a3d2c;margin-top:6px;line-height:1.3;overflow:hidden;">{{ b.note }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 420, &quot;height&quot;: 900},
+  &quot;maxStems&quot;: {&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:7,&quot;min&quot;:3,&quot;max&quot;:7,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},
+  &quot;recipientName&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Laksh&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},
+  &quot;occasionText&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;18th Birthday&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},
+  &quot;revealDate&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2026-08-16T18:00:00&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}
+}">
+
+class Component extends DCLogic {
+  flowers = [
+    {id:'lavender', src:'assets/flowers2/lavender.png'},
+    {id:'tulip', src:'assets/flowers2/tulip.png'},
+    {id:'daisy-pink', src:'assets/flowers2/daisy-pink.png'},
+    {id:'cluster-a', src:'assets/flowers2/cluster-pink-a.png'},
+    {id:'poppy', src:'assets/flowers2/poppy.png'},
+    {id:'marigold', src:'assets/flowers2/marigold-orange.png'},
+    {id:'daisy-yellow', src:'assets/flowers2/daisy-yellow.png'},
+    {id:'cluster-b', src:'assets/flowers2/cluster-pink-b.png'},
+    {id:'hollyhock', src:'assets/flowers2/hollyhock-pink.png'},
+  ];
+
+  colors = [
+    {id:'blue', swatch:'#a9c5da', back:'assets/envelope2/envelope-back.png', front:'assets/envelope2/envelope-front.png'},
+    {id:'green', swatch:'#b7bd94', back:'assets/envelope2/envelope-back-green.png', front:'assets/envelope2/envelope-front-green.png'},
+    {id:'pink', swatch:'#dba7a0', back:'assets/envelope2/envelope-back-pink.png', front:'assets/envelope2/envelope-front-pink.png'},
+    {id:'cream', swatch:'#ece4d3', back:'assets/envelope2/envelope-back-cream.png', front:'assets/envelope2/envelope-front-cream.png'},
+  ];
+
+  sampleData = [
+    {name:'Priya', note:"Happy 18th! So proud of who you're becoming.", flowerIds:['tulip','daisy-pink','lavender'], color:'pink'},
+    {name:'Rohan', note:"18 and still the funniest person I know. Love you.", flowerIds:['marigold','cluster-a'], color:'cream'},
+    {name:'Meera', note:"Watching you grow up has been one of my favorite things.", flowerIds:['poppy','lavender','daisy-yellow'], color:'blue'},
+    {name:'Dev', note:"Here's to late nights and terrible video game strategies.", flowerIds:['hollyhock','cluster-b','marigold'], color:'green'},
+    {name:'Ananya', note:"You make everyone around you better. Happy birthday!", flowerIds:['tulip','poppy','daisy-yellow'], color:'pink'},
+    {name:'Kabir', note:"Legal adult now, still the same troublemaker.", flowerIds:['lavender','cluster-b'], color:'blue'},
+    {name:'Simran', note:"So many good memories and so many more to come.", flowerIds:['daisy-pink','marigold','hollyhock'], color:'cream'},
+    {name:'Vikram', note:"Proud of the person you've become.", flowerIds:['poppy','cluster-a','lavender'], color:'green'},
+  ];
+
+  state = { stems: [], greenery: [], note: '', cName: '', cEmail: '', submitted: false, color: 'blue', now: Date.now(), view: 'builder', flippedIds: {} };
+
+  constructor(props) {
+    super(props);
+    this.flowerMap = {};
+    this.flowers.forEach(f => this.flowerMap[f.id] = f);
+    this.uidCounter = 0;
+    this.maxStems = props.maxStems || 7;
+    this.revealDate = new Date(props.revealDate || '2026-08-16T18:00:00');
+    this.colorMap = {};
+    this.wallBouquets = this.sampleData.map((b, i) => {
+      const stems = this.generateStems(b.flowerIds);
+      return { ...b, id: 'w' + i, stems };
+    });
+  }
+
+  generateStems(flowerIds) { return flowerIds.map(fid => this.makeStemObj(fid)); }
+
+  componentDidMount() {
+    this._timer = setInterval(() => this.setState({ now: Date.now() }), 30000);
+  }
+  componentWillUnmount() {
+    clearInterval(this._timer);
+  }
+
+  generateGreenery(count) {
+    const n = Math.max(2, Math.min(4, count));
+    const arr = [];
+    for (let i = 0; i < n; i++) {
+      const centered = n === 1 ? 0 : (i - (n - 1) / 2 + 0.5);
+      arr.push({ uid: 'g' + (this.uidCounter++), dx: centered * 6 + (Math.random() - 0.5) * 6, dy: -(4 + Math.random() * 26), rot: centered * 3 + (Math.random() - 0.5) * 8, scale: 0.7 + Math.random() * 0.3, z: Math.floor(Math.random() * 2) + 2 });
+    }
+    return arr;
+  }
+  makeStemObj(fid) {
+    return { uid: 's' + (this.uidCounter++), flowerId: fid, src: this.flowerMap[fid].src, jr: (Math.random() - 0.5) * 2, jd: Math.random(), sc: 0.9 + Math.random() * 0.2 };
+  }
+  tightTransform(stem, i, n) {
+    const centered = n === 1 ? 0 : (i - (n - 1) / 2);
+    const dx = centered * 26 + stem.jr * 6;
+    const dy = -(20 + stem.jd * 55 + Math.abs(centered) * 16);
+    const rot = centered * 3 + stem.jr * 4;
+    return { dx, dy, rot, scale: stem.sc, z: Math.round(20 - Math.abs(dx)) };
+  }
+
+  addFlower(fid) {
+    if (this.state.stems.length >= this.maxStems) return;
+    const stems = [...this.state.stems, this.makeStemObj(fid)];
+    this.setState({ stems, greenery: this.generateGreenery(stems.length) });
+  }
+  clearAll() { this.setState({ stems: [], greenery: [] }); }
+  submit() {
+    if (!this.state.stems.length || !this.state.note.trim()) return;
+    this.setState({ submitted: true });
+  }
+  editNote() { this.setState({ submitted: false }); }
+  flipCard(id) { this.setState(s => ({ flippedIds: { ...s.flippedIds, [id]: !s.flippedIds[id] } })); }
+
+  renderVals() {
+    const s = this.state;
+    const n = s.stems.length;
+    const stemViews = s.stems.map((st, i) => {
+      const t = this.tightTransform(st, i, n);
+      return { ...st, style: { position: 'absolute', left: '50%', bottom: '110px', height: '185px', width: 'auto', transform: `translate(-50%,0) translate(${t.dx}px, ${t.dy}px) rotate(${t.rot}deg) scale(${t.scale})`, transformOrigin: 'bottom center', zIndex: 2, filter: 'drop-shadow(0 4px 6px rgba(90,70,40,0.15))', transition: 'transform 0.5s cubic-bezier(.3,.7,.2,1)' } };
+    });
+    const greeneryViews = s.greenery.map(lf => ({ ...lf, style: { position: 'absolute', left: '50%', bottom: '175px', width: '34px', height: 'auto', transform: `translate(-50%,0) translate(${lf.dx}px, ${lf.dy}px) rotate(${lf.rot}deg) scale(${lf.scale})`, transformOrigin: 'bottom center', zIndex: 3, pointerEvents: 'none' } }));
+
+    const disabled = s.stems.length >= this.maxStems;
+    const flowerButtons = this.flowers.map(f => ({
+      ...f, onClick: () => this.addFlower(f.id),
+      style: { background: '#FBF6E9', border: '1px solid rgba(122,100,70,0.2)', borderRadius: '10px', padding: '8px 6px', cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.4 : 1, flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+    }));
+
+    const diffMs = Math.max(0, this.revealDate.getTime() - s.now);
+    const days = Math.floor(diffMs / 86400000);
+    const hours = Math.floor((diffMs % 86400000) / 3600000);
+    const mins = Math.floor((diffMs % 3600000) / 60000);
+    const countdownText = `${days}d ${hours}h ${mins}m`;
+
+    const canSend = s.stems.length > 0 && !!s.note.trim();
+    const activeColor = this.colors.find(c => c.id === s.color) || this.colors[0];
+    const colorButtons = this.colors.map(c => ({
+      ...c,
+      onClick: () => this.setState({ color: c.id }),
+      style: { width: '30px', height: '30px', borderRadius: '50%', background: c.swatch, border: s.color === c.id ? '2px solid #4a3d2c' : '2px solid rgba(122,100,70,0.25)', cursor: 'pointer', padding: 0 },
+    }));
+    const tabBase = { border: 'none', borderRadius: '999px', padding: '7px 16px', fontSize: '13px', fontFamily: "'Nunito',sans-serif", fontWeight: 700, cursor: 'pointer' };
+    const activeTab = { ...tabBase, background: '#6b7d5c', color: '#FBF6E9' };
+    const inactiveTab = { ...tabBase, background: 'rgba(122,100,70,0.1)', color: '#7c6a4e' };
+
+    const wallCards = this.wallBouquets.map(b => {
+      const flipped = !!s.flippedIds[b.id];
+      const bc = this.colors.find(c => c.id === b.color) || this.colors[0];
+      const n2 = b.stems.length;
+      const stemViews = b.stems.map((st, i) => {
+        const t = this.tightTransform(st, i, n2);
+        return { ...st, style: { position: 'absolute', left: '50%', bottom: '54px', height: '90px', width: 'auto', transform: `translate(-50%,0) translate(${t.dx * 0.48}px, ${t.dy * 0.48}px) rotate(${t.rot}deg) scale(${t.scale})`, transformOrigin: 'bottom center', zIndex: 2, filter: 'drop-shadow(0 2px 4px rgba(90,70,40,0.15))' } };
+      });
+      return {
+        ...b, stemViews, backSrc: bc.back, frontSrc: bc.front,
+        onClick: () => this.flipCard(b.id),
+        frontStyle: { position: 'absolute', inset: 0, opacity: flipped ? 0 : 1, transform: flipped ? 'scale(0.94)' : 'scale(1)', pointerEvents: flipped ? 'none' : 'auto', transition: 'opacity 0.35s ease, transform 0.35s ease' },
+        backCardStyle: { position: 'absolute', inset: 0, backgroundImage: "url('assets/envelope2/note-writing-bg.png')", backgroundSize: '100% 100%', padding: '16px', opacity: flipped ? 1 : 0, transform: flipped ? 'scale(1)' : 'scale(0.94)', pointerEvents: flipped ? 'auto' : 'none', transition: 'opacity 0.35s ease, transform 0.35s ease' },
+      };
+    });
+
+    return {
+      isBuilder: s.view === 'builder', isWall: s.view === 'wall',
+      setBuilderView: () => this.setState({ view: 'builder' }),
+      setWallView: () => this.setState({ view: 'wall' }),
+      builderTabStyle: s.view === 'builder' ? activeTab : inactiveTab,
+      wallTabStyle: s.view === 'wall' ? activeTab : inactiveTab,
+      wallCards, wallCount: wallCards.length,
+      colorButtons, envelopeBackSrc: activeColor.back, envelopeFrontSrc: activeColor.front,
+      recipientName: this.props.recipientName || 'Laksh',
+      occasionText: this.props.occasionText || '18th Birthday',
+      maxStems: this.maxStems, stemCount: s.stems.length,
+      stemViews, greeneryViews, hasNoStems: s.stems.length === 0,
+      clearAll: () => this.clearAll(),
+      flowerButtons,
+      note: s.note, onNoteChange: (e) => this.setState({ note: e.target.value }),
+      cName: s.cName, onNameChange: (e) => this.setState({ cName: e.target.value }),
+      cEmail: s.cEmail, onEmailChange: (e) => this.setState({ cEmail: e.target.value }),
+      submitted: s.submitted, notSubmitted: !s.submitted, cantSend: !canSend,
+      submit: () => this.submit(), editNote: () => this.editNote(),
+      countdownText,
+      submitStyle: { width: '100%', background: canSend ? '#6b7d5c' : '#c9c2ac', color: '#FBF6E9', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '15px', fontWeight: 700, fontFamily: "'Nunito',sans-serif", cursor: canSend ? 'pointer' : 'not-allowed' },
+      editButtonStyle: { width: '100%', background: 'transparent', color: '#6b7d5c', border: '1px solid #6b7d5c', borderRadius: '10px', padding: '14px', fontSize: '15px', fontWeight: 700, fontFamily: "'Nunito',sans-serif", cursor: 'pointer' },
+    };
+  }
+}
+
+</script>
+</body>
+</html>
