@@ -22,7 +22,28 @@ model Organizer {
   email     String   @unique
   createdAt DateTime @default(now())
 
-  events Event[]
+  events   Event[]
+  sessions Session[]
+}
+
+model MagicLink {
+  id         String    @id @default(cuid())
+  email      String
+  token      String    @unique @default(cuid())
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  token       String    @unique @default(cuid())
+  organizerId String
+  organizer   Organizer @relation(fields: [organizerId], references: [id])
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([organizerId])
 }
 
 model Event {

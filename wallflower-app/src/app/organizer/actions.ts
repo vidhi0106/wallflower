@@ -1,0 +1,60 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+import { destroyCurrentSession, getCurrentOrganizer } from "@/lib/wallflower/auth";
+import { generateUniqueEventSlug } from "@/lib/wallflower/slug";
+
+export async function logout() {
+  await destroyCurrentSession();
+  redirect("/login");
+}
+
+export type CreateEventState = { status: "idle" } | { status: "error"; error: string };
+
+export async function createEvent(
+  _prevState: CreateEventState,
+  formData: FormData
+): Promise<CreateEventState> {
+  const organizer = await getCurrentOrganizer();
+  if (!organizer) redirect("/login");
+
+  const recipientName = String(formData.get("recipientName") || "").trim();
+  const occasionText = String(formData.get("occasionText") || "").trim();
+  const revealDateRaw = String(formData.get("revealDate") || "").trim();
+
+  if (!recipientName) return { status: "error", error: "Recipient name is required." };
+  if (!occasionText) return { status: "error", error: "Occasion is required." };
+
+  let revealDate: Date | null = null;
+  if (revealDateRaw) {
+    const parsed = new Date(revealDateRaw);
+    if (Number.isNaN(parsed.getTime())) return { status: "error", error: "Invalid reveal date." };
+    revealDate = parsed;
+  }
+
+  const slug = await generateUniqueEventSlug(recipientName);
+  const event = await prisma.event.create({
+    data: { organizerId: organizer.id, slug, recipientName, occasionText, revealDate },
+  });
+
+  revalidatePath("/organizer");
+  redirect(`/organizer/events/${event.id}`);
+}
+
+export async function decideSubmission(submissionId: string, decision: "approved" | "denied") {
+  const organizer = await getCurrentOrganizer();
+  if (!organizer) redirect("/login");
+
+  const submission = await prisma.submission.findUnique({
+    where: { id: submissionId },
+    include: { event: true },
+  });
+  if (!submission || submission.event.organizerId !== organizer.id) {
+    throw new Error("Submission not found");
+  }
+
+  await prisma.submission.update({ where: { id: submissionId }, data: { status: decision } });
+  revalidatePath(`/organizer/events/${submission.eventId}`);
+}
