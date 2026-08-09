@@ -4,9 +4,10 @@ Birthday tribute app. Contributors build a flower bouquet, tuck it into a
 colored envelope, and write a note; organizers reveal all submissions at
 once as a combined garden wall.
 
-This is step 1 of the build: **the bouquet builder + submission form**,
-working end-to-end against a real database. No auth, email, or reveal wall
-yet — those are steps 2-4.
+Steps 1 and 2 of the build are done: **the bouquet builder + submission
+form**, and **organizer magic-link auth + dashboard + approve/deny queue**,
+both working end-to-end against a real database. No email service or
+reveal wall yet — see `HANDOFF.md` for exact status and next steps.
 
 ## Stack
 
@@ -50,6 +51,7 @@ yet — those are steps 2-4.
 
 ## What's implemented
 
+**Contributor side (step 1)**
 - `GET /e/[slug]` — the builder page for a given event
 - `POST /api/events/[slug]/submissions` — create a submission (rejects a
   second submission from the same email for the same event)
@@ -60,7 +62,22 @@ yet — those are steps 2-4.
   token cached in `localStorage` for now — real email delivery of edit
   links is step 3)
 
+**Organizer side (step 2)**
+- `/login` — passwordless magic-link sign-in. No email service wired up
+  yet, so the "sent" link is shown directly on the page and logged
+  server-side (see `HANDOFF.md`)
+- `GET /api/auth/verify` — consumes the magic-link token, creates the
+  organizer on first login, starts a session (httpOnly cookie)
+- `/organizer` — dashboard: the organizer's events + create-event form
+- `/organizer/events/[eventId]` — review queue (pending/approved/denied)
+  with Approve/Deny actions, ownership-checked server-side
+
 ## Data model
 
-See `prisma/schema.prisma` — `Organizer`, `Event`, `Submission`, matching
-the spec's rough data model.
+See `prisma/schema.prisma` — `Organizer`, `Event`, `Submission`,
+`MagicLink`, `Session`.
+
+## Deploying
+
+See `HANDOFF.md` for exact status, what's left to wire up for a Vercel
+deploy, and what to build next.
