@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EventStatus {
+  collecting
+  revealed
+}
+
+enum SubmissionStatus {
+  pending
+  approved
+  denied
+}
+
+model Organizer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  events Event[]
+}
+
+model Event {
+  id            String      @id @default(cuid())
+  organizerId   String
+  organizer     Organizer   @relation(fields: [organizerId], references: [id])
+  slug          String      @unique
+  recipientName String
+  occasionText  String
+  revealDate    DateTime?
+  status        EventStatus @default(collecting)
+  createdAt     DateTime    @default(now())
+
+  submissions Submission[]
+
+  @@index([organizerId])
+}
+
+model Submission {
+  id                String            @id @default(cuid())
+  eventId           String
+  event             Event             @relation(fields: [eventId], references: [id])
+  contributorName   String
+  contributorEmail  String
+  bouquetData       Json
+  noteText          String
+  status            SubmissionStatus  @default(pending)
+  editToken         String            @unique @default(cuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@unique([eventId, contributorEmail])
+  @@index([eventId])
+}

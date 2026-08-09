@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --background: #efeae0;
+  --foreground: #4a3d2c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-caveat: var(--font-caveat);
+  --font-nunito: var(--font-nunito);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-nunito), sans-serif;
+}
+
+a {
+  color: #6b7d5c;
+}
+a:hover {
+  color: #54613f;
+}
+
+.font-caveat {
+  font-family: var(--font-caveat), cursive;
+}
+.font-nunito {
+  font-family: var(--font-nunito), sans-serif;
+}
+
+.wf-shell {
+  width: 100%;
+  max-width: 420px;
+  background: #f7efdd;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.wf-builder-grid {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.wf-form-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+@media (min-width: 860px) {
+  .wf-shell {
+    max-width: 960px;
+  }
+  .wf-builder-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 56px;
+    align-items: start;
+    padding: 8px 40px 0;
+  }
+  .wf-envelope-col {
+    position: sticky;
+    top: 24px;
+  }
+  .wf-form-col {
+    min-height: 560px;
+  }
+}
