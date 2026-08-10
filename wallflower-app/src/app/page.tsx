@@ -39,9 +39,14 @@ export default function Home() {
             />
           ))}
           <img
+            src="/envelope2/note.png"
+            alt=""
+            style={{ position: "absolute", left: "50%", bottom: 16, width: "62%", transform: "translateX(-50%)", zIndex: 3 }}
+          />
+          <img
             src="/envelope2/envelope-front.png"
             alt=""
-            style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 3 }}
+            style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 4 }}
           />
         </div>
 
