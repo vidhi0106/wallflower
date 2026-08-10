@@ -217,7 +217,7 @@ export default function HeroEnvelope() {
         </div>
 
         <h1 className="font-caveat font-bold text-3xl text-center mt-6">
-          A garden of notes, tucked away for the big day
+          Share a garden of notes
         </h1>
         <p className="text-sm text-center mt-3" style={{ color: "#7c6a4e", lineHeight: 1.6, maxWidth: 320 }}>
           Everyone tucks in a bouquet and a note. Hidden until you reveal it all at once.
