@@ -123,8 +123,8 @@ function NoteCard({ note }: { note: ExampleNote }) {
           ))}
           <div style={{ position: "absolute", left: "50%", bottom: "22%", width: "72%", transform: "translateX(-50%)", zIndex: 3 }}>
             <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
-            <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", padding: "22% 8% 0", textAlign: "center" }}>
-              <span className="font-caveat font-bold" style={{ fontSize: 11, lineHeight: 1.15, color: "#4a3d2c" }}>
+            <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", padding: "20% 6% 0", textAlign: "center" }}>
+              <span className="font-caveat font-bold" style={{ fontSize: 14, lineHeight: 1.15, color: "#4a3d2c" }}>
                 {note.occasion}
               </span>
             </div>
@@ -152,10 +152,10 @@ function NoteCard({ note }: { note: ExampleNote }) {
             justifyContent: "center",
           }}
         >
-          <p className="font-caveat" style={{ fontSize: 13, lineHeight: 1.25, color: "#4a3d2c", margin: 0 }}>
+          <p className="font-caveat" style={{ fontSize: 16, lineHeight: 1.3, color: "#4a3d2c", margin: 0 }}>
             {note.message}
           </p>
-          <p className="font-caveat font-bold" style={{ fontSize: 12, color: "#6b7d5c", marginTop: 6 }}>
+          <p className="font-caveat font-bold" style={{ fontSize: 14, color: "#6b7d5c", marginTop: 8 }}>
             — {note.from}
           </p>
         </div>
@@ -165,9 +165,9 @@ function NoteCard({ note }: { note: ExampleNote }) {
 }
 
 const decorStems = [
-  { src: "/flowers2/lavender.png", dx: -34, dy: -60, rot: -8, scale: 0.95 },
-  { src: "/flowers2/poppy.png", dx: 0, dy: -78, rot: 0, scale: 1 },
-  { src: "/flowers2/daisy-pink.png", dx: 34, dy: -58, rot: 9, scale: 0.9 },
+  { src: "/flowers2/lavender.png", dx: -28, dy: -54, rot: -10, scale: 0.85 },
+  { src: "/flowers2/poppy.png", dx: 0, dy: -74, rot: 0, scale: 1 },
+  { src: "/flowers2/daisy-pink.png", dx: 28, dy: -54, rot: 10, scale: 0.85 },
 ];
 
 export default function HeroEnvelope() {
@@ -219,9 +219,8 @@ export default function HeroEnvelope() {
         <h1 className="font-caveat font-bold text-3xl text-center mt-6">
           A garden of notes, tucked away for the big day
         </h1>
-        <p className="text-sm text-center mt-3" style={{ color: "#7c6a4e", lineHeight: 1.6, maxWidth: 360 }}>
-          Everyone who loves them builds a little bouquet, tucks it into an envelope, and writes a
-          note. It all stays hidden until you reveal it — one combined garden, all at once.
+        <p className="text-sm text-center mt-3" style={{ color: "#7c6a4e", lineHeight: 1.6, maxWidth: 320 }}>
+          Everyone tucks in a bouquet and a note. Hidden until you reveal it all at once.
         </p>
 
         <a
@@ -242,8 +241,7 @@ export default function HeroEnvelope() {
         </a>
 
         <p className="text-xs text-center mt-4" style={{ color: "#a8977a" }}>
-          Already have a link from a friend? Use the one they shared with you to add your own
-          bouquet.
+          Got a link from a friend? Use it to tuck in your own bouquet.
         </p>
       </div>
     </div>

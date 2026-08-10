@@ -16,7 +16,7 @@ const ICON_PROPS = {
 const STEPS = [
   {
     title: "Set up an event",
-    body: "Name the person and the occasion. You get a private link — no account setup beyond that.",
+    body: "Name them, name the day. Get a private link — that's it.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="4" y="9" width="26" height="18" rx="2.5" />
@@ -28,7 +28,7 @@ const STEPS = [
   },
   {
     title: "Invite loved ones",
-    body: "Share the link or a QR code however you like — text, email, group chat. No sign-up required to contribute.",
+    body: "Share the link, however you like. No sign-up to join in.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M14.5 19.5l5-5" />
@@ -39,7 +39,7 @@ const STEPS = [
   },
   {
     title: "Send bouquets & notes",
-    body: "Each person builds a little bouquet, writes a note, and tucks it into an envelope. Stays private until reveal day.",
+    body: "A bouquet, a note, tucked away. Private until reveal day.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M17 28V15" />
@@ -51,7 +51,7 @@ const STEPS = [
   },
   {
     title: "The wall of wishes",
-    body: "Reveal it manually or set a date — every bouquet blooms together at once, into one shared garden.",
+    body: "Reveal it whenever — every bouquet blooms together, at once.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="4" y="4" width="10" height="10" rx="2" />
