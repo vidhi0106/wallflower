@@ -1,8 +1,11 @@
+import QRCode from "qrcode";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrganizer } from "@/lib/wallflower/auth";
 import { decideSubmission, revealEvent } from "@/app/organizer/actions";
 import { maybeAutoReveal } from "@/lib/wallflower/reveal";
+import { getBaseUrl } from "@/lib/wallflower/email";
+import ShareLink from "@/components/ShareLink";
 import type { EnvelopeColorId, FlowerId } from "@/lib/wallflower/catalog";
 
 function RevealStatus({ eventId, status, revealDate }: { eventId: string; status: string; revealDate: Date | null }) {
@@ -133,16 +136,57 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   const approved = event.submissions.filter((s) => s.status === "approved");
   const denied = event.submissions.filter((s) => s.status === "denied");
 
+  const contributionUrl = `${getBaseUrl()}/e/${event.slug}`;
+  const wallUrl = `${contributionUrl}?view=wall`;
+  const qrSvg = await QRCode.toString(contributionUrl, {
+    type: "svg",
+    margin: 1,
+    color: { dark: "#4a3d2c", light: "#00000000" },
+  });
+  const qrDataUri = `data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`;
+
   return (
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="font-caveat font-bold text-2xl" style={{ color: "#4a3d2c" }}>
           {event.recipientName}&rsquo;s {event.occasionText}
         </h1>
-        <p className="text-xs mt-1" style={{ color: "#a8977a" }}>
-          Contribution link: /e/{event.slug}
-        </p>
+        <a
+          href={wallUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="font-nunito font-bold text-xs inline-block mt-2"
+          style={{ background: "rgba(122,100,70,0.1)", color: "#7c6a4e", borderRadius: 8, padding: "6px 12px" }}
+        >
+          View Wall →
+        </a>
         <RevealStatus eventId={event.id} status={event.status} revealDate={event.revealDate} />
+
+        <div className="flex items-start gap-4 mt-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={qrDataUri}
+            alt="QR code linking to the contribution page"
+            width={112}
+            height={112}
+            style={{ borderRadius: 8, border: "1px solid rgba(122,100,70,0.2)", flexShrink: 0 }}
+          />
+          <div className="flex-1">
+            <p className="text-xs" style={{ color: "#a8977a" }}>
+              Contribution link
+            </p>
+            <a
+              href={contributionUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm font-bold break-all"
+              style={{ color: "#6b7d5c" }}
+            >
+              {contributionUrl}
+            </a>
+            <ShareLink url={contributionUrl} recipientName={event.recipientName} occasionText={event.occasionText} />
+          </div>
+        </div>
       </div>
 
       <section>

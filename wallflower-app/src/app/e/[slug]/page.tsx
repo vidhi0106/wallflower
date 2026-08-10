@@ -6,6 +6,9 @@ import type { EnvelopeColorId, FlowerId } from "@/lib/wallflower/catalog";
 
 export default async function EventPage(props: PageProps<"/e/[slug]">) {
   const { slug } = await props.params;
+  const searchParams = await props.searchParams;
+  const viewParam = Array.isArray(searchParams.view) ? searchParams.view[0] : searchParams.view;
+  const initialView = viewParam === "wall" ? "wall" : "builder";
 
   const found = await prisma.event.findUnique({ where: { slug } });
   if (!found) notFound();
@@ -21,6 +24,7 @@ export default async function EventPage(props: PageProps<"/e/[slug]">) {
 
   return (
     <BouquetBuilder
+      initialView={initialView}
       event={{
         slug: event.slug,
         recipientName: event.recipientName,
