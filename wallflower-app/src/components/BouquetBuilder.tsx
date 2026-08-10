@@ -10,12 +10,14 @@ import {
   type FlowerId,
 } from "@/lib/wallflower/catalog";
 import { makeStem, tightTransform, type Stem } from "@/lib/wallflower/bouquet";
+import RevealWall, { type WallSubmission } from "@/components/RevealWall";
 
 export interface BouquetBuilderEvent {
   slug: string;
   recipientName: string;
   occasionText: string;
   revealDate: string | null;
+  status: "collecting" | "revealed";
 }
 
 interface SubmissionRecord {
@@ -41,7 +43,14 @@ function formatCountdown(revealDate: string | null, now: number): string {
   return `${days}d ${hours}h ${mins}m`;
 }
 
-export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }) {
+export default function BouquetBuilder({
+  event,
+  wallSubmissions,
+}: {
+  event: BouquetBuilderEvent;
+  wallSubmissions: WallSubmission[];
+}) {
+  const [view, setView] = useState<"builder" | "wall">("builder");
   const [stems, setStems] = useState<Stem[]>([]);
   const [color, setColor] = useState<EnvelopeColorId>("blue");
   const [note, setNote] = useState("");
@@ -152,6 +161,50 @@ export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }
           </div>
         </div>
 
+        <div className="flex justify-center gap-2 px-6 pt-0.5 pb-2.5">
+          <button
+            onClick={() => setView("builder")}
+            className="font-nunito font-bold text-xs"
+            style={{
+              border: "none",
+              borderRadius: 999,
+              padding: "7px 16px",
+              background: view === "builder" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
+              color: view === "builder" ? "#FBF6E9" : "#7c6a4e",
+              cursor: "pointer",
+            }}
+          >
+            Add a Bouquet
+          </button>
+          <button
+            onClick={() => setView("wall")}
+            className="font-nunito font-bold text-xs"
+            style={{
+              border: "none",
+              borderRadius: 999,
+              padding: "7px 16px",
+              background: view === "wall" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
+              color: view === "wall" ? "#FBF6E9" : "#7c6a4e",
+              cursor: "pointer",
+            }}
+          >
+            Reveal Wall
+          </button>
+        </div>
+
+        {view === "wall" && (
+          <RevealWall
+            slug={event.slug}
+            recipientName={event.recipientName}
+            occasionText={event.occasionText}
+            status={event.status}
+            revealDate={event.revealDate}
+            now={now}
+            submissions={wallSubmissions}
+          />
+        )}
+
+        {view === "builder" && (
         <div className="wf-builder-grid flex flex-col flex-1">
           <div className="wf-envelope-col">
             <div className="text-center text-xs px-6 pb-1" style={{ color: "#a8977a" }}>
@@ -433,6 +486,7 @@ export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

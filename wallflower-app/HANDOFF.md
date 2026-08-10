@@ -14,11 +14,12 @@ Build priority, as given by the user:
 3. Email notifications (submission confirmation, review request,
    deny-with-note, edit link) — **done**
 4. Reveal mechanics (countdown/teaser page, manual + auto-trigger, live
-   reveal wall) — **not started, next up**
+   reveal wall) — **done**
 
+All four steps from the original spec are built and manually verified.
 The user also wants the app **deployed to Vercel** with a hosted
-Postgres, purely so they can preview it in a browser without local setup.
-Not started — see "Vercel deploy" below.
+Postgres, purely so they can preview it in a browser without local setup
+— that's the only thing not started. See "Vercel deploy" below.
 
 ## Stack (already decided and built — don't re-litigate)
 
@@ -41,6 +42,16 @@ Not started — see "Vercel deploy" below.
   (`/organizer/events/[eventId]`, session-authed) and the one-tap email
   link (`/review/[reviewToken]`, token-authed, no login) — keep it that
   way rather than duplicating approve/deny logic if you touch either
+- Reveal: `maybeAutoReveal()` in `src/lib/wallflower/reveal.ts` is a
+  check-on-read (no cron/scheduler exists in this deployment target) —
+  called from both `/e/[slug]` and the organizer event page. The
+  `/e/[slug]` recipient page has a tab switcher (builder / reveal wall)
+  built into `BouquetBuilder.tsx`; the wall grid itself is
+  `src/components/RevealWall.tsx`, which only ever mounts client-side
+  (not the default tab) — that's load-bearing for its `useState(() =>
+  localStorage...)` lazy initializer being safe (no SSR/hydration path to
+  worry about); don't refactor it to render by default without revisiting
+  that
 
 **Read `wallflower-app/AGENTS.md` before writing any Next.js code** — this
 app is on Next.js 16, which has real breaking changes vs. older training

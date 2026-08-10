@@ -1,8 +1,38 @@
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrganizer } from "@/lib/wallflower/auth";
-import { decideSubmission } from "@/app/organizer/actions";
+import { decideSubmission, revealEvent } from "@/app/organizer/actions";
+import { maybeAutoReveal } from "@/lib/wallflower/reveal";
 import type { EnvelopeColorId, FlowerId } from "@/lib/wallflower/catalog";
+
+function RevealStatus({ eventId, status, revealDate }: { eventId: string; status: string; revealDate: Date | null }) {
+  if (status === "revealed") {
+    return (
+      <p className="text-xs mt-1 font-nunito font-bold" style={{ color: "#6b7d5c" }}>
+        Revealed — the garden is live for anyone with the link
+      </p>
+    );
+  }
+  const reveal = revealEvent.bind(null, eventId);
+  return (
+    <div className="flex items-center gap-3 mt-2">
+      <p className="text-xs" style={{ color: "#a8977a" }}>
+        {revealDate
+          ? `Set to auto-reveal ${revealDate.toLocaleString()}`
+          : "No reveal date set — trigger it manually when ready"}
+      </p>
+      <form action={reveal}>
+        <button
+          type="submit"
+          className="font-nunito font-bold text-xs"
+          style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}
+        >
+          Reveal now
+        </button>
+      </form>
+    </div>
+  );
+}
 
 function DecisionButtons({ submissionId }: { submissionId: string }) {
   const approve = decideSubmission.bind(null, submissionId, "approved");
@@ -91,11 +121,13 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   const organizer = await getCurrentOrganizer();
   if (!organizer) redirect("/login");
 
-  const event = await prisma.event.findUnique({
+  const found = await prisma.event.findUnique({
     where: { id: eventId },
     include: { submissions: { orderBy: { createdAt: "desc" } } },
   });
-  if (!event || event.organizerId !== organizer.id) notFound();
+  if (!found || found.organizerId !== organizer.id) notFound();
+  const revealed = await maybeAutoReveal(found);
+  const event = { ...found, ...revealed };
 
   const pending = event.submissions.filter((s) => s.status === "pending");
   const approved = event.submissions.filter((s) => s.status === "approved");
@@ -110,6 +142,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
         <p className="text-xs mt-1" style={{ color: "#a8977a" }}>
           Contribution link: /e/{event.slug}
         </p>
+        <RevealStatus eventId={event.id} status={event.status} revealDate={event.revealDate} />
       </div>
 
       <section>

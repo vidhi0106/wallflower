@@ -4,11 +4,13 @@ Birthday tribute app. Contributors build a flower bouquet, tuck it into a
 colored envelope, and write a note; organizers reveal all submissions at
 once as a combined garden wall.
 
-Steps 1-3 of the build are done: **the bouquet builder + submission form**,
-**organizer magic-link auth + dashboard + approve/deny queue**, and
-**email notifications** (confirmation, review request, deny-with-note),
-all working end-to-end against a real database. No reveal wall yet — see
-`HANDOFF.md` for exact status and next steps.
+All four build steps are done: **the bouquet builder + submission form**,
+**organizer magic-link auth + dashboard + approve/deny queue**, **email
+notifications** (confirmation, review request, deny-with-note), and
+**reveal mechanics** (countdown teaser, manual + auto-trigger, live
+reveal wall with flip-to-note cards), all working end-to-end against a
+real database. See `HANDOFF.md` for exact status and what's left
+(deploying it).
 
 ## Stack
 
@@ -83,6 +85,22 @@ all working end-to-end against a real database. No reveal wall yet — see
   `applySubmissionDecision()` in `src/lib/wallflower/decision.ts`
 - A denied submission's edit page shows the organizer's note and lets the
   contributor revise and resend, which re-notifies the organizer
+
+**Reveal (step 4)**
+- `/e/[slug]` now has two tabs: **Add a Bouquet** (the builder) and
+  **Reveal Wall**. Pre-reveal, the wall tab shows a countdown teaser;
+  post-reveal, it shows a grid of approved bouquets that flip on click to
+  reveal the contributor's name and note (`src/components/RevealWall.tsx`)
+- `src/lib/wallflower/reveal.ts` — `maybeAutoReveal()` flips an event from
+  `collecting` to `revealed` once its `revealDate` has passed. There's no
+  cron job; it's a check-on-read triggered by whoever loads the event page
+  next (recipient or organizer)
+- Organizers can also reveal manually anytime from
+  `/organizer/events/[eventId]` (works with or without a `revealDate` set)
+- Returning visitors see an "X new" badge on the wall for bouquets
+  approved since their last visit, tracked via `localStorage` (no
+  recipient auth exists, same pattern as the contributor's edit-token
+  caching)
 
 ## Data model
 
