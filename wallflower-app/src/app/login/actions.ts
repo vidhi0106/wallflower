@@ -1,10 +1,11 @@
 "use server";
 
 import { createMagicLink } from "@/lib/wallflower/auth";
+import { getBaseUrl, magicLinkEmail, sendEmail } from "@/lib/wallflower/email";
 
 export type MagicLinkState =
   | { status: "idle" }
-  | { status: "sent"; email: string; devUrl: string }
+  | { status: "sent"; email: string; devUrl?: string }
   | { status: "error"; error: string };
 
 export async function requestMagicLink(
@@ -17,11 +18,15 @@ export async function requestMagicLink(
   }
 
   const link = await createMagicLink(email);
-  const devUrl = `/api/auth/verify?token=${link.token}`;
+  const path = `/api/auth/verify?token=${link.token}`;
+  const url = `${getBaseUrl()}${path}`;
 
-  // No email service wired up yet (that's step 3) — log the link server-side
-  // and hand it back to the page so organizers can sign in during development.
-  console.log(`[wallflower] magic link for ${link.email}: ${devUrl}`);
+  await sendEmail({ to: link.email, ...magicLinkEmail(url) });
+
+  // No provider configured (RESEND_API_KEY unset) means sendEmail only
+  // logged it server-side — hand the link back to the page too so sign-in
+  // still works without one.
+  const devUrl = process.env.RESEND_API_KEY ? undefined : path;
 
   return { status: "sent", email: link.email, devUrl };
 }

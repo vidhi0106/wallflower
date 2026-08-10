@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { destroyCurrentSession, getCurrentOrganizer } from "@/lib/wallflower/auth";
 import { generateUniqueEventSlug } from "@/lib/wallflower/slug";
+import { applySubmissionDecision } from "@/lib/wallflower/decision";
 
 export async function logout() {
   await destroyCurrentSession();
@@ -43,7 +44,11 @@ export async function createEvent(
   redirect(`/organizer/events/${event.id}`);
 }
 
-export async function decideSubmission(submissionId: string, decision: "approved" | "denied") {
+export async function decideSubmission(
+  submissionId: string,
+  decision: "approved" | "denied",
+  formData?: FormData
+) {
   const organizer = await getCurrentOrganizer();
   if (!organizer) redirect("/login");
 
@@ -55,6 +60,7 @@ export async function decideSubmission(submissionId: string, decision: "approved
     throw new Error("Submission not found");
   }
 
-  await prisma.submission.update({ where: { id: submissionId }, data: { status: decision } });
+  const note = String(formData?.get("note") || "").trim() || null;
+  await applySubmissionDecision(submission, decision, note);
   revalidatePath(`/organizer/events/${submission.eventId}`);
 }

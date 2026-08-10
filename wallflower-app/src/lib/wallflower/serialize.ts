@@ -8,5 +8,6 @@ export function serializeSubmission(submission: Submission) {
     noteText: submission.noteText,
     bouquetData: submission.bouquetData,
     status: submission.status,
+    denyNote: submission.status === "denied" ? submission.denyNote : null,
   };
 }

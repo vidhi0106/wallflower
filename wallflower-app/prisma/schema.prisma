@@ -72,6 +72,8 @@ model Submission {
   noteText          String
   status            SubmissionStatus  @default(pending)
   editToken         String            @unique @default(cuid())
+  reviewToken       String            @unique @default(cuid())
+  denyNote          String?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 

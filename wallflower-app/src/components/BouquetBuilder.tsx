@@ -24,6 +24,8 @@ interface SubmissionRecord {
   contributorEmail: string;
   noteText: string;
   bouquetData: { flowerIds: FlowerId[]; color: EnvelopeColorId };
+  status: "pending" | "approved" | "denied";
+  denyNote: string | null;
 }
 
 function storageKey(slug: string) {
@@ -57,10 +59,14 @@ export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }
   }, []);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(storageKey(event.slug));
-    if (!stored) return;
+    // A private edit link (from the confirmation/deny email) takes priority
+    // over localStorage so it works from any device, not just the browser
+    // that originally submitted.
+    const fromUrl = new URLSearchParams(window.location.search).get("edit");
+    const token = fromUrl ?? window.localStorage.getItem(storageKey(event.slug));
+    if (!token) return;
     let cancelled = false;
-    fetch(`/api/submissions/${stored}`)
+    fetch(`/api/submissions/${token}`)
       .then(async (res) => {
         if (!res.ok) throw new Error("not found");
         return res.json();
@@ -74,6 +80,10 @@ export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }
         setName(data.contributorName);
         setEmail(data.contributorEmail);
         setMode("sealed");
+        window.localStorage.setItem(storageKey(event.slug), data.editToken);
+        if (fromUrl) {
+          window.history.replaceState({}, "", window.location.pathname);
+        }
       })
       .catch(() => {
         if (cancelled) return;
@@ -353,15 +363,31 @@ export default function BouquetBuilder({ event }: { event: BouquetBuilderEvent }
               </>
             )}
 
-            {mode === "sealed" && (
+            {mode === "sealed" && submission?.status === "denied" ? (
               <div className="text-center px-8 py-9">
-                <div className="font-caveat font-bold text-2xl" style={{ color: "#6b7d5c" }}>
-                  Sealed &amp; sent
+                <div className="font-caveat font-bold text-2xl" style={{ color: "#b0503f" }}>
+                  Needs a small change
                 </div>
+                {submission.denyNote && (
+                  <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+                    &ldquo;{submission.denyNote}&rdquo;
+                  </p>
+                )}
                 <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
-                  Your note will be delivered to {event.recipientName} in {countdownText}.
+                  Edit your bouquet below and send it again.
                 </p>
               </div>
+            ) : (
+              mode === "sealed" && (
+                <div className="text-center px-8 py-9">
+                  <div className="font-caveat font-bold text-2xl" style={{ color: "#6b7d5c" }}>
+                    Sealed &amp; sent
+                  </div>
+                  <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+                    Your note will be delivered to {event.recipientName} in {countdownText}.
+                  </p>
+                </div>
+              )
             )}
 
             <div className="flex-1" style={{ minHeight: 16 }} />

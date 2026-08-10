@@ -20,18 +20,23 @@ export default function LoginForm() {
       {state.status === "sent" ? (
         <div className="mt-8 text-sm" style={{ color: "#4a3d2c" }}>
           <p>
-            A sign-in link was &ldquo;sent&rdquo; to <strong>{state.email}</strong>.
+            A sign-in link was sent to <strong>{state.email}</strong>.
           </p>
-          <p className="mt-3" style={{ color: "#7c6a4e" }}>
-            No email service is wired up yet, so here&rsquo;s the dev link directly:
-          </p>
-          <a
-            href={state.devUrl}
-            className="block mt-3 break-all underline"
-            style={{ color: "#6b7d5c" }}
-          >
-            {state.devUrl}
-          </a>
+          {state.devUrl && (
+            <>
+              <p className="mt-3" style={{ color: "#7c6a4e" }}>
+                No email provider is configured in this environment, so here&rsquo;s the link
+                directly:
+              </p>
+              <a
+                href={state.devUrl}
+                className="block mt-3 break-all underline"
+                style={{ color: "#6b7d5c" }}
+              >
+                {state.devUrl}
+              </a>
+            </>
+          )}
         </div>
       ) : (
         <form action={formAction} className="mt-8 flex flex-col gap-3">

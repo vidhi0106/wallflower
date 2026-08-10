@@ -2,10 +2,16 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { serializeSubmission } from "@/lib/wallflower/serialize";
 import { submissionInputSchema, submissionUpdateSchema } from "@/lib/wallflower/validation";
+import {
+  getBaseUrl,
+  reviewRequestEmail,
+  sendEmail,
+  submissionConfirmationEmail,
+} from "@/lib/wallflower/email";
 
 export async function POST(request: Request, ctx: RouteContext<"/api/events/[slug]/submissions">) {
   const { slug } = await ctx.params;
-  const event = await prisma.event.findUnique({ where: { slug } });
+  const event = await prisma.event.findUnique({ where: { slug }, include: { organizer: true } });
   if (!event) {
     return Response.json({ error: "Event not found" }, { status: 404 });
   }
@@ -26,6 +32,28 @@ export async function POST(request: Request, ctx: RouteContext<"/api/events/[slu
         bouquetData: { flowerIds, color },
       },
     });
+
+    const baseUrl = getBaseUrl();
+    await Promise.all([
+      sendEmail({
+        to: submission.contributorEmail,
+        ...submissionConfirmationEmail({
+          recipientName: event.recipientName,
+          occasionText: event.occasionText,
+          editUrl: `${baseUrl}/e/${event.slug}?edit=${submission.editToken}`,
+        }),
+      }),
+      sendEmail({
+        to: event.organizer.email,
+        ...reviewRequestEmail({
+          contributorName: submission.contributorName,
+          recipientName: event.recipientName,
+          occasionText: event.occasionText,
+          reviewUrl: `${baseUrl}/review/${submission.reviewToken}`,
+        }),
+      }),
+    ]);
+
     return Response.json(serializeSubmission(submission), { status: 201 });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
@@ -40,7 +68,7 @@ export async function POST(request: Request, ctx: RouteContext<"/api/events/[slu
 
 export async function PATCH(request: Request, ctx: RouteContext<"/api/events/[slug]/submissions">) {
   const { slug } = await ctx.params;
-  const event = await prisma.event.findUnique({ where: { slug } });
+  const event = await prisma.event.findUnique({ where: { slug }, include: { organizer: true } });
   if (!event) {
     return Response.json({ error: "Event not found" }, { status: 404 });
   }
@@ -65,8 +93,23 @@ export async function PATCH(request: Request, ctx: RouteContext<"/api/events/[sl
         noteText,
         bouquetData: { flowerIds, color },
         status: "pending",
+        denyNote: null,
       },
     });
+
+    if (existing.status !== "pending") {
+      // Revised after a decision — the organizer needs to look again.
+      await sendEmail({
+        to: event.organizer.email,
+        ...reviewRequestEmail({
+          contributorName: submission.contributorName,
+          recipientName: event.recipientName,
+          occasionText: event.occasionText,
+          reviewUrl: `${getBaseUrl()}/review/${submission.reviewToken}`,
+        }),
+      });
+    }
+
     return Response.json(serializeSubmission(submission));
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {

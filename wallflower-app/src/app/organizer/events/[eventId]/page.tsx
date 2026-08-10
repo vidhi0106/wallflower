@@ -8,17 +8,33 @@ function DecisionButtons({ submissionId }: { submissionId: string }) {
   const approve = decideSubmission.bind(null, submissionId, "approved");
   const deny = decideSubmission.bind(null, submissionId, "denied");
   return (
-    <div className="flex gap-2">
-      <form action={approve}>
-        <button
-          type="submit"
-          className="font-nunito font-bold text-sm"
-          style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "8px 14px", cursor: "pointer" }}
-        >
-          Approve
-        </button>
-      </form>
-      <form action={deny}>
+    <div className="flex flex-col items-end gap-2">
+      <div className="flex gap-2">
+        <form action={approve}>
+          <button
+            type="submit"
+            className="font-nunito font-bold text-sm"
+            style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "8px 14px", cursor: "pointer" }}
+          >
+            Approve
+          </button>
+        </form>
+      </div>
+      <form action={deny} className="flex flex-col items-end gap-1.5 w-full max-w-[220px]">
+        <textarea
+          name="note"
+          rows={2}
+          placeholder="Optional note if denying…"
+          className="w-full text-xs"
+          style={{
+            border: "1px solid rgba(122,100,70,0.3)",
+            borderRadius: 6,
+            padding: "6px 8px",
+            resize: "none",
+            color: "#4a3d2c",
+            background: "#FBF6E9",
+          }}
+        />
         <button
           type="submit"
           className="font-nunito font-bold text-sm"
