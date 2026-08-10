@@ -194,7 +194,7 @@ export default function HeroEnvelope() {
               style={{
                 position: "absolute",
                 left: "50%",
-                bottom: 40,
+                bottom: 8,
                 height: 78,
                 width: "auto",
                 transform: `translate(-50%,0) translate(${s.dx}px, ${s.dy}px) rotate(${s.rot}deg) scale(${s.scale})`,
