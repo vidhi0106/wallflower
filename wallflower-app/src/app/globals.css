@@ -84,7 +84,7 @@ a:hover {
 .landing-hero > *:nth-child(2) {
   order: -1;
 }
-.landing-notes-col {
+.landing-notes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -96,29 +96,35 @@ a:hover {
 }
 @media (min-width: 860px) {
   .landing-hero {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 36px;
-    max-width: 1080px;
-    padding: 24px 40px 0;
+    position: relative;
+    max-width: 1100px;
+    height: 680px;
+    padding: 24px 0 0;
   }
-  .landing-hero > *:nth-child(2) {
-    order: 0;
+  .landing-hero-center {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 420px;
   }
-  .landing-notes-col {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    width: 168px;
-    padding-top: 56px;
+  .landing-notes {
+    position: absolute;
+    inset: 0;
+    display: block;
   }
-  .landing-notes-col > *:nth-child(2) {
-    margin-top: 32px;
+  .landing-note-card {
+    position: absolute;
+    width: 148px;
   }
-  .landing-notes-col:last-child > *:nth-child(3) {
-    margin-top: 20px;
-  }
+  /* Left arc, top to bottom */
+  .landing-note-card:nth-child(1) { left: 4%; top: 4%; transform: rotate(-7deg); }
+  .landing-note-card:nth-child(2) { left: -2%; top: 38%; transform: rotate(5deg); }
+  .landing-note-card:nth-child(3) { left: 7%; top: 73%; transform: rotate(-4deg); }
+  /* Right arc, top to bottom */
+  .landing-note-card:nth-child(4) { right: 3%; top: 2%; transform: rotate(6deg); }
+  .landing-note-card:nth-child(5) { right: -3%; top: 37%; transform: rotate(-5deg); }
+  .landing-note-card:nth-child(6) { right: 6%; top: 72%; transform: rotate(4deg); }
 }
 
 .landing-steps {

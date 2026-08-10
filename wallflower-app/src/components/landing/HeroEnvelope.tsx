@@ -171,18 +171,15 @@ const decorStems = [
 ];
 
 export default function HeroEnvelope() {
-  const left = EXAMPLE_NOTES.slice(0, 3);
-  const right = EXAMPLE_NOTES.slice(3);
-
   return (
     <div className="landing-hero">
-      <div className="landing-notes-col">
-        {left.map((n) => (
+      <div className="landing-notes">
+        {EXAMPLE_NOTES.map((n) => (
           <NoteCard key={n.id} note={n} />
         ))}
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="landing-hero-center flex flex-col items-center">
         <div className="relative" style={{ width: 160, height: 130 }}>
           <img
             src="/envelope2/envelope-back.png"
@@ -248,12 +245,6 @@ export default function HeroEnvelope() {
           Already have a link from a friend? Use the one they shared with you to add your own
           bouquet.
         </p>
-      </div>
-
-      <div className="landing-notes-col">
-        {right.map((n) => (
-          <NoteCard key={n.id} note={n} />
-        ))}
       </div>
     </div>
   );
