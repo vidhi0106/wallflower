@@ -154,7 +154,7 @@ export default function BouquetBuilder({
 
   return (
     <div className="min-h-screen flex justify-center" style={{ background: "#EFEAE0", color: "#4a3d2c" }}>
-      <div className="wf-shell w-full flex flex-col" style={{ maxWidth: 420, background: "#F7EFDD" }}>
+      <div className="wf-shell w-full flex flex-col">
         <div className="text-center px-6 pt-6 pb-1">
           <div className="font-caveat font-bold text-[26px]" style={{ color: "#4a3d2c" }}>
             For {event.recipientName}&rsquo;s {event.occasionText}
