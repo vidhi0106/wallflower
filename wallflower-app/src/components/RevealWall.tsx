@@ -7,7 +7,10 @@ import { makeStem, tightTransform } from "@/lib/wallflower/bouquet";
 export interface WallSubmission {
   id: string;
   contributorName: string;
-  noteText: string;
+  // null when the viewer isn't allowed to read this note yet — the card
+  // still renders (envelope, flowers, contributor name) but can't be
+  // flipped open.
+  noteText: string | null;
   bouquetData: { flowerIds: FlowerId[]; color: EnvelopeColorId };
   updatedAt: string;
 }
@@ -16,18 +19,23 @@ function lastSeenKey(slug: string) {
   return `wallflower:wall-seen:${slug}`;
 }
 
+function submissionStorageKey(slug: string) {
+  return `wallflower:submission:${slug}`;
+}
+
 function WallCard({ submission }: { submission: WallSubmission }) {
   const [flipped, setFlipped] = useState(false);
+  const unlocked = submission.noteText !== null;
   const activeColor = ENVELOPE_COLOR_MAP[submission.bouquetData.color];
   const stems = submission.bouquetData.flowerIds.map((id) => makeStem(id));
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      onClick={() => setFlipped((f) => !f)}
-      onKeyDown={(e) => e.key === "Enter" && setFlipped((f) => !f)}
-      style={{ position: "relative", height: 225, cursor: "pointer" }}
+      role={unlocked ? "button" : undefined}
+      tabIndex={unlocked ? 0 : undefined}
+      onClick={unlocked ? () => setFlipped((f) => !f) : undefined}
+      onKeyDown={unlocked ? (e) => e.key === "Enter" && setFlipped((f) => !f) : undefined}
+      style={{ position: "relative", height: 225, cursor: unlocked ? "pointer" : "default" }}
     >
       <div
         style={{
@@ -72,26 +80,28 @@ function WallCard({ submission }: { submission: WallSubmission }) {
         <img src={activeColor.front} alt="" style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 4 }} />
       </div>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url('/envelope2/note-writing-bg.png')",
-          backgroundSize: "100% 100%",
-          padding: 16,
-          opacity: flipped ? 1 : 0,
-          transform: flipped ? "scale(1)" : "scale(0.94)",
-          pointerEvents: flipped ? "auto" : "none",
-          transition: "opacity 0.35s ease, transform 0.35s ease",
-        }}
-      >
-        <div className="font-caveat font-bold" style={{ fontSize: 17, color: "#4a3d2c" }}>
-          {submission.contributorName}
+      {unlocked && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url('/envelope2/note-writing-bg.png')",
+            backgroundSize: "100% 100%",
+            padding: 16,
+            opacity: flipped ? 1 : 0,
+            transform: flipped ? "scale(1)" : "scale(0.94)",
+            pointerEvents: flipped ? "auto" : "none",
+            transition: "opacity 0.35s ease, transform 0.35s ease",
+          }}
+        >
+          <div className="font-caveat font-bold" style={{ fontSize: 17, color: "#4a3d2c" }}>
+            {submission.contributorName}
+          </div>
+          <div className="font-caveat" style={{ fontSize: 13, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, overflow: "hidden" }}>
+            {submission.noteText}
+          </div>
         </div>
-        <div className="font-caveat" style={{ fontSize: 13, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, overflow: "hidden" }}>
-          {submission.noteText}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -113,6 +123,7 @@ export default function RevealWall({
   revealDate,
   now,
   submissions,
+  fullAccess,
 }: {
   slug: string;
   recipientName: string;
@@ -121,12 +132,13 @@ export default function RevealWall({
   revealDate: string | null;
   now: number;
   submissions: WallSubmission[];
+  fullAccess: boolean;
 }) {
-  // RevealWall only ever mounts client-side (the wall tab isn't the default
-  // view, so this never renders during SSR) — safe to read localStorage
-  // synchronously as the initial state rather than in an effect.
+  // A direct ?view=wall link (dashboard's "View Wall" / the recipient link)
+  // renders this during SSR too, where window isn't available — only the
+  // client-side render (which runs again on hydration) can read localStorage.
   const [newCount] = useState(() => {
-    if (status !== "revealed") return 0;
+    if (status !== "revealed" || typeof window === "undefined") return 0;
     const lastSeen = window.localStorage.getItem(lastSeenKey(slug));
     if (!lastSeen) return 0;
     return submissions.filter((s) => new Date(s.updatedAt).getTime() > Number(lastSeen)).length;
@@ -136,6 +148,35 @@ export default function RevealWall({
     if (status !== "revealed") return;
     window.localStorage.setItem(lastSeenKey(slug), String(Date.now()));
   }, [status, slug]);
+
+  // Everyone's server-sent noteText is null except for full-access viewers
+  // (organizer/recipient) — a regular contributor unlocks only their own
+  // card, by looking up their own submission via the editToken already
+  // stashed in localStorage from the builder flow.
+  const [ownSubmission, setOwnSubmission] = useState<{ id: string; noteText: string } | null>(null);
+
+  useEffect(() => {
+    if (fullAccess || status !== "revealed") return;
+    const token = window.localStorage.getItem(submissionStorageKey(slug));
+    if (!token) return;
+    let cancelled = false;
+    fetch(`/api/submissions/${token}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { id: string; noteText: string; status: string } | null) => {
+        if (cancelled || !data || data.status !== "approved") return;
+        setOwnSubmission({ id: data.id, noteText: data.noteText });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [fullAccess, status, slug]);
+
+  const resolvedSubmissions = fullAccess
+    ? submissions
+    : submissions.map((s) =>
+        s.id === ownSubmission?.id ? { ...s, noteText: ownSubmission.noteText } : s
+      );
 
   if (status !== "revealed") {
     return (
@@ -176,7 +217,7 @@ export default function RevealWall({
         </p>
       ) : (
         <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(148px, 1fr))" }}>
-          {submissions.map((s) => (
+          {resolvedSubmissions.map((s) => (
             <WallCard key={s.id} submission={s} />
           ))}
         </div>

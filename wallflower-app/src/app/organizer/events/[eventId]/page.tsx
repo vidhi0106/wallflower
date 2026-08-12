@@ -2,7 +2,7 @@ import QRCode from "qrcode";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrganizer } from "@/lib/wallflower/auth";
-import { decideSubmission, revealEvent } from "@/app/organizer/actions";
+import { decideSubmission, revealEvent, setAutoApprove } from "@/app/organizer/actions";
 import { maybeAutoReveal } from "@/lib/wallflower/reveal";
 import { getBaseUrl } from "@/lib/wallflower/email";
 import ShareLink from "@/components/ShareLink";
@@ -31,6 +31,35 @@ function RevealStatus({ eventId, status, revealDate }: { eventId: string; status
           style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}
         >
           Reveal now
+        </button>
+      </form>
+    </div>
+  );
+}
+
+function AutoApproveToggle({ eventId, autoApprove }: { eventId: string; autoApprove: boolean }) {
+  const toggle = setAutoApprove.bind(null, eventId, !autoApprove);
+  return (
+    <div className="flex items-center gap-3 mt-2">
+      <p className="text-xs" style={{ color: "#a8977a" }}>
+        {autoApprove
+          ? "Auto-approve is on — new notes skip review and go straight to the wall."
+          : "Auto-approve is off — new notes wait in your review queue."}
+      </p>
+      <form action={toggle}>
+        <button
+          type="submit"
+          className="font-nunito font-bold text-xs"
+          style={{
+            background: "transparent",
+            color: "#7c6a4e",
+            border: "1px solid rgba(122,100,70,0.3)",
+            borderRadius: 8,
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+        >
+          {autoApprove ? "Turn off" : "Turn on"}
         </button>
       </form>
     </div>
@@ -138,6 +167,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
 
   const contributionUrl = `${getBaseUrl()}/e/${event.slug}`;
   const wallUrl = `${contributionUrl}?view=wall`;
+  const recipientUrl = `${wallUrl}&recipient=${event.recipientAccessToken}`;
   const qrSvg = await QRCode.toString(contributionUrl, {
     type: "svg",
     margin: 1,
@@ -168,6 +198,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
           View Wall →
         </a>
         <RevealStatus eventId={event.id} status={event.status} revealDate={event.revealDate} />
+        <AutoApproveToggle eventId={event.id} autoApprove={event.autoApprove} />
 
         <div className="flex items-start gap-4 mt-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -193,6 +224,28 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
             </a>
             <ShareLink url={contributionUrl} recipientName={event.recipientName} occasionText={event.occasionText} />
           </div>
+        </div>
+
+        <div className="mt-5">
+          <p className="text-xs" style={{ color: "#a8977a" }}>
+            {event.recipientName}&rsquo;s private link — the only link that shows everyone&rsquo;s full notes,
+            not just names. Share it whenever you&rsquo;re ready.
+          </p>
+          <a
+            href={recipientUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-bold break-all"
+            style={{ color: "#6b7d5c" }}
+          >
+            {recipientUrl}
+          </a>
+          <ShareLink
+            url={recipientUrl}
+            recipientName={event.recipientName}
+            occasionText={event.occasionText}
+            message={`${event.recipientName}, your garden is ready — take a look: ${recipientUrl}`}
+          />
         </div>
       </div>
 

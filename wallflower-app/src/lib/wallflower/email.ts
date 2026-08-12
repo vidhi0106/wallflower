@@ -136,6 +136,24 @@ export function reviewRequestEmail(params: {
   };
 }
 
+export function autoApprovedFyiEmail(params: {
+  contributorName: string;
+  recipientName: string;
+  occasionText: string;
+  dashboardUrl: string;
+}): Pick<Email, "subject" | "html" | "text"> {
+  const { contributorName, recipientName, occasionText, dashboardUrl } = params;
+  return {
+    subject: `${contributorName} added a bouquet for ${recipientName}'s ${occasionText}`,
+    text: `${contributorName} just tucked a bouquet into ${recipientName}'s garden. Auto-approve is on, so it's already up on the wall — no action needed.\n\nView it in your dashboard:\n${dashboardUrl}${textFooter()}`,
+    html: layout(`
+      <p style="font-size:15px;line-height:1.6;margin:0 0 12px;"><strong>${contributorName}</strong> just tucked a bouquet into ${recipientName}'s garden 🌼</p>
+      <p style="font-size:15px;line-height:1.6;margin:0;">Auto-approve is on, so it's already up on the wall — no action needed.</p>
+      <p style="text-align:center;margin:28px 0;">${button("View your dashboard", dashboardUrl)}</p>
+    `),
+  };
+}
+
 export function denyNotificationEmail(params: {
   recipientName: string;
   occasionText: string;

@@ -78,6 +78,19 @@ export async function decideSubmission(
   revalidatePath(`/organizer/events/${submission.eventId}`);
 }
 
+export async function setAutoApprove(eventId: string, autoApprove: boolean) {
+  const organizer = await getCurrentOrganizer();
+  if (!organizer) redirect("/login");
+
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event || event.organizerId !== organizer.id) {
+    throw new Error("Event not found");
+  }
+
+  await prisma.event.update({ where: { id: eventId }, data: { autoApprove } });
+  revalidatePath(`/organizer/events/${eventId}`);
+}
+
 export async function revealEvent(eventId: string) {
   const organizer = await getCurrentOrganizer();
   if (!organizer) redirect("/login");

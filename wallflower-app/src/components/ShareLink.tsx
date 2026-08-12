@@ -6,12 +6,14 @@ export default function ShareLink({
   url,
   recipientName,
   occasionText,
+  message: messageOverride,
 }: {
   url: string;
   recipientName: string;
   occasionText: string;
+  message?: string;
 }) {
-  const defaultMessage = `Add a note for ${recipientName}’s ${occasionText}: ${url}`;
+  const defaultMessage = messageOverride ?? `Add a note for ${recipientName}’s ${occasionText}: ${url}`;
   const [message, setMessage] = useState(defaultMessage);
   const [copiedMessage, setCopiedMessage] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);

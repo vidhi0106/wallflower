@@ -46,10 +46,12 @@ function formatCountdown(revealDate: string | null, now: number): string {
 export default function BouquetBuilder({
   event,
   wallSubmissions,
+  fullAccess,
   initialView = "builder",
 }: {
   event: BouquetBuilderEvent;
   wallSubmissions: WallSubmission[];
+  fullAccess: boolean;
   initialView?: "builder" | "wall";
 }) {
   const [view, setView] = useState<"builder" | "wall">(initialView);
@@ -203,6 +205,7 @@ export default function BouquetBuilder({
             revealDate={event.revealDate}
             now={now}
             submissions={wallSubmissions}
+            fullAccess={fullAccess}
           />
         )}
 

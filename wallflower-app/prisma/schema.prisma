@@ -47,15 +47,17 @@ model Session {
 }
 
 model Event {
-  id            String      @id @default(cuid())
-  organizerId   String
-  organizer     Organizer   @relation(fields: [organizerId], references: [id])
-  slug          String      @unique
-  recipientName String
-  occasionText  String
-  revealDate    DateTime?
-  status        EventStatus @default(collecting)
-  createdAt     DateTime    @default(now())
+  id                   String      @id @default(cuid())
+  organizerId          String
+  organizer            Organizer   @relation(fields: [organizerId], references: [id])
+  slug                 String      @unique
+  recipientName        String
+  occasionText         String
+  revealDate           DateTime?
+  status               EventStatus @default(collecting)
+  autoApprove          Boolean     @default(false)
+  recipientAccessToken String      @unique @default(cuid())
+  createdAt            DateTime    @default(now())
 
   submissions Submission[]
 
@@ -63,19 +65,19 @@ model Event {
 }
 
 model Submission {
-  id                String            @id @default(cuid())
-  eventId           String
-  event             Event             @relation(fields: [eventId], references: [id])
-  contributorName   String
-  contributorEmail  String
-  bouquetData       Json
-  noteText          String
-  status            SubmissionStatus  @default(pending)
-  editToken         String            @unique @default(cuid())
-  reviewToken       String            @unique @default(cuid())
-  denyNote          String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  id               String           @id @default(cuid())
+  eventId          String
+  event            Event            @relation(fields: [eventId], references: [id])
+  contributorName  String
+  contributorEmail String
+  bouquetData      Json
+  noteText         String
+  status           SubmissionStatus @default(pending)
+  editToken        String           @unique @default(cuid())
+  reviewToken      String           @unique @default(cuid())
+  denyNote         String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   @@unique([eventId, contributorEmail])
   @@index([eventId])

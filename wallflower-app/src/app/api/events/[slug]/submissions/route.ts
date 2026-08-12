@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { serializeSubmission } from "@/lib/wallflower/serialize";
 import { submissionInputSchema, submissionUpdateSchema } from "@/lib/wallflower/validation";
 import {
+  autoApprovedFyiEmail,
   getBaseUrl,
   reviewRequestEmail,
   sendEmail,
@@ -30,10 +31,31 @@ export async function POST(request: Request, ctx: RouteContext<"/api/events/[slu
         contributorEmail,
         noteText,
         bouquetData: { flowerIds, color },
+        status: event.autoApprove ? "approved" : "pending",
       },
     });
 
     const baseUrl = getBaseUrl();
+    const organizerEmail = event.autoApprove
+      ? sendEmail({
+          to: event.organizer.email,
+          ...autoApprovedFyiEmail({
+            contributorName: submission.contributorName,
+            recipientName: event.recipientName,
+            occasionText: event.occasionText,
+            dashboardUrl: `${baseUrl}/organizer/events/${event.id}`,
+          }),
+        })
+      : sendEmail({
+          to: event.organizer.email,
+          ...reviewRequestEmail({
+            contributorName: submission.contributorName,
+            recipientName: event.recipientName,
+            occasionText: event.occasionText,
+            reviewUrl: `${baseUrl}/review/${submission.reviewToken}`,
+          }),
+        });
+
     await Promise.all([
       sendEmail({
         to: submission.contributorEmail,
@@ -43,15 +65,7 @@ export async function POST(request: Request, ctx: RouteContext<"/api/events/[slu
           editUrl: `${baseUrl}/e/${event.slug}?edit=${submission.editToken}`,
         }),
       }),
-      sendEmail({
-        to: event.organizer.email,
-        ...reviewRequestEmail({
-          contributorName: submission.contributorName,
-          recipientName: event.recipientName,
-          occasionText: event.occasionText,
-          reviewUrl: `${baseUrl}/review/${submission.reviewToken}`,
-        }),
-      }),
+      organizerEmail,
     ]);
 
     return Response.json(serializeSubmission(submission), { status: 201 });
@@ -92,22 +106,35 @@ export async function PATCH(request: Request, ctx: RouteContext<"/api/events/[sl
         contributorEmail,
         noteText,
         bouquetData: { flowerIds, color },
-        status: "pending",
+        status: event.autoApprove ? "approved" : "pending",
         denyNote: null,
       },
     });
 
     if (existing.status !== "pending") {
-      // Revised after a decision — the organizer needs to look again.
-      await sendEmail({
-        to: event.organizer.email,
-        ...reviewRequestEmail({
-          contributorName: submission.contributorName,
-          recipientName: event.recipientName,
-          occasionText: event.occasionText,
-          reviewUrl: `${getBaseUrl()}/review/${submission.reviewToken}`,
-        }),
-      });
+      // Revised after a decision — the organizer needs to know either way.
+      const baseUrl = getBaseUrl();
+      await sendEmail(
+        event.autoApprove
+          ? {
+              to: event.organizer.email,
+              ...autoApprovedFyiEmail({
+                contributorName: submission.contributorName,
+                recipientName: event.recipientName,
+                occasionText: event.occasionText,
+                dashboardUrl: `${baseUrl}/organizer/events/${event.id}`,
+              }),
+            }
+          : {
+              to: event.organizer.email,
+              ...reviewRequestEmail({
+                contributorName: submission.contributorName,
+                recipientName: event.recipientName,
+                occasionText: event.occasionText,
+                reviewUrl: `${baseUrl}/review/${submission.reviewToken}`,
+              }),
+            }
+      );
     }
 
     return Response.json(serializeSubmission(submission));
