@@ -5,7 +5,7 @@ import { getBaseUrl, magicLinkEmail, sendEmail } from "@/lib/wallflower/email";
 
 export type MagicLinkState =
   | { status: "idle" }
-  | { status: "sent"; email: string; devUrl?: string }
+  | { status: "sent"; email: string; signInUrl: string }
   | { status: "error"; error: string };
 
 export async function requestMagicLink(
@@ -23,10 +23,7 @@ export async function requestMagicLink(
 
   await sendEmail({ to: link.email, ...magicLinkEmail(url) });
 
-  // No provider configured (RESEND_API_KEY unset) means sendEmail only
-  // logged it server-side — hand the link back to the page too so sign-in
-  // still works without one.
-  const devUrl = process.env.RESEND_API_KEY ? undefined : path;
-
-  return { status: "sent", email: link.email, devUrl };
+  // The email is for coming back later — hand the link back to the page
+  // too so signing in right now doesn't require leaving the tab.
+  return { status: "sent", email: link.email, signInUrl: path };
 }
