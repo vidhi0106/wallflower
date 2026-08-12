@@ -5,63 +5,169 @@ import { getCurrentOrganizer } from "@/lib/wallflower/auth";
 import { decideSubmission, revealEvent, setAutoApprove } from "@/app/organizer/actions";
 import { maybeAutoReveal } from "@/lib/wallflower/reveal";
 import { getBaseUrl } from "@/lib/wallflower/email";
-import ShareLink from "@/components/ShareLink";
+import CopyRow from "@/components/CopyRow";
+import {
+  CalendarIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  ClipboardIcon,
+  LinkIcon,
+  LockIcon,
+  TrashIcon,
+  XCircleIcon,
+} from "@/components/icons";
 import type { EnvelopeColorId, FlowerId } from "@/lib/wallflower/catalog";
 
-function RevealStatus({ eventId, status, revealDate }: { eventId: string; status: string; revealDate: Date | null }) {
-  if (status === "revealed") {
-    return (
-      <p className="text-xs mt-1 font-nunito font-bold" style={{ color: "#6b7d5c" }}>
-        Revealed — the garden is live for anyone with the link
-      </p>
-    );
-  }
-  const reveal = revealEvent.bind(null, eventId);
+const ink = "#3e3428";
+const inkMuted = "#8a7c63";
+const green = "#5b7553";
+const cardBorder = "#efe7d8";
+
+function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mt-2">
-      <p className="text-xs" style={{ color: "#a8977a" }}>
-        {revealDate
-          ? `Set to auto-reveal ${revealDate.toLocaleString()}`
-          : "No reveal date set — trigger it manually when ready"}
-      </p>
-      <form action={reveal}>
-        <button
-          type="submit"
-          className="font-nunito font-bold text-xs"
-          style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}
-        >
-          Reveal now
-        </button>
-      </form>
+    <div style={{ background: "#fff", border: `1px solid ${cardBorder}`, borderRadius: 16, padding: 20 }}>
+      {children}
     </div>
   );
 }
 
-function AutoApproveToggle({ eventId, autoApprove }: { eventId: string; autoApprove: boolean }) {
+function IconBadge({ bg, fg, children }: { bg: string; fg: string; children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: "50%",
+        background: bg,
+        color: fg,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function InfoCard({
+  icon,
+  iconBg,
+  iconFg,
+  title,
+  description,
+  children,
+}: {
+  icon: React.ReactNode;
+  iconBg: string;
+  iconFg: string;
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Card>
+      <div className="flex gap-3">
+        <IconBadge bg={iconBg} fg={iconFg}>
+          {icon}
+        </IconBadge>
+        <div className="flex-1">
+          <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+            {title}
+          </div>
+          <p className="text-xs mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
+            {description}
+          </p>
+          <div className="mt-3">{children}</div>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function RevealCard({ eventId, status, revealDate }: { eventId: string; status: string; revealDate: Date | null }) {
+  if (status === "revealed") {
+    return (
+      <InfoCard
+        icon={<CalendarIcon size={18} />}
+        iconBg="#f7e3e2"
+        iconFg="#c97b72"
+        title="Reveal date"
+        description="Revealed — the garden is live for anyone with the link."
+      >
+        <></>
+      </InfoCard>
+    );
+  }
+  const reveal = revealEvent.bind(null, eventId);
+  return (
+    <InfoCard
+      icon={<CalendarIcon size={18} />}
+      iconBg="#f7e3e2"
+      iconFg="#c97b72"
+      title="Reveal date"
+      description={
+        revealDate ? `Set to auto-reveal ${revealDate.toLocaleString()}` : "Not set — trigger it manually when you're ready."
+      }
+    >
+      <form action={reveal}>
+        <button
+          type="submit"
+          className="font-nunito font-bold text-xs"
+          style={{ background: green, color: "#fff", border: "none", borderRadius: 8, padding: "7px 14px", cursor: "pointer" }}
+        >
+          Reveal now
+        </button>
+      </form>
+    </InfoCard>
+  );
+}
+
+function AutoApproveCard({ eventId, autoApprove }: { eventId: string; autoApprove: boolean }) {
   const toggle = setAutoApprove.bind(null, eventId, !autoApprove);
   return (
-    <div className="flex items-center gap-3 mt-2">
-      <p className="text-xs" style={{ color: "#a8977a" }}>
-        {autoApprove
-          ? "Auto-approve is on — new notes skip review and go straight to the wall."
-          : "Auto-approve is off — new notes wait in your review queue."}
-      </p>
+    <InfoCard
+      icon={<ClipboardIcon size={18} />}
+      iconBg="#eae1f5"
+      iconFg="#8a6fbf"
+      title="Auto-approve"
+      description={
+        autoApprove ? "On — new notes skip review and go straight to the wall." : "New notes wait in your review queue."
+      }
+    >
       <form action={toggle}>
         <button
           type="submit"
           className="font-nunito font-bold text-xs"
-          style={{
-            background: "transparent",
-            color: "#7c6a4e",
-            border: "1px solid rgba(122,100,70,0.3)",
-            borderRadius: 8,
-            padding: "6px 12px",
-            cursor: "pointer",
-          }}
+          style={{ background: "transparent", color: inkMuted, border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "7px 14px", cursor: "pointer" }}
         >
           {autoApprove ? "Turn off" : "Turn on"}
         </button>
       </form>
+    </InfoCard>
+  );
+}
+
+function Avatar({ name }: { name: string }) {
+  const letter = name.trim().charAt(0).toUpperCase() || "?";
+  return (
+    <div
+      className="font-nunito font-bold"
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: "50%",
+        background: "#4a5f42",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 14,
+        flexShrink: 0,
+      }}
+    >
+      {letter}
     </div>
   );
 }
@@ -69,41 +175,36 @@ function AutoApproveToggle({ eventId, autoApprove }: { eventId: string; autoAppr
 function DecisionButtons({ submissionId }: { submissionId: string }) {
   const approve = decideSubmission.bind(null, submissionId, "approved");
   const deny = decideSubmission.bind(null, submissionId, "denied");
+  const denyFormId = `deny-${submissionId}`;
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col gap-2" style={{ minWidth: 220 }}>
       <div className="flex gap-2">
         <form action={approve}>
           <button
             type="submit"
-            className="font-nunito font-bold text-sm"
-            style={{ background: "#6b7d5c", color: "#FBF6E9", border: "none", borderRadius: 8, padding: "8px 14px", cursor: "pointer" }}
+            className="font-nunito font-bold text-sm flex items-center gap-1.5"
+            style={{ background: green, color: "#fff", border: "none", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}
           >
-            Approve
+            <CheckIcon size={15} /> Approve
           </button>
         </form>
+        <button
+          form={denyFormId}
+          type="submit"
+          className="font-nunito font-bold text-sm flex items-center gap-1.5"
+          style={{ background: "#fff", color: "#b0503f", border: "1px solid #b0503f", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}
+        >
+          <TrashIcon size={15} /> Deny
+        </button>
       </div>
-      <form action={deny} className="flex flex-col items-end gap-1.5 w-full max-w-[220px]">
+      <form id={denyFormId} action={deny}>
         <textarea
           name="note"
           rows={2}
           placeholder="Optional note if denying…"
-          className="w-full text-xs"
-          style={{
-            border: "1px solid rgba(122,100,70,0.3)",
-            borderRadius: 6,
-            padding: "6px 8px",
-            resize: "none",
-            color: "#4a3d2c",
-            background: "#FBF6E9",
-          }}
+          className="w-full text-xs font-nunito"
+          style={{ border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "8px 10px", resize: "none", color: ink, background: "#faf7f0" }}
         />
-        <button
-          type="submit"
-          className="font-nunito font-bold text-sm"
-          style={{ background: "transparent", color: "#b0503f", border: "1px solid #b0503f", borderRadius: 8, padding: "8px 14px", cursor: "pointer" }}
-        >
-          Deny
-        </button>
       </form>
     </div>
   );
@@ -124,27 +225,41 @@ function SubmissionRow({
 }) {
   const bouquet = submission.bouquetData as { flowerIds: FlowerId[]; color: EnvelopeColorId } | null;
   return (
-    <li className="px-4 py-3" style={{ background: "#F7EFDD", borderRadius: 10 }}>
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="font-caveat font-bold text-lg" style={{ color: "#4a3d2c" }}>
-            {submission.contributorName}
-          </div>
-          <div className="text-xs" style={{ color: "#a8977a" }}>
-            {submission.contributorEmail}
-          </div>
-          <p className="text-sm mt-2" style={{ color: "#4a3d2c" }}>
-            {submission.noteText}
-          </p>
-          {bouquet && (
-            <div className="text-xs mt-2" style={{ color: "#7c6a4e" }}>
-              {bouquet.color} envelope · {bouquet.flowerIds.length} flower{bouquet.flowerIds.length === 1 ? "" : "s"}
+    <li>
+      <Card>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex gap-3 min-w-0">
+            <Avatar name={submission.contributorName} />
+            <div className="min-w-0">
+              <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+                {submission.contributorName}
+              </div>
+              <div className="text-xs" style={{ color: inkMuted }}>
+                {submission.contributorEmail}
+              </div>
+              <p className="text-sm mt-2" style={{ color: ink }}>
+                {submission.noteText}
+              </p>
+              {bouquet && (
+                <div className="text-xs mt-2" style={{ color: inkMuted }}>
+                  {bouquet.color} envelope • {bouquet.flowerIds.length} flower{bouquet.flowerIds.length === 1 ? "" : "s"}
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          {actionable && <DecisionButtons submissionId={submission.id} />}
         </div>
-        {actionable && <DecisionButtons submissionId={submission.id} />}
-      </div>
+      </Card>
     </li>
+  );
+}
+
+function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <h2 className="font-nunito font-bold text-lg flex items-center gap-2" style={{ color: ink }}>
+      <span style={{ color: inkMuted }}>{icon}</span>
+      {children}
+    </h2>
   );
 }
 
@@ -168,97 +283,98 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   const contributionUrl = `${getBaseUrl()}/e/${event.slug}`;
   const wallUrl = `${contributionUrl}?view=wall`;
   const recipientUrl = `${wallUrl}&recipient=${event.recipientAccessToken}`;
+  const shareMessage = `Add a note for ${event.recipientName}'s ${event.occasionText}: ${contributionUrl}`;
   const qrSvg = await QRCode.toString(contributionUrl, {
     type: "svg",
     margin: 1,
-    color: { dark: "#4a3d2c", light: "#00000000" },
+    color: { dark: "#3e3428", light: "#00000000" },
   });
   const qrDataUri = `data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <div>
-        <a
-          href="/organizer"
-          className="font-nunito text-xs"
-          style={{ color: "#a8977a", textDecoration: "underline" }}
-        >
-          ← View all events
+        <a href="/organizer" className="font-nunito text-xs" style={{ color: inkMuted, textDecoration: "none" }}>
+          ← Back to all events
         </a>
-        <h1 className="font-caveat font-bold text-2xl mt-1" style={{ color: "#4a3d2c" }}>
-          {event.recipientName}&rsquo;s {event.occasionText}
-        </h1>
-        <a
-          href={wallUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="font-nunito font-bold text-xs inline-block mt-2"
-          style={{ background: "rgba(122,100,70,0.1)", color: "#7c6a4e", borderRadius: 8, padding: "6px 12px" }}
-        >
-          View Wall →
-        </a>
-        <RevealStatus eventId={event.id} status={event.status} revealDate={event.revealDate} />
-        <AutoApproveToggle eventId={event.id} autoApprove={event.autoApprove} />
+        <div className="flex items-center justify-between flex-wrap gap-3 mt-2">
+          <h1 className="font-nunito font-bold text-2xl" style={{ color: ink }}>
+            {event.recipientName}&rsquo;s {event.occasionText}
+          </h1>
+          <a
+            href={wallUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="font-nunito font-bold text-sm flex items-center gap-1.5"
+            style={{ background: green, color: "#fff", borderRadius: 10, padding: "9px 16px", textDecoration: "none" }}
+          >
+            View Wall →
+          </a>
+        </div>
+      </div>
 
-        <div className="flex items-start gap-4 mt-4">
+      <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
+        <RevealCard eventId={event.id} status={event.status} revealDate={event.revealDate} />
+        <AutoApproveCard eventId={event.id} autoApprove={event.autoApprove} />
+      </div>
+
+      <Card>
+        <div className="flex gap-3">
+          <IconBadge bg="#e3efd9" fg="#6b8a57">
+            <LinkIcon size={18} />
+          </IconBadge>
+          <div>
+            <div className="font-nunito font-bold text-base" style={{ color: ink }}>
+              Share this wall
+            </div>
+            <p className="text-xs mt-0.5" style={{ color: inkMuted }}>
+              Invite others to add notes, photos, and memories.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-5 mt-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={qrDataUri}
             alt="QR code linking to the contribution page"
-            width={112}
-            height={112}
-            style={{ borderRadius: 8, border: "1px solid rgba(122,100,70,0.2)", flexShrink: 0 }}
+            width={128}
+            height={128}
+            style={{ borderRadius: 12, border: `1px solid ${cardBorder}`, flexShrink: 0 }}
           />
-          <div className="flex-1">
-            <p className="text-xs" style={{ color: "#a8977a" }}>
-              Contribution link
-            </p>
-            <a
-              href={contributionUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm font-bold break-all"
-              style={{ color: "#6b7d5c" }}
-            >
-              {contributionUrl}
-            </a>
-            <ShareLink url={contributionUrl} recipientName={event.recipientName} occasionText={event.occasionText} />
+          <div className="flex-1 flex flex-col gap-3 min-w-0">
+            <CopyRow label="Contribution link" value={contributionUrl} />
+            <CopyRow label={`Add a note for ${event.recipientName}'s ${event.occasionText}:`} value={shareMessage} />
           </div>
         </div>
+      </Card>
 
-        <div className="mt-5">
-          <p className="text-xs" style={{ color: "#a8977a" }}>
-            {event.recipientName}&rsquo;s private link — the only link that shows everyone&rsquo;s full notes,
-            not just names. Share it whenever you&rsquo;re ready.
-          </p>
-          <a
-            href={recipientUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-bold break-all"
-            style={{ color: "#6b7d5c" }}
-          >
-            {recipientUrl}
-          </a>
-          <ShareLink
-            url={recipientUrl}
-            recipientName={event.recipientName}
-            occasionText={event.occasionText}
-            message={`${event.recipientName}, your garden is ready — take a look: ${recipientUrl}`}
-          />
+      <Card>
+        <div className="flex gap-3">
+          <IconBadge bg="#f9e4e7" fg="#c4707e">
+            <LockIcon size={18} />
+          </IconBadge>
+          <div className="flex-1 min-w-0">
+            <div className="font-nunito font-bold text-base" style={{ color: ink }}>
+              Private link (only for you)
+            </div>
+            <p className="text-xs mt-0.5" style={{ color: inkMuted }}>
+              This private link shows everyone&rsquo;s full notes, not just names.
+            </p>
+            <div className="mt-3">
+              <CopyRow value={recipientUrl} />
+            </div>
+          </div>
         </div>
-      </div>
+      </Card>
 
-      <section>
-        <h2 className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
-          Pending review ({pending.length})
-        </h2>
+      <section className="flex flex-col gap-3">
+        <SectionHeading icon={<ClipboardIcon size={18} />}>Pending review ({pending.length})</SectionHeading>
         {pending.length === 0 ? (
-          <p className="text-sm mt-2" style={{ color: "#7c6a4e" }}>
+          <p className="text-sm" style={{ color: inkMuted }}>
             Nothing waiting on you.
           </p>
         ) : (
-          <ul className="mt-3 flex flex-col gap-3">
+          <ul className="flex flex-col gap-3">
             {pending.map((s) => (
               <SubmissionRow key={s.id} submission={s} actionable />
             ))}
@@ -266,16 +382,14 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
         )}
       </section>
 
-      <section>
-        <h2 className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
-          Approved ({approved.length})
-        </h2>
+      <section className="flex flex-col gap-3">
+        <SectionHeading icon={<CheckCircleIcon size={18} />}>Approved ({approved.length})</SectionHeading>
         {approved.length === 0 ? (
-          <p className="text-sm mt-2" style={{ color: "#7c6a4e" }}>
+          <p className="text-sm" style={{ color: inkMuted }}>
             None yet.
           </p>
         ) : (
-          <ul className="mt-3 flex flex-col gap-3">
+          <ul className="flex flex-col gap-3">
             {approved.map((s) => (
               <SubmissionRow key={s.id} submission={s} actionable={false} />
             ))}
@@ -284,11 +398,9 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
       </section>
 
       {denied.length > 0 && (
-        <section>
-          <h2 className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
-            Denied ({denied.length})
-          </h2>
-          <ul className="mt-3 flex flex-col gap-3">
+        <section className="flex flex-col gap-3">
+          <SectionHeading icon={<XCircleIcon size={18} />}>Denied ({denied.length})</SectionHeading>
+          <ul className="flex flex-col gap-3">
             {denied.map((s) => (
               <SubmissionRow key={s.id} submission={s} actionable={false} />
             ))}
