@@ -6,6 +6,7 @@ import { decideSubmission, revealEvent, setAutoApprove } from "@/app/organizer/a
 import { maybeAutoReveal } from "@/lib/wallflower/reveal";
 import { getBaseUrl } from "@/lib/wallflower/email";
 import CopyRow from "@/components/CopyRow";
+import ToggleSwitch from "@/components/ToggleSwitch";
 import {
   CalendarIcon,
   CheckCircleIcon,
@@ -21,11 +22,14 @@ import type { EnvelopeColorId, FlowerId } from "@/lib/wallflower/catalog";
 const ink = "#3e3428";
 const inkMuted = "#8a7c63";
 const green = "#5b7553";
-const cardBorder = "#efe7d8";
+const cardBorder = "#e5dcc3";
+const cardBg = "#fbf6e9";
+const badgeBg = "#e3efd9";
+const badgeFg = "#4a5f42";
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ background: "#fff", border: `1px solid ${cardBorder}`, borderRadius: 16, padding: 20 }}>
+    <div style={{ background: cardBg, border: `1px solid ${cardBorder}`, borderRadius: 16, padding: 20 }}>
       {children}
     </div>
   );
@@ -91,8 +95,8 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
     return (
       <InfoCard
         icon={<CalendarIcon size={18} />}
-        iconBg="#f7e3e2"
-        iconFg="#c97b72"
+        iconBg={badgeBg}
+        iconFg={badgeFg}
         title="Reveal date"
         description="Revealed — the garden is live for anyone with the link."
       >
@@ -104,8 +108,8 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
   return (
     <InfoCard
       icon={<CalendarIcon size={18} />}
-      iconBg="#f7e3e2"
-      iconFg="#c97b72"
+      iconBg={badgeBg}
+      iconFg={badgeFg}
       title="Reveal date"
       description={
         revealDate ? `Set to auto-reveal ${revealDate.toLocaleString()}` : "Not set — trigger it manually when you're ready."
@@ -125,27 +129,26 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
 }
 
 function AutoApproveCard({ eventId, autoApprove }: { eventId: string; autoApprove: boolean }) {
-  const toggle = setAutoApprove.bind(null, eventId, !autoApprove);
+  const setForEvent = setAutoApprove.bind(null, eventId);
   return (
-    <InfoCard
-      icon={<ClipboardIcon size={18} />}
-      iconBg="#eae1f5"
-      iconFg="#8a6fbf"
-      title="Auto-approve"
-      description={
-        autoApprove ? "On — new notes skip review and go straight to the wall." : "New notes wait in your review queue."
-      }
-    >
-      <form action={toggle}>
-        <button
-          type="submit"
-          className="font-nunito font-bold text-xs"
-          style={{ background: "transparent", color: inkMuted, border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "7px 14px", cursor: "pointer" }}
-        >
-          {autoApprove ? "Turn off" : "Turn on"}
-        </button>
-      </form>
-    </InfoCard>
+    <Card>
+      <div className="flex gap-3">
+        <IconBadge bg={badgeBg} fg={badgeFg}>
+          <ClipboardIcon size={18} />
+        </IconBadge>
+        <div className="flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+              Auto-approve
+            </div>
+            <ToggleSwitch checked={autoApprove} action={setForEvent} />
+          </div>
+          <p className="text-xs mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
+            {autoApprove ? "On — new notes skip review and go straight to the wall." : "New notes wait in your review queue."}
+          </p>
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -256,8 +259,22 @@ function SubmissionRow({
 
 function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <h2 className="font-nunito font-bold text-lg flex items-center gap-2" style={{ color: ink }}>
-      <span style={{ color: inkMuted }}>{icon}</span>
+    <h2 className="font-nunito font-bold text-lg flex items-center gap-2.5" style={{ color: ink }}>
+      <span
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          background: badgeBg,
+          color: badgeFg,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        {icon}
+      </span>
       {children}
     </h2>
   );
@@ -320,7 +337,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
 
       <Card>
         <div className="flex gap-3">
-          <IconBadge bg="#e3efd9" fg="#6b8a57">
+          <IconBadge bg={badgeBg} fg={badgeFg}>
             <LinkIcon size={18} />
           </IconBadge>
           <div>
@@ -350,7 +367,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
 
       <Card>
         <div className="flex gap-3">
-          <IconBadge bg="#f9e4e7" fg="#c4707e">
+          <IconBadge bg={badgeBg} fg={badgeFg}>
             <LockIcon size={18} />
           </IconBadge>
           <div className="flex-1 min-w-0">
