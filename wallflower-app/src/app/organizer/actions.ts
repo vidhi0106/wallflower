@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { destroyCurrentSession, getCurrentOrganizer } from "@/lib/wallflower/auth";
 import { generateUniqueEventSlug } from "@/lib/wallflower/slug";
 import { applySubmissionDecision } from "@/lib/wallflower/decision";
+import { eventCreatedEmail, getBaseUrl, sendEmail } from "@/lib/wallflower/email";
 
 export async function logout() {
   await destroyCurrentSession();
@@ -38,6 +39,18 @@ export async function createEvent(
   const slug = await generateUniqueEventSlug(recipientName);
   const event = await prisma.event.create({
     data: { organizerId: organizer.id, slug, recipientName, occasionText, revealDate },
+  });
+
+  const baseUrl = getBaseUrl();
+  await sendEmail({
+    to: organizer.email,
+    ...eventCreatedEmail({
+      recipientName,
+      occasionText,
+      revealDate,
+      dashboardUrl: `${baseUrl}/organizer/events/${event.id}`,
+      contributionUrl: `${baseUrl}/e/${event.slug}`,
+    }),
   });
 
   revalidatePath("/organizer");
