@@ -148,7 +148,14 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-caveat font-bold text-2xl" style={{ color: "#4a3d2c" }}>
+        <a
+          href="/organizer"
+          className="font-nunito text-xs"
+          style={{ color: "#a8977a", textDecoration: "underline" }}
+        >
+          ← View all events
+        </a>
+        <h1 className="font-caveat font-bold text-2xl mt-1" style={{ color: "#4a3d2c" }}>
           {event.recipientName}&rsquo;s {event.occasionText}
         </h1>
         <a
