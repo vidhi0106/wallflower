@@ -56,7 +56,7 @@ model Event {
   revealDate           DateTime?
   status               EventStatus @default(collecting)
   autoApprove          Boolean     @default(false)
-  recipientAccessToken String      @unique @default(cuid())
+  recipientAccessToken String      @unique @default(dbgenerated("gen_random_uuid()"))
   createdAt            DateTime    @default(now())
 
   submissions Submission[]
