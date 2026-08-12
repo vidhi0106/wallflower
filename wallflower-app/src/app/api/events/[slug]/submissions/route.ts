@@ -49,7 +49,7 @@ export async function POST(request: Request, ctx: RouteContext<"/api/events/[slu
           contributorName: submission.contributorName,
           recipientName: event.recipientName,
           occasionText: event.occasionText,
-          reviewUrl: `${baseUrl}/organizer/events/${event.id}`,
+          reviewUrl: `${baseUrl}/review/${submission.reviewToken}`,
         }),
       }),
     ]);

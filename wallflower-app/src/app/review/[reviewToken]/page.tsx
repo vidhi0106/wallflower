@@ -101,6 +101,14 @@ export default async function ReviewByTokenPage(props: PageProps<"/review/[revie
             </button>
           </form>
         </div>
+
+        <a
+          href={`/organizer/events/${submission.eventId}`}
+          className="block text-center text-xs mt-6 underline"
+          style={{ color: "#a8977a" }}
+        >
+          See all notes for this event →
+        </a>
       </div>
     </div>
   );
