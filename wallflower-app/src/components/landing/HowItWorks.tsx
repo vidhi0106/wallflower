@@ -7,7 +7,7 @@ const ICON_PROPS = {
   height: 34,
   viewBox: "0 0 34 34",
   fill: "none",
-  stroke: "#e3efd9",
+  stroke: "#4a5f42",
   strokeWidth: 1.6,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
@@ -21,7 +21,7 @@ const STEPS = [
       <svg {...ICON_PROPS}>
         <rect x="4" y="9" width="26" height="18" rx="2.5" />
         <path d="M4 11l13 9 13-9" />
-        <circle cx="27" cy="7" r="5" fill="#4a5f42" />
+        <circle cx="27" cy="7" r="5" fill="#e3efd9" />
         <path d="M27 4.8v4.4M24.8 7h4.4" />
       </svg>
     ),
