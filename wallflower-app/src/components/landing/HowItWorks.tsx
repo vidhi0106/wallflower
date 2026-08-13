@@ -91,7 +91,7 @@ export default function HowItWorks() {
         maxWidth: 1080,
         margin: "0 auto",
         padding: "40px 24px",
-        background: "rgba(247, 239, 221, 0.5)",
+        background: "rgba(247, 239, 221, 0.7)",
         borderRadius: 24,
       }}
     >
