@@ -2,23 +2,23 @@ import Link from "next/link";
 
 const LEFT_FLOWERS = [
   { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 135, rot: -8 },
-  { src: "/flowers2/daisy-yellow.png", offset: 70, height: 195, rot: 4 },
-  { src: "/flowers2/daisy-pink.png", offset: 40, height: 100, rot: -10 },
-  { src: "/flowers2/lavender.png", offset: 140, height: 150, rot: 7 },
+  { src: "/flowers2/daisy-pink.png", offset: 22, height: 100, rot: -10 },
+  { src: "/flowers2/daisy-yellow.png", offset: 42, height: 195, rot: 4 },
+  { src: "/flowers2/lavender.png", offset: 68, height: 150, rot: 7 },
 ];
 
 const RIGHT_FLOWERS = [
   { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 125, rot: 8 },
-  { src: "/flowers2/daisy-yellow.png", offset: 75, height: 190, rot: -5 },
-  { src: "/flowers2/cluster-pink-a.png", offset: 45, height: 105, rot: 10 },
-  { src: "/flowers2/lavender.png", offset: 145, height: 145, rot: -7 },
+  { src: "/flowers2/cluster-pink-a.png", offset: 22, height: 105, rot: 10 },
+  { src: "/flowers2/daisy-yellow.png", offset: 42, height: 190, rot: -5 },
+  { src: "/flowers2/lavender.png", offset: 68, height: 145, rot: -7 },
 ];
 
 function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typeof LEFT_FLOWERS }) {
   const containerStyle: React.CSSProperties = {
     position: "absolute",
     bottom: 0,
-    width: 220,
+    width: 160,
     height: 210,
     pointerEvents: "none",
     zIndex: 0,
@@ -90,28 +90,30 @@ export default function Footer() {
       className="w-full"
       style={{ position: "relative", background: "#f7efdd", borderTop: "1px solid rgba(122,100,70,0.15)", overflow: "visible" }}
     >
-      <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
-      <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
-      <div
-        className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10"
-        style={{ position: "relative", zIndex: 1 }}
-      >
-        <div>
-          <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
-            Wallflower
-          </Link>
-          <p className="text-xs mt-2 whitespace-nowrap" style={{ color: "#a8977a" }}>
-            A little garden of notes, revealed all at once.
-          </p>
-          <Link
-            href="/login"
-            className="font-nunito font-bold no-underline inline-block mt-4"
-            style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
-          >
-            Create an event
-          </Link>
+      <div className="max-w-3xl mx-auto" style={{ position: "relative" }}>
+        <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
+        <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
+        <div
+          className="px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10"
+          style={{ position: "relative", zIndex: 1 }}
+        >
+          <div>
+            <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
+              Wallflower
+            </Link>
+            <p className="text-xs mt-2 whitespace-nowrap" style={{ color: "#a8977a" }}>
+              A little garden of notes, revealed all at once.
+            </p>
+            <Link
+              href="/login"
+              className="font-nunito font-bold no-underline inline-block mt-4"
+              style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+            >
+              Create an event
+            </Link>
+          </div>
+          <FeedbackEnvelope />
         </div>
-        <FeedbackEnvelope />
       </div>
       <div style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
         <p className="max-w-3xl mx-auto px-6 py-4 text-xs text-center" style={{ color: "#a8977a" }}>
