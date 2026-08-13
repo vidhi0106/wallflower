@@ -11,6 +11,7 @@ import {
 } from "@/lib/wallflower/catalog";
 import { makeStem, tightTransform, type Stem } from "@/lib/wallflower/bouquet";
 import RevealWall, { type WallSubmission } from "@/components/RevealWall";
+import Spinner from "@/components/Spinner";
 
 export interface BouquetBuilderEvent {
   slug: string;
@@ -82,6 +83,8 @@ export default function BouquetBuilder({
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const [confirmingWithdraw, setConfirmingWithdraw] = useState(false);
+  const [withdrawing, setWithdrawing] = useState(false);
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -183,6 +186,29 @@ export default function BouquetBuilder({
 
   function editNote() {
     setMode("building");
+  }
+
+  async function withdraw() {
+    if (!submission || withdrawing) return;
+    setWithdrawing(true);
+    try {
+      const res = await fetch(`/api/submissions/${submission.editToken}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Something went wrong withdrawing your bouquet.");
+      window.localStorage.removeItem(storageKey(event.slug));
+      setSubmission(null);
+      setStems([]);
+      setNote("");
+      setName("");
+      setEmail("");
+      setColor("blue");
+      setMode("building");
+      setConfirmingWithdraw(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong.");
+      setConfirmingWithdraw(false);
+    } finally {
+      setWithdrawing(false);
+    }
   }
 
   return (
@@ -499,7 +525,7 @@ export default function BouquetBuilder({
                   <button
                     onClick={submit}
                     disabled={sending}
-                    className="w-full font-nunito font-bold"
+                    className="w-full font-nunito font-bold flex items-center justify-center gap-2"
                     style={{
                       background: canSend && !sending ? "#6b7d5c" : "#c9c2ac",
                       color: "#FBF6E9",
@@ -510,26 +536,81 @@ export default function BouquetBuilder({
                       cursor: sending ? "default" : "pointer",
                     }}
                   >
+                    {sending && <Spinner size={16} />}
                     {sending ? "Sending…" : submission ? "Save changes" : "Send bouquet"}
                   </button>
                 </>
               )}
-              {mode === "sealed" && (
-                <button
-                  onClick={editNote}
-                  className="w-full font-nunito font-bold"
-                  style={{
-                    background: "transparent",
-                    color: "#6b7d5c",
-                    border: "1px solid #6b7d5c",
-                    borderRadius: 10,
-                    padding: 14,
-                    fontSize: 15,
-                    cursor: "pointer",
-                  }}
-                >
-                  Edit your note
-                </button>
+              {mode === "sealed" && !confirmingWithdraw && (
+                <>
+                  <button
+                    onClick={editNote}
+                    className="w-full font-nunito font-bold"
+                    style={{
+                      background: "transparent",
+                      color: "#6b7d5c",
+                      border: "1px solid #6b7d5c",
+                      borderRadius: 10,
+                      padding: 14,
+                      fontSize: 15,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Edit your note
+                  </button>
+                  <button
+                    onClick={() => setConfirmingWithdraw(true)}
+                    className="w-full font-nunito text-xs mt-2.5 bg-transparent border-none underline cursor-pointer"
+                    style={{ color: "#a8977a" }}
+                  >
+                    Withdraw your note
+                  </button>
+                </>
+              )}
+              {mode === "sealed" && confirmingWithdraw && (
+                <div className="text-center">
+                  <p className="text-sm" style={{ color: "#b0503f" }}>
+                    This removes your bouquet completely — are you sure?
+                  </p>
+                  {error && (
+                    <p className="text-sm mt-2" style={{ color: "#b0503f" }}>
+                      {error}
+                    </p>
+                  )}
+                  <div className="flex gap-2 justify-center mt-3">
+                    <button
+                      onClick={withdraw}
+                      disabled={withdrawing}
+                      className="font-nunito font-bold text-sm flex items-center gap-1.5"
+                      style={{
+                        background: "#b0503f",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 10,
+                        padding: "10px 16px",
+                        cursor: withdrawing ? "default" : "pointer",
+                      }}
+                    >
+                      {withdrawing && <Spinner size={14} />}
+                      {withdrawing ? "Withdrawing…" : "Yes, withdraw"}
+                    </button>
+                    <button
+                      onClick={() => setConfirmingWithdraw(false)}
+                      disabled={withdrawing}
+                      className="font-nunito font-bold text-sm"
+                      style={{
+                        background: "transparent",
+                        color: "#7c6a4e",
+                        border: "1px solid rgba(122,100,70,0.3)",
+                        borderRadius: 10,
+                        padding: "10px 16px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>

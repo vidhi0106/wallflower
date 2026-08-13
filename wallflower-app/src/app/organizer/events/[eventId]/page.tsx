@@ -1,12 +1,16 @@
 import QRCode from "qrcode";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrganizer } from "@/lib/wallflower/auth";
-import { decideSubmission, revealEvent, setAutoApprove } from "@/app/organizer/actions";
+import { decideSubmission, deleteEvent, revealEvent, setAutoApprove, updateEvent } from "@/app/organizer/actions";
 import { maybeAutoReveal } from "@/lib/wallflower/reveal";
 import { getBaseUrl } from "@/lib/wallflower/email";
 import CopyRow from "@/components/CopyRow";
 import ToggleSwitch from "@/components/ToggleSwitch";
+import SubmitButton from "@/components/SubmitButton";
+import DeleteEventButton from "@/components/DeleteEventButton";
+import EditEventForm from "@/components/EditEventForm";
 import {
   CalendarIcon,
   CheckCircleIcon,
@@ -116,13 +120,13 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
       }
     >
       <form action={reveal}>
-        <button
-          type="submit"
+        <SubmitButton
+          pendingLabel="Revealing…"
           className="font-nunito font-bold text-xs"
-          style={{ background: green, color: "#fff", border: "none", borderRadius: 8, padding: "7px 14px", cursor: "pointer" }}
+          style={{ background: green, color: "#fff", border: "none", borderRadius: 8, padding: "7px 14px" }}
         >
           Reveal now
-        </button>
+        </SubmitButton>
       </form>
     </InfoCard>
   );
@@ -178,38 +182,34 @@ function Avatar({ name }: { name: string }) {
 function DecisionButtons({ submissionId }: { submissionId: string }) {
   const approve = decideSubmission.bind(null, submissionId, "approved");
   const deny = decideSubmission.bind(null, submissionId, "denied");
-  const denyFormId = `deny-${submissionId}`;
   return (
-    <div className="flex flex-col gap-2" style={{ minWidth: 220 }}>
+    <form className="flex flex-col gap-2" style={{ minWidth: 220 }}>
       <div className="flex gap-2">
-        <form action={approve}>
-          <button
-            type="submit"
-            className="font-nunito font-bold text-sm flex items-center gap-1.5"
-            style={{ background: green, color: "#fff", border: "none", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}
-          >
-            <CheckIcon size={15} /> Approve
-          </button>
-        </form>
-        <button
-          form={denyFormId}
-          type="submit"
+        <SubmitButton
+          formAction={approve}
+          pendingLabel="Approving…"
           className="font-nunito font-bold text-sm flex items-center gap-1.5"
-          style={{ background: "#fff", color: "#b0503f", border: "1px solid #b0503f", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}
+          style={{ background: green, color: "#fff", border: "none", borderRadius: 10, padding: "9px 14px" }}
+        >
+          <CheckIcon size={15} /> Approve
+        </SubmitButton>
+        <SubmitButton
+          formAction={deny}
+          pendingLabel="Denying…"
+          className="font-nunito font-bold text-sm flex items-center gap-1.5"
+          style={{ background: "#fff", color: "#b0503f", border: "1px solid #b0503f", borderRadius: 10, padding: "9px 14px" }}
         >
           <TrashIcon size={15} /> Deny
-        </button>
+        </SubmitButton>
       </div>
-      <form id={denyFormId} action={deny}>
-        <textarea
-          name="note"
-          rows={2}
-          placeholder="Optional note if denying…"
-          className="w-full text-xs font-nunito"
-          style={{ border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "8px 10px", resize: "none", color: ink, background: "#faf7f0" }}
-        />
-      </form>
-    </div>
+      <textarea
+        name="note"
+        rows={2}
+        placeholder="Optional note if denying…"
+        className="w-full text-xs font-nunito"
+        style={{ border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "8px 10px", resize: "none", color: ink, background: "#faf7f0" }}
+      />
+    </form>
   );
 }
 
@@ -311,9 +311,9 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <a href="/organizer" className="font-nunito text-xs" style={{ color: inkMuted, textDecoration: "none" }}>
+        <Link href="/organizer" className="font-nunito text-xs" style={{ color: inkMuted, textDecoration: "none" }}>
           ← Back to all events
-        </a>
+        </Link>
         <div className="flex items-center justify-between flex-wrap gap-3 mt-2">
           <h1 className="font-nunito font-bold text-2xl" style={{ color: ink }}>
             {event.recipientName}&rsquo;s {event.occasionText}
@@ -329,6 +329,15 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
           </a>
         </div>
       </div>
+
+      <Card>
+        <EditEventForm
+          action={updateEvent.bind(null, event.id)}
+          recipientName={event.recipientName}
+          occasionText={event.occasionText}
+          revealDate={event.revealDate}
+        />
+      </Card>
 
       <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
         <RevealCard eventId={event.id} status={event.status} revealDate={event.revealDate} />
@@ -424,6 +433,10 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
           </ul>
         </section>
       )}
+
+      <div style={{ borderTop: `1px solid ${cardBorder}`, marginTop: 12, paddingTop: 24 }}>
+        <DeleteEventButton eventId={event.id} submissionCount={event.submissions.length} action={deleteEvent} />
+      </div>
     </div>
   );
 }

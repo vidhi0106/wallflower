@@ -18,6 +18,12 @@ body {
   font-family: var(--font-nunito), sans-serif;
 }
 
+@keyframes wf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 a {
   color: #6b7d5c;
 }

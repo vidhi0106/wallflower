@@ -103,3 +103,56 @@ export async function revealEvent(eventId: string) {
   await prisma.event.update({ where: { id: eventId }, data: { status: "revealed" } });
   revalidatePath(`/organizer/events/${eventId}`);
 }
+
+export type UpdateEventState = { status: "idle" } | { status: "error"; error: string } | { status: "saved" };
+
+export async function updateEvent(
+  eventId: string,
+  _prevState: UpdateEventState,
+  formData: FormData
+): Promise<UpdateEventState> {
+  const organizer = await getCurrentOrganizer();
+  if (!organizer) redirect("/login");
+
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event || event.organizerId !== organizer.id) {
+    throw new Error("Event not found");
+  }
+
+  const recipientName = String(formData.get("recipientName") || "").trim();
+  const occasionText = String(formData.get("occasionText") || "").trim();
+  const revealDateRaw = String(formData.get("revealDate") || "").trim();
+
+  if (!recipientName) return { status: "error", error: "Recipient name is required." };
+  if (!occasionText) return { status: "error", error: "Occasion is required." };
+
+  let revealDate: Date | null = null;
+  if (revealDateRaw) {
+    const parsed = new Date(revealDateRaw);
+    if (Number.isNaN(parsed.getTime())) return { status: "error", error: "Invalid reveal date." };
+    revealDate = parsed;
+  }
+
+  await prisma.event.update({ where: { id: eventId }, data: { recipientName, occasionText, revealDate } });
+  revalidatePath(`/organizer/events/${eventId}`);
+  return { status: "saved" };
+}
+
+export async function deleteEvent(eventId: string) {
+  const organizer = await getCurrentOrganizer();
+  if (!organizer) redirect("/login");
+
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event || event.organizerId !== organizer.id) {
+    throw new Error("Event not found");
+  }
+
+  // Submission.eventId is ON DELETE RESTRICT, so submissions have to go first.
+  await prisma.$transaction([
+    prisma.submission.deleteMany({ where: { eventId } }),
+    prisma.event.delete({ where: { id: eventId } }),
+  ]);
+
+  revalidatePath("/organizer");
+  redirect("/organizer");
+}
