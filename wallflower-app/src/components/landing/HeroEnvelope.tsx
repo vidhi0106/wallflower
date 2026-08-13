@@ -180,7 +180,7 @@ export default function HeroEnvelope() {
       </div>
 
       <div className="landing-hero-center flex flex-col items-center">
-        <div className="relative" style={{ width: 160, height: 130 }}>
+        <div className="relative wf-bloom-in" style={{ width: 160, height: 130 }}>
           <img
             src="/envelope2/envelope-back.png"
             alt=""
