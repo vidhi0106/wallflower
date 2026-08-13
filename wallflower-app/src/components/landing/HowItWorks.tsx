@@ -84,7 +84,17 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section ref={ref} className="w-full" style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px" }}>
+    <section
+      ref={ref}
+      className="w-full"
+      style={{
+        maxWidth: 1080,
+        margin: "0 auto",
+        padding: "40px 24px",
+        background: "rgba(247, 239, 221, 0.5)",
+        borderRadius: 24,
+      }}
+    >
       <h2 className="font-caveat font-bold text-2xl text-center" style={{ color: "#4a3d2c" }}>
         How it works
       </h2>
