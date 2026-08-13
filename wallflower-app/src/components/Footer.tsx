@@ -89,7 +89,7 @@ export default function Footer() {
     >
       <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
       <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
-      <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-start gap-6">
+      <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10">
         <div>
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
