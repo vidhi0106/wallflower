@@ -16,9 +16,6 @@ export default function Footer() {
           <Link href="/login" style={{ color: "#6b7d5c" }}>
             Create your own event
           </Link>
-          <Link href="/" style={{ color: "#6b7d5c" }}>
-            What is Wallflower
-          </Link>
           <a href="mailto:vidhishah0106@gmail.com?subject=Wallflower%20feedback" style={{ color: "#6b7d5c" }}>
             Send feedback
           </a>
