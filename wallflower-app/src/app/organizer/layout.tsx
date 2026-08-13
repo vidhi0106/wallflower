@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentOrganizer } from "@/lib/wallflower/auth";
 import { logout } from "./actions";
@@ -12,9 +13,9 @@ export default async function OrganizerLayout({ children }: { children: React.Re
         className="flex items-center justify-between px-6 py-4"
         style={{ borderBottom: "1px solid rgba(122,100,70,0.15)" }}
       >
-        <a href="/organizer" className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
+        <Link href="/" className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
           Wallflower
-        </a>
+        </Link>
         <div className="flex items-center gap-4 text-sm" style={{ color: "#7c6a4e" }}>
           <span>{organizer.email}</span>
           <form action={logout}>

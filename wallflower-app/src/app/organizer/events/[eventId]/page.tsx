@@ -345,7 +345,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
               Share this wall
             </div>
             <p className="text-xs mt-0.5" style={{ color: inkMuted }}>
-              Invite others to add notes, photos, and memories.
+              Invite others to add a bouquet and a note.
             </p>
           </div>
         </div>

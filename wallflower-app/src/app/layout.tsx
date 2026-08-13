@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const caveat = Caveat({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${caveat.variable} ${nunito.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>
