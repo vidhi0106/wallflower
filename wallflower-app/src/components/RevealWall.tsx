@@ -240,7 +240,7 @@ export default function RevealWall({
           No approved bouquets yet — check back soon.
         </p>
       ) : (
-        <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(148px, 1fr))" }}>
+        <div className="wf-wall-grid">
           {resolvedSubmissions.map((s, i) => (
             <WallCard key={s.id} submission={s} index={i} />
           ))}

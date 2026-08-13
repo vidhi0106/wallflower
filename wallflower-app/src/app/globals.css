@@ -63,6 +63,24 @@ body {
   transform: rotate(calc(var(--wf-rot, 0deg) + 4deg)) scale(1.1);
 }
 
+.wf-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 32px 24px;
+}
+@media (min-width: 640px) {
+  .wf-wall-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 36px 28px;
+  }
+}
+@media (min-width: 860px) {
+  .wf-wall-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 44px 32px;
+  }
+}
+
 a {
   color: #6b7d5c;
 }
@@ -137,7 +155,21 @@ a:hover {
 .landing-note-card {
   display: block;
   width: 100%;
+  transform: rotate(var(--wf-rot, 0deg));
+  filter: drop-shadow(0 10px 16px rgba(90, 70, 40, 0.28));
+  animation: wf-bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  transition: transform 0.25s ease;
 }
+.landing-note-card:hover {
+  transform: rotate(calc(var(--wf-rot, 0deg) + 4deg)) scale(1.1);
+}
+/* Staggered, not left-to-right, so they pop in like scattered blooms. */
+.landing-note-card:nth-child(1) { animation-delay: 0.1s; }
+.landing-note-card:nth-child(2) { animation-delay: 0.35s; }
+.landing-note-card:nth-child(3) { animation-delay: 0.5s; }
+.landing-note-card:nth-child(4) { animation-delay: 0s; }
+.landing-note-card:nth-child(5) { animation-delay: 0.15s; }
+.landing-note-card:nth-child(6) { animation-delay: 0.25s; }
 @media (min-width: 860px) {
   .landing-hero {
     position: relative;
@@ -162,13 +194,13 @@ a:hover {
     width: 148px;
   }
   /* Left arc, top to bottom */
-  .landing-note-card:nth-child(1) { left: 4%; top: 4%; transform: rotate(-7deg); }
-  .landing-note-card:nth-child(2) { left: -2%; top: 38%; transform: rotate(5deg); }
-  .landing-note-card:nth-child(3) { left: 7%; top: 73%; transform: rotate(-4deg); }
+  .landing-note-card:nth-child(1) { left: 4%; top: 4%; --wf-rot: -7deg; }
+  .landing-note-card:nth-child(2) { left: -2%; top: 38%; --wf-rot: 5deg; }
+  .landing-note-card:nth-child(3) { left: 7%; top: 73%; --wf-rot: -4deg; }
   /* Right arc, top to bottom */
-  .landing-note-card:nth-child(4) { right: 3%; top: 2%; transform: rotate(6deg); }
-  .landing-note-card:nth-child(5) { right: -3%; top: 37%; transform: rotate(-5deg); }
-  .landing-note-card:nth-child(6) { right: 6%; top: 72%; transform: rotate(4deg); }
+  .landing-note-card:nth-child(4) { right: 3%; top: 2%; --wf-rot: 6deg; }
+  .landing-note-card:nth-child(5) { right: -3%; top: 37%; --wf-rot: -5deg; }
+  .landing-note-card:nth-child(6) { right: 6%; top: 72%; --wf-rot: 4deg; }
 }
 
 .landing-steps {
