@@ -43,18 +43,35 @@ function formatCountdown(revealDate: string | null, now: number): string {
   return `${days}d ${hours}h ${mins}m`;
 }
 
+function joinList(items: string[]): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0];
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
+function WarningIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 9v4M12 17h.01" />
+      <path d="M10.29 3.86L1.82 18a1 1 0 0 0 .86 1.5h18.64a1 1 0 0 0 .86-1.5L13.71 3.86a1 1 0 0 0-1.72 0z" />
+    </svg>
+  );
+}
+
 export default function BouquetBuilder({
   event,
   wallSubmissions,
   fullAccess,
+  hideBuilder = false,
   initialView = "builder",
 }: {
   event: BouquetBuilderEvent;
   wallSubmissions: WallSubmission[];
   fullAccess: boolean;
+  hideBuilder?: boolean;
   initialView?: "builder" | "wall";
 }) {
-  const [view, setView] = useState<"builder" | "wall">(initialView);
+  const [view, setView] = useState<"builder" | "wall">(hideBuilder ? "wall" : initialView);
   const [stems, setStems] = useState<Stem[]>([]);
   const [color, setColor] = useState<EnvelopeColorId>("blue");
   const [note, setNote] = useState("");
@@ -64,6 +81,7 @@ export default function BouquetBuilder({
   const [mode, setMode] = useState<"building" | "sealed">("building");
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -108,7 +126,13 @@ export default function BouquetBuilder({
   }, [event.slug]);
 
   const activeColor = ENVELOPE_COLOR_MAP[color];
-  const canSend = stems.length > 0 && note.trim().length > 0 && name.trim().length > 0 && email.trim().length > 0;
+  const missing = [
+    stems.length === 0 && "a flower",
+    note.trim().length === 0 && "a note",
+    name.trim().length === 0 && "your name",
+    email.trim().length === 0 && "your email",
+  ].filter((v): v is string => v !== false);
+  const canSend = missing.length === 0;
   const countdownText = useMemo(() => formatCountdown(event.revealDate, now), [event.revealDate, now]);
 
   function addFlower(id: FlowerId) {
@@ -121,7 +145,12 @@ export default function BouquetBuilder({
   }
 
   async function submit() {
-    if (!canSend || sending) return;
+    if (!canSend) {
+      setAttemptedSubmit(true);
+      return;
+    }
+    if (sending) return;
+    setAttemptedSubmit(false);
     setSending(true);
     setError(null);
     try {
@@ -165,36 +194,38 @@ export default function BouquetBuilder({
           </div>
         </div>
 
-        <div className="flex justify-center gap-2 px-6 pt-0.5 pb-2.5">
-          <button
-            onClick={() => setView("builder")}
-            className="font-nunito font-bold text-xs"
-            style={{
-              border: "none",
-              borderRadius: 999,
-              padding: "7px 16px",
-              background: view === "builder" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
-              color: view === "builder" ? "#FBF6E9" : "#7c6a4e",
-              cursor: "pointer",
-            }}
-          >
-            Add a Bouquet
-          </button>
-          <button
-            onClick={() => setView("wall")}
-            className="font-nunito font-bold text-xs"
-            style={{
-              border: "none",
-              borderRadius: 999,
-              padding: "7px 16px",
-              background: view === "wall" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
-              color: view === "wall" ? "#FBF6E9" : "#7c6a4e",
-              cursor: "pointer",
-            }}
-          >
-            Reveal Wall
-          </button>
-        </div>
+        {!hideBuilder && (
+          <div className="flex justify-center gap-2 px-6 pt-0.5 pb-2.5">
+            <button
+              onClick={() => setView("builder")}
+              className="font-nunito font-bold text-xs"
+              style={{
+                border: "none",
+                borderRadius: 999,
+                padding: "7px 16px",
+                background: view === "builder" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
+                color: view === "builder" ? "#FBF6E9" : "#7c6a4e",
+                cursor: "pointer",
+              }}
+            >
+              Add a Bouquet
+            </button>
+            <button
+              onClick={() => setView("wall")}
+              className="font-nunito font-bold text-xs"
+              style={{
+                border: "none",
+                borderRadius: 999,
+                padding: "7px 16px",
+                background: view === "wall" ? "#6b7d5c" : "rgba(122,100,70,0.1)",
+                color: view === "wall" ? "#FBF6E9" : "#7c6a4e",
+                cursor: "pointer",
+              }}
+            >
+              Reveal Wall
+            </button>
+          </div>
+        )}
 
         {view === "wall" && (
           <RevealWall
@@ -307,8 +338,13 @@ export default function BouquetBuilder({
             {mode === "building" && (
               <>
                 <div className="flex justify-between px-6 pt-2 pb-0.5 text-xs mx-auto w-full box-border" style={{ maxWidth: 320, color: "#7c6a4e" }}>
-                  <span>
+                  <span className="flex items-center gap-1.5">
                     {stems.length} / {MAX_STEMS} stems
+                    {attemptedSubmit && stems.length === 0 && (
+                      <span className="font-nunito font-bold flex items-center gap-1" style={{ color: "#b0503f" }}>
+                        <WarningIcon /> pick at least one
+                      </span>
+                    )}
                   </span>
                   <button onClick={clearAll} className="bg-transparent border-none underline p-0 cursor-pointer" style={{ color: "#8a6a45", fontSize: 12 }}>
                     clear
@@ -454,22 +490,29 @@ export default function BouquetBuilder({
               style={{ background: "linear-gradient(to top, #F7EFDD 65%, rgba(247,239,221,0))", paddingTop: 18, paddingBottom: 22 }}
             >
               {mode === "building" && (
-                <button
-                  onClick={submit}
-                  disabled={!canSend || sending}
-                  className="w-full font-nunito font-bold"
-                  style={{
-                    background: canSend && !sending ? "#6b7d5c" : "#c9c2ac",
-                    color: "#FBF6E9",
-                    border: "none",
-                    borderRadius: 10,
-                    padding: 14,
-                    fontSize: 15,
-                    cursor: canSend && !sending ? "pointer" : "not-allowed",
-                  }}
-                >
-                  {sending ? "Sending…" : submission ? "Save changes" : "Send bouquet"}
-                </button>
+                <>
+                  {attemptedSubmit && !canSend && (
+                    <div className="text-sm mb-2 flex items-center gap-1.5 font-nunito font-bold" style={{ color: "#b0503f" }}>
+                      <WarningIcon /> Add {joinList(missing)} to send your bouquet.
+                    </div>
+                  )}
+                  <button
+                    onClick={submit}
+                    disabled={sending}
+                    className="w-full font-nunito font-bold"
+                    style={{
+                      background: canSend && !sending ? "#6b7d5c" : "#c9c2ac",
+                      color: "#FBF6E9",
+                      border: "none",
+                      borderRadius: 10,
+                      padding: 14,
+                      fontSize: 15,
+                      cursor: sending ? "default" : "pointer",
+                    }}
+                  >
+                    {sending ? "Sending…" : submission ? "Save changes" : "Send bouquet"}
+                  </button>
+                </>
               )}
               {mode === "sealed" && (
                 <button

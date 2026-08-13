@@ -22,9 +22,8 @@ export default async function EventPage(props: PageProps<"/e/[slug]">) {
   // their editToken), keeping other contributors' messages private even
   // though the garden of names stays visible to build recognition.
   const organizer = await getCurrentOrganizer();
-  const fullAccess =
-    (organizer !== null && organizer.id === event.organizerId) ||
-    (!!recipientParam && recipientParam === event.recipientAccessToken);
+  const isRecipient = !!recipientParam && recipientParam === event.recipientAccessToken;
+  const fullAccess = (organizer !== null && organizer.id === event.organizerId) || isRecipient;
 
   const approved =
     event.status === "revealed"
@@ -45,6 +44,7 @@ export default async function EventPage(props: PageProps<"/e/[slug]">) {
         status: event.status,
       }}
       fullAccess={fullAccess}
+      hideBuilder={isRecipient}
       wallSubmissions={approved.map((s) => ({
         id: s.id,
         contributorName: s.contributorName,
