@@ -511,10 +511,7 @@ export default function BouquetBuilder({
             )}
 
             <div className="flex-1" style={{ minHeight: 16 }} />
-            <div
-              className="sticky bottom-0 px-6"
-              style={{ background: "linear-gradient(to top, #F7EFDD 65%, rgba(247,239,221,0))", paddingTop: 18, paddingBottom: 22 }}
-            >
+            <div className="sticky bottom-0 px-6" style={{ paddingTop: 18, paddingBottom: 22 }}>
               {mode === "building" && (
                 <>
                   {attemptedSubmit && !canSend && (
