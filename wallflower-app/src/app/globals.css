@@ -64,10 +64,11 @@ body {
 }
 
 .wf-footer-envelope {
+  transform: rotate(var(--wf-rot, -7deg));
   transition: transform 0.25s ease;
 }
 .wf-footer-envelope:hover {
-  transform: scale(1.06) rotate(-2deg);
+  transform: rotate(calc(var(--wf-rot, -7deg) + 3deg)) scale(1.08);
 }
 
 .wf-bloom-in {
@@ -229,7 +230,7 @@ a:hover {
   width: 64px;
   height: 64px;
   border-radius: 999px;
-  background: #e3efd9;
+  background: rgba(107, 125, 92, 0.8);
   border: 1px solid rgba(122, 100, 70, 0.15);
   display: flex;
   align-items: center;

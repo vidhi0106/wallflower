@@ -47,14 +47,14 @@ function FeedbackEnvelope() {
       href="mailto:vidhishah0106@gmail.com?subject=Wallflower%20feedback"
       aria-label="Send feedback"
       className="wf-footer-envelope"
-      style={{ position: "relative", display: "block", width: 128, height: 96 }}
+      style={{ position: "relative", display: "block", width: 92, height: 70, "--wf-rot": "-7deg" } as React.CSSProperties}
     >
       <img
         src="/envelope2/envelope-back.png"
         alt=""
         style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 1 }}
       />
-      <div style={{ position: "absolute", left: "50%", bottom: 30, width: "78%", transform: "translateX(-50%)", zIndex: 2 }}>
+      <div style={{ position: "absolute", left: "50%", bottom: 32, width: "80%", transform: "translateX(-50%)", zIndex: 2 }}>
         <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
         <div
           style={{
@@ -62,12 +62,12 @@ function FeedbackEnvelope() {
             inset: 0,
             display: "flex",
             justifyContent: "center",
-            padding: "20% 8% 0",
+            padding: "16% 6% 0",
             textAlign: "center",
             overflow: "hidden",
           }}
         >
-          <span className="font-caveat font-bold" style={{ fontSize: 12, lineHeight: 1.15, color: "#4a3d2c", whiteSpace: "nowrap" }}>
+          <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c", whiteSpace: "nowrap" }}>
             Send feedback
           </span>
         </div>
@@ -89,7 +89,7 @@ export default function Footer() {
     >
       <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
       <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
-      <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+      <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-start gap-6">
         <div>
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
@@ -108,7 +108,7 @@ export default function Footer() {
         <FeedbackEnvelope />
       </div>
       <div style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
-        <p className="max-w-3xl mx-auto px-6 py-4 text-xs text-center sm:text-left" style={{ color: "#a8977a" }}>
+        <p className="max-w-3xl mx-auto px-6 py-4 text-xs text-center" style={{ color: "#a8977a" }}>
           &copy; 2026 Vidhi Shah &middot; Built with Claude
         </p>
       </div>
