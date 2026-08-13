@@ -4,7 +4,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center" style={{ background: "#EFEAE0", color: "#4a3d2c" }}>
+    <div className="min-h-screen flex flex-col items-center" style={{ color: "#4a3d2c" }}>
       <header className="w-full flex justify-center px-6 py-6">
         <Link href="/" className="font-caveat font-bold text-xl no-underline" style={{ color: "#4a3d2c" }}>
           Wallflower

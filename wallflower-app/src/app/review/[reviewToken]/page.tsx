@@ -23,7 +23,7 @@ export default async function ReviewByTokenPage(props: PageProps<"/review/[revie
   const deny = decideByReviewToken.bind(null, reviewToken, "denied");
 
   return (
-    <div className="min-h-screen flex justify-center" style={{ background: "#EFEAE0" }}>
+    <div className="min-h-screen flex justify-center">
       <div className="w-full max-w-sm px-6 py-16" style={{ color: "#4a3d2c" }}>
         <p className="text-xs uppercase tracking-wide" style={{ color: "#a8977a" }}>
           {submission.event.recipientName}&rsquo;s {submission.event.occasionText}

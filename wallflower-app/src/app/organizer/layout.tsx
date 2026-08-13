@@ -8,10 +8,10 @@ export default async function OrganizerLayout({ children }: { children: React.Re
   if (!organizer) redirect("/login");
 
   return (
-    <div className="min-h-screen" style={{ background: "#EFEAE0" }}>
+    <div className="min-h-screen">
       <header
         className="flex items-center justify-between px-6 py-4"
-        style={{ borderBottom: "1px solid rgba(122,100,70,0.15)" }}
+        style={{ background: "#EFEAE0", borderBottom: "1px solid rgba(122,100,70,0.15)" }}
       >
         <Link href="/" className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
           Wallflower

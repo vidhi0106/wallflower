@@ -13,9 +13,23 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: url("/backgrounds/garden-desktop.webp");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-nunito), sans-serif;
+}
+
+/* Orientation (not a fixed device-width list) picks the background, so any
+   viewport shape -- phone, tablet, foldable, ultrawide -- gets whichever
+   image actually fits it, and it re-evaluates live on resize/rotate. */
+@media (orientation: portrait) {
+  body {
+    background-image: url("/backgrounds/garden-phone.webp");
+  }
 }
 
 @keyframes wf-spin {
