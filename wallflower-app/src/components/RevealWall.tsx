@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ENVELOPE_COLOR_MAP, type EnvelopeColorId, type FlowerId } from "@/lib/wallflower/catalog";
 import { makeStem, tightTransform } from "@/lib/wallflower/bouquet";
+import NoteModal from "@/components/NoteModal";
 
 export interface WallSubmission {
   id: string;
@@ -34,11 +35,30 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
-function WallCard({ submission, index }: { submission: WallSubmission; index: number }) {
+function WallCard({
+  submission,
+  index,
+  onExpand,
+}: {
+  submission: WallSubmission;
+  index: number;
+  onExpand: (id: string) => void;
+}) {
   const [flipped, setFlipped] = useState(false);
+  const [overflowing, setOverflowing] = useState(false);
+  const noteTextRef = useRef<HTMLDivElement>(null);
   const unlocked = submission.noteText !== null;
   const activeColor = ENVELOPE_COLOR_MAP[submission.bouquetData.color];
   const stems = submission.bouquetData.flowerIds.map((id) => makeStem(id));
+
+  useEffect(() => {
+    const el = noteTextRef.current;
+    if (!el) return;
+    const check = () => setOverflowing(el.scrollHeight > el.clientHeight + 1);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [submission.noteText]);
 
   const seed = hashString(submission.id);
   const rotation = ((seed % 100) / 100) * 10 - 5; // -5deg .. 5deg, stable per card
@@ -121,8 +141,50 @@ function WallCard({ submission, index }: { submission: WallSubmission; index: nu
           <div className="font-caveat font-bold" style={{ fontSize: 17, color: "#4a3d2c" }}>
             {submission.contributorName}
           </div>
-          <div className="font-caveat" style={{ fontSize: 13, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, overflow: "hidden" }}>
-            {submission.noteText}
+          <div style={{ position: "relative" }}>
+            <div
+              ref={noteTextRef}
+              className="font-caveat"
+              style={{ fontSize: 13, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, maxHeight: 128, overflow: "hidden" }}
+            >
+              {submission.noteText}
+            </div>
+            {overflowing && (
+              <>
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 28,
+                    background: "linear-gradient(to bottom, rgba(251,246,233,0), rgba(251,246,233,0.95))",
+                    pointerEvents: "none",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onExpand(submission.id);
+                  }}
+                  className="font-nunito font-bold"
+                  style={{
+                    position: "absolute",
+                    bottom: 2,
+                    right: 0,
+                    fontSize: 10,
+                    color: "#6b7d5c",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Read more
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -179,6 +241,12 @@ export default function RevealWall({
   // stashed in localStorage from the builder flow.
   const [ownSubmission, setOwnSubmission] = useState<{ id: string; noteText: string } | null>(null);
 
+  // Which card's "Read more" opened the modal, if any. Navigation only ever
+  // moves between notes this viewer can actually read -- a regular
+  // contributor with just their own note unlocked has nothing to page to,
+  // so the modal simply won't show arrows for them.
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
   useEffect(() => {
     if (fullAccess || status !== "revealed") return;
     const token = window.localStorage.getItem(submissionStorageKey(slug));
@@ -201,6 +269,10 @@ export default function RevealWall({
     : submissions.map((s) =>
         s.id === ownSubmission?.id ? { ...s, noteText: ownSubmission.noteText } : s
       );
+
+  const readableNotes = resolvedSubmissions
+    .filter((s): s is WallSubmission & { noteText: string } => s.noteText !== null)
+    .map((s) => ({ id: s.id, contributorName: s.contributorName, noteText: s.noteText }));
 
   if (status !== "revealed") {
     return (
@@ -242,9 +314,17 @@ export default function RevealWall({
       ) : (
         <div className="wf-wall-grid">
           {resolvedSubmissions.map((s, i) => (
-            <WallCard key={s.id} submission={s} index={i} />
+            <WallCard key={s.id} submission={s} index={i} onExpand={setExpandedId} />
           ))}
         </div>
+      )}
+      {expandedId && (
+        <NoteModal
+          notes={readableNotes}
+          currentId={expandedId}
+          onClose={() => setExpandedId(null)}
+          onNavigate={setExpandedId}
+        />
       )}
     </div>
   );
