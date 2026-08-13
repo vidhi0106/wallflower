@@ -55,7 +55,6 @@ a:hover {
 .wf-shell {
   width: 100%;
   max-width: 420px;
-  background: #f7efdd;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
