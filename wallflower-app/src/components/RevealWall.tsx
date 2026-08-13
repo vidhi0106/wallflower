@@ -23,11 +23,26 @@ function submissionStorageKey(slug: string) {
   return `wallflower:submission:${slug}`;
 }
 
-function WallCard({ submission }: { submission: WallSubmission }) {
+// Deterministic (not Math.random()) so a card's tilt/delay stays stable
+// across re-renders instead of jittering every time state changes.
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function WallCard({ submission, index }: { submission: WallSubmission; index: number }) {
   const [flipped, setFlipped] = useState(false);
   const unlocked = submission.noteText !== null;
   const activeColor = ENVELOPE_COLOR_MAP[submission.bouquetData.color];
   const stems = submission.bouquetData.flowerIds.map((id) => makeStem(id));
+
+  const seed = hashString(submission.id);
+  const rotation = ((seed % 100) / 100) * 10 - 5; // -5deg .. 5deg, stable per card
+  const delay = ((Math.floor(seed / 100) % 60) / 60) * 0.5 + index * 0.03; // staggered + a little randomized
 
   return (
     <div
@@ -35,7 +50,16 @@ function WallCard({ submission }: { submission: WallSubmission }) {
       tabIndex={unlocked ? 0 : undefined}
       onClick={unlocked ? () => setFlipped((f) => !f) : undefined}
       onKeyDown={unlocked ? (e) => e.key === "Enter" && setFlipped((f) => !f) : undefined}
-      style={{ position: "relative", height: 225, cursor: unlocked ? "pointer" : "default" }}
+      className="wf-envelope"
+      style={
+        {
+          position: "relative",
+          height: 225,
+          cursor: unlocked ? "pointer" : "default",
+          "--wf-rot": `${rotation}deg`,
+          "--wf-delay": `${delay}s`,
+        } as React.CSSProperties
+      }
     >
       <div
         style={{
@@ -217,8 +241,8 @@ export default function RevealWall({
         </p>
       ) : (
         <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(148px, 1fr))" }}>
-          {resolvedSubmissions.map((s) => (
-            <WallCard key={s.id} submission={s} />
+          {resolvedSubmissions.map((s, i) => (
+            <WallCard key={s.id} submission={s} index={i} />
           ))}
         </div>
       )}

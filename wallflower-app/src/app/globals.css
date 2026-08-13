@@ -14,7 +14,10 @@
 
 body {
   background-color: var(--background);
-  background-image: url("/backgrounds/garden-desktop.webp");
+  /* A semi-transparent tint of the base cream layered over the image fades
+     it toward ~80% strength without touching foreground content opacity
+     (a plain `opacity` on body would fade the text/buttons too). */
+  background-image: linear-gradient(rgba(239, 234, 224, 0.2), rgba(239, 234, 224, 0.2)), url("/backgrounds/garden-desktop.webp");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
@@ -28,7 +31,7 @@ body {
    image actually fits it, and it re-evaluates live on resize/rotate. */
 @media (orientation: portrait) {
   body {
-    background-image: url("/backgrounds/garden-phone.webp");
+    background-image: linear-gradient(rgba(239, 234, 224, 0.2), rgba(239, 234, 224, 0.2)), url("/backgrounds/garden-phone.webp");
   }
 }
 
@@ -36,6 +39,28 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes wf-bloom {
+  from {
+    opacity: 0;
+    transform: rotate(var(--wf-rot, 0deg)) scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--wf-rot, 0deg)) scale(1);
+  }
+}
+
+.wf-envelope {
+  transform: rotate(var(--wf-rot, 0deg));
+  filter: drop-shadow(0 10px 16px rgba(90, 70, 40, 0.28));
+  animation: wf-bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: var(--wf-delay, 0s);
+  transition: transform 0.25s ease;
+}
+.wf-envelope:hover {
+  transform: rotate(calc(var(--wf-rot, 0deg) + 4deg)) scale(1.1);
 }
 
 a {
