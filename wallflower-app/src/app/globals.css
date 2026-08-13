@@ -63,6 +63,13 @@ body {
   transform: rotate(calc(var(--wf-rot, 0deg) + 4deg)) scale(1.1);
 }
 
+.wf-footer-envelope {
+  transition: transform 0.25s ease;
+}
+.wf-footer-envelope:hover {
+  transform: scale(1.06) rotate(-2deg);
+}
+
 .wf-bloom-in {
   animation: wf-bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
   animation-delay: 0.05s;
