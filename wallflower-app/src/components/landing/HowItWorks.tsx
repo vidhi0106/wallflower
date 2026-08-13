@@ -7,7 +7,7 @@ const ICON_PROPS = {
   height: 34,
   viewBox: "0 0 34 34",
   fill: "none",
-  stroke: "#4a3d2c",
+  stroke: "#6b7d5c",
   strokeWidth: 1.6,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
@@ -95,7 +95,7 @@ export default function HowItWorks() {
         borderRadius: 24,
       }}
     >
-      <h2 className="font-caveat font-bold text-2xl text-center" style={{ color: "#4a3d2c" }}>
+      <h2 className="font-caveat font-bold text-4xl text-left" style={{ color: "#4a3d2c" }}>
         How it works
       </h2>
       <div className="landing-steps mt-8">
