@@ -269,28 +269,31 @@ export default function BouquetBuilder({
         {view === "builder" && (
         <div className="wf-builder-grid flex flex-col flex-1">
           <div className="wf-envelope-col">
-            <div className="text-center text-xs px-6 pb-1" style={{ color: "#a8977a" }}>
-              Choose your envelope color
-            </div>
-            <div className="flex gap-2.5 justify-center px-6 pb-2">
-              {ENVELOPE_COLORS.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setColor(c.id)}
-                  aria-label={c.label}
-                  disabled={mode === "sealed"}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: c.swatch,
-                    border: color === c.id ? "2px solid #4a3d2c" : "2px solid rgba(122,100,70,0.25)",
-                    cursor: mode === "sealed" ? "default" : "pointer",
-                    padding: 0,
-                  }}
-                />
-              ))}
-            </div>
+            {mode !== "sealed" && (
+              <>
+                <div className="text-center text-xs px-6 pb-1" style={{ color: "#a8977a" }}>
+                  Choose your envelope color
+                </div>
+                <div className="flex gap-2.5 justify-center px-6 pb-2">
+                  {ENVELOPE_COLORS.map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => setColor(c.id)}
+                      aria-label={c.label}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: "50%",
+                        background: c.swatch,
+                        border: color === c.id ? "2px solid #4a3d2c" : "2px solid rgba(122,100,70,0.25)",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
 
             <div className="relative w-full mx-auto" style={{ maxWidth: 320, height: 460, marginTop: -10 }}>
               <img
@@ -510,6 +513,78 @@ export default function BouquetBuilder({
               )
             )}
 
+            {mode === "sealed" && !confirmingWithdraw && (
+              <div className="px-8">
+                <button
+                  onClick={editNote}
+                  className="w-full font-nunito font-bold"
+                  style={{
+                    background: "transparent",
+                    color: "#6b7d5c",
+                    border: "1px solid #6b7d5c",
+                    borderRadius: 10,
+                    padding: 14,
+                    fontSize: 15,
+                    cursor: "pointer",
+                  }}
+                >
+                  Edit your note
+                </button>
+                <button
+                  onClick={() => setConfirmingWithdraw(true)}
+                  className="w-full font-nunito text-xs mt-2.5 bg-transparent border-none underline cursor-pointer"
+                  style={{ color: "#a8977a" }}
+                >
+                  Withdraw your note
+                </button>
+              </div>
+            )}
+            {mode === "sealed" && confirmingWithdraw && (
+              <div className="text-center px-8">
+                <p className="text-sm" style={{ color: "#b0503f" }}>
+                  This removes your bouquet completely — are you sure?
+                </p>
+                {error && (
+                  <p className="text-sm mt-2" style={{ color: "#b0503f" }}>
+                    {error}
+                  </p>
+                )}
+                <div className="flex gap-2 justify-center mt-3">
+                  <button
+                    onClick={withdraw}
+                    disabled={withdrawing}
+                    className="font-nunito font-bold text-sm flex items-center gap-1.5"
+                    style={{
+                      background: "#b0503f",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 10,
+                      padding: "10px 16px",
+                      cursor: withdrawing ? "default" : "pointer",
+                    }}
+                  >
+                    {withdrawing && <Spinner size={14} />}
+                    {withdrawing ? "Withdrawing…" : "Yes, withdraw"}
+                  </button>
+                  <button
+                    onClick={() => setConfirmingWithdraw(false)}
+                    disabled={withdrawing}
+                    className="font-nunito font-bold text-sm"
+                    style={{
+                      background: "transparent",
+                      color: "#7c6a4e",
+                      border: "1px solid rgba(122,100,70,0.3)",
+                      borderRadius: 10,
+                      padding: "10px 16px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="flex-1" style={{ minHeight: 16 }} />
             <div className="sticky bottom-0 px-6" style={{ paddingTop: 18, paddingBottom: 22 }}>
               {mode === "building" && (
@@ -537,77 +612,6 @@ export default function BouquetBuilder({
                     {sending ? "Sending…" : submission ? "Save changes" : "Send bouquet"}
                   </button>
                 </>
-              )}
-              {mode === "sealed" && !confirmingWithdraw && (
-                <>
-                  <button
-                    onClick={editNote}
-                    className="w-full font-nunito font-bold"
-                    style={{
-                      background: "transparent",
-                      color: "#6b7d5c",
-                      border: "1px solid #6b7d5c",
-                      borderRadius: 10,
-                      padding: 14,
-                      fontSize: 15,
-                      cursor: "pointer",
-                    }}
-                  >
-                    Edit your note
-                  </button>
-                  <button
-                    onClick={() => setConfirmingWithdraw(true)}
-                    className="w-full font-nunito text-xs mt-2.5 bg-transparent border-none underline cursor-pointer"
-                    style={{ color: "#a8977a" }}
-                  >
-                    Withdraw your note
-                  </button>
-                </>
-              )}
-              {mode === "sealed" && confirmingWithdraw && (
-                <div className="text-center">
-                  <p className="text-sm" style={{ color: "#b0503f" }}>
-                    This removes your bouquet completely — are you sure?
-                  </p>
-                  {error && (
-                    <p className="text-sm mt-2" style={{ color: "#b0503f" }}>
-                      {error}
-                    </p>
-                  )}
-                  <div className="flex gap-2 justify-center mt-3">
-                    <button
-                      onClick={withdraw}
-                      disabled={withdrawing}
-                      className="font-nunito font-bold text-sm flex items-center gap-1.5"
-                      style={{
-                        background: "#b0503f",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: 10,
-                        padding: "10px 16px",
-                        cursor: withdrawing ? "default" : "pointer",
-                      }}
-                    >
-                      {withdrawing && <Spinner size={14} />}
-                      {withdrawing ? "Withdrawing…" : "Yes, withdraw"}
-                    </button>
-                    <button
-                      onClick={() => setConfirmingWithdraw(false)}
-                      disabled={withdrawing}
-                      className="font-nunito font-bold text-sm"
-                      style={{
-                        background: "transparent",
-                        color: "#7c6a4e",
-                        border: "1px solid rgba(122,100,70,0.3)",
-                        borderRadius: 10,
-                        padding: "10px 16px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
               )}
             </div>
           </div>
