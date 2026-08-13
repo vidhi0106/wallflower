@@ -1,24 +1,27 @@
 import Link from "next/link";
 
 const LEFT_FLOWERS = [
-  { src: "/flowers2/lavender.png", offset: -4, height: 92, rot: -9 },
-  { src: "/flowers2/daisy-pink.png", offset: 26, height: 68, rot: 7 },
-  { src: "/flowers2/poppy.png", offset: 48, height: 78, rot: -4 },
+  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 135, rot: -8 },
+  { src: "/flowers2/daisy-yellow.png", offset: 70, height: 195, rot: 4 },
+  { src: "/flowers2/daisy-pink.png", offset: 40, height: 100, rot: -10 },
+  { src: "/flowers2/lavender.png", offset: 140, height: 150, rot: 7 },
 ];
 
 const RIGHT_FLOWERS = [
-  { src: "/flowers2/hollyhock-pink.png", offset: -4, height: 96, rot: 8 },
-  { src: "/flowers2/daisy-yellow.png", offset: 28, height: 66, rot: -7 },
-  { src: "/flowers2/marigold-orange.png", offset: 50, height: 76, rot: 5 },
+  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 125, rot: 8 },
+  { src: "/flowers2/daisy-yellow.png", offset: 75, height: 190, rot: -5 },
+  { src: "/flowers2/cluster-pink-a.png", offset: 45, height: 105, rot: 10 },
+  { src: "/flowers2/lavender.png", offset: 145, height: 145, rot: -7 },
 ];
 
 function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typeof LEFT_FLOWERS }) {
   const containerStyle: React.CSSProperties = {
     position: "absolute",
     bottom: 0,
-    width: 130,
-    height: 100,
+    width: 220,
+    height: 210,
     pointerEvents: "none",
+    zIndex: 0,
     ...(side === "left" ? { left: 0 } : { right: 0 }),
   };
 
@@ -89,7 +92,10 @@ export default function Footer() {
     >
       <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
       <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
-      <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10">
+      <div
+        className="max-w-3xl mx-auto px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10"
+        style={{ position: "relative", zIndex: 1 }}
+      >
         <div>
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
