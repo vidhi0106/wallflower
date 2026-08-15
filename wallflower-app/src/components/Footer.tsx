@@ -46,7 +46,7 @@ export default function Footer() {
   return (
     <footer className="w-full">
       <div
-        className="w-auto sm:w-full mx-5 sm:mx-0 rounded-[20px] sm:rounded-none"
+        className="mx-5 sm:mx-[60px] rounded-[20px] sm:rounded-[24px]"
         style={{ background: "rgba(247, 239, 221, 0.5)" }}
       >
         <div

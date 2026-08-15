@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { requestMagicLink, type MagicLinkState } from "./actions";
 
@@ -10,7 +11,10 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-sm mx-auto px-6 py-16">
-      <h1 className="font-caveat font-bold text-3xl text-center" style={{ color: "#4a3d2c" }}>
+      <Link href="/" className="font-nunito text-xs no-underline" style={{ color: "#a8977a" }}>
+        ← Back
+      </Link>
+      <h1 className="font-caveat font-bold text-3xl text-center mt-6" style={{ color: "#4a3d2c" }}>
         Organizer sign in
       </h1>
       <p className="text-sm text-center mt-2" style={{ color: "#7c6a4e" }}>
