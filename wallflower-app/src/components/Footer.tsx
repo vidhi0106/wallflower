@@ -46,33 +46,28 @@ export default function Footer() {
   return (
     <footer className="w-full">
       <div
-        className="w-full grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-4 px-6 py-6"
+        className="w-full flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 sm:gap-4 px-8 py-8"
         style={{ maxWidth: 760, margin: "0 auto", background: "rgba(247, 239, 221, 0.5)", borderRadius: 24 }}
       >
-        <div className="text-center sm:text-left justify-self-center sm:justify-self-start">
+        <div className="text-center sm:text-left">
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
           </Link>
           <p className="text-xs mt-2" style={{ color: "#a8977a" }}>
             A little garden of notes, revealed all at once.
           </p>
+          <Link
+            href="/login"
+            className="font-nunito font-bold no-underline inline-block mt-4"
+            style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+          >
+            Create an event
+          </Link>
+          <p className="text-xs mt-4" style={{ color: "#a8977a" }}>
+            &copy; 2026 Vidhi Shah &middot; Built with Claude
+          </p>
         </div>
-        <div className="justify-self-center">
-          <FeedbackEnvelope />
-        </div>
-        <Link
-          href="/login"
-          className="font-nunito font-bold no-underline inline-block justify-self-center sm:justify-self-end"
-          style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
-        >
-          Create an event
-        </Link>
-      </div>
-
-      <div className="w-full mt-10" style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
-        <p className="max-w-3xl mx-auto px-6 py-4 text-xs text-center" style={{ color: "#a8977a" }}>
-          &copy; 2026 Vidhi Shah &middot; Built with Claude
-        </p>
+        <FeedbackEnvelope />
       </div>
     </footer>
   );
