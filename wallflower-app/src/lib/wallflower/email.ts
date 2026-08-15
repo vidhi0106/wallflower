@@ -47,7 +47,7 @@ function layout(bodyHtml: string): string {
       <div style="font-size:22px;font-style:italic;text-align:center;color:#4a3d2c;margin:0 0 20px;">🌷 Wallflower</div>
       ${bodyHtml}
       <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(122,100,70,0.2);font-size:12px;color:#a8977a;line-height:1.6;">
-        Wallflower is a little garden of notes — everyone tucks in a bouquet and a message, hidden until you reveal it all at once.<br/>
+        Wallflower is a little garden of notes: everyone tucks in a bouquet and a message, hidden until you reveal it all at once.<br/>
         <a href="${getBaseUrl()}" style="color:#8a6a45;">Start your own →</a>
       </div>
     </div>
@@ -56,16 +56,16 @@ function layout(bodyHtml: string): string {
 }
 
 function textFooter(): string {
-  return `\n\n—\nWallflower is a little garden of notes — everyone tucks in a bouquet and a message, hidden until you reveal it all at once.\nStart your own: ${getBaseUrl()}`;
+  return `\n\n---\nWallflower is a little garden of notes: everyone tucks in a bouquet and a message, hidden until you reveal it all at once.\nStart your own: ${getBaseUrl()}`;
 }
 
 export function magicLinkEmail(url: string): Pick<Email, "subject" | "html" | "text"> {
   return {
     subject: "Your Wallflower sign-in link",
-    text: `Hi there,\n\nHere's your sign-in link — it'll take you straight to your organizer dashboard:\n${url}\n\nThis link expires in 15 minutes. If you didn't request it, you can ignore this email.${textFooter()}`,
+    text: `Hi there,\n\nHere's your sign-in link. It'll take you straight to your organizer dashboard:\n${url}\n\nThis link expires in 15 minutes. If you didn't request it, you can ignore this email.${textFooter()}`,
     html: layout(`
       <p style="font-size:15px;line-height:1.6;margin:0 0 12px;">Hi there,</p>
-      <p style="font-size:15px;line-height:1.6;margin:0 0 12px;">Here's your sign-in link — tap the button below to get back to your organizer dashboard.</p>
+      <p style="font-size:15px;line-height:1.6;margin:0 0 12px;">Here's your sign-in link. Tap the button below to get back to your organizer dashboard.</p>
       <p style="text-align:center;margin:28px 0;">${button("Sign in to Wallflower", url)}</p>
       <p style="font-size:13px;color:#a8977a;line-height:1.6;margin:0;">This link expires in 15 minutes. If you didn't request it, you can safely ignore this email.</p>
     `),
@@ -82,7 +82,7 @@ export function eventCreatedEmail(params: {
   const { recipientName, occasionText, revealDate, dashboardUrl, contributionUrl } = params;
   const revealText = revealDate
     ? revealDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })
-    : "whenever you're ready — just trigger it manually from your dashboard";
+    : "whenever you're ready, just trigger it manually from your dashboard";
 
   return {
     subject: `Your garden for ${recipientName}'s ${occasionText} is planted 🌱`,
@@ -108,12 +108,12 @@ export function submissionConfirmationEmail(params: {
   const { recipientName, occasionText, editUrl } = params;
   return {
     subject: `Your bouquet for ${recipientName}'s ${occasionText} is sealed`,
-    text: `Your bouquet is sealed and on its way 🌸\n\nIt'll stay hidden until ${recipientName}'s garden is revealed. You can revise it any time before then using your private link:\n${editUrl}\n\nDon't share this link — anyone who has it can edit what you sent.${textFooter()}`,
+    text: `Your bouquet is sealed and on its way 🌸\n\nIt'll stay hidden until ${recipientName}'s garden is revealed. You can revise it any time before then using your private link:\n${editUrl}\n\nDon't share this link. Anyone who has it can edit what you sent.${textFooter()}`,
     html: layout(`
       <p style="font-size:15px;line-height:1.6;margin:0 0 12px;">Your bouquet is sealed and on its way 🌸</p>
       <p style="font-size:15px;line-height:1.6;margin:0;">It'll stay hidden until ${recipientName}'s garden is revealed. Changed your mind about something? You can revise it any time before then.</p>
       <p style="text-align:center;margin:28px 0;">${button("Edit your bouquet", editUrl)}</p>
-      <p style="font-size:13px;color:#a8977a;line-height:1.6;margin:0;">Keep this link to yourself — anyone who has it can edit what you sent.</p>
+      <p style="font-size:13px;color:#a8977a;line-height:1.6;margin:0;">Keep this link to yourself. Anyone who has it can edit what you sent.</p>
     `),
   };
 }
@@ -145,10 +145,10 @@ export function autoApprovedFyiEmail(params: {
   const { contributorName, recipientName, occasionText, dashboardUrl } = params;
   return {
     subject: `${contributorName} added a bouquet for ${recipientName}'s ${occasionText}`,
-    text: `${contributorName} just tucked a bouquet into ${recipientName}'s garden. Auto-approve is on, so it's already up on the wall — no action needed.\n\nView it in your dashboard:\n${dashboardUrl}${textFooter()}`,
+    text: `${contributorName} just tucked a bouquet into ${recipientName}'s garden. Auto-approve is on, so it's already up on the wall. No action needed.\n\nView it in your dashboard:\n${dashboardUrl}${textFooter()}`,
     html: layout(`
       <p style="font-size:15px;line-height:1.6;margin:0 0 12px;"><strong>${contributorName}</strong> just tucked a bouquet into ${recipientName}'s garden 🌼</p>
-      <p style="font-size:15px;line-height:1.6;margin:0;">Auto-approve is on, so it's already up on the wall — no action needed.</p>
+      <p style="font-size:15px;line-height:1.6;margin:0;">Auto-approve is on, so it's already up on the wall. No action needed.</p>
       <p style="text-align:center;margin:28px 0;">${button("View your dashboard", dashboardUrl)}</p>
     `),
   };
@@ -167,9 +167,9 @@ export function denyNotificationEmail(params: {
     : "";
   return {
     subject: `Your bouquet for ${recipientName}'s ${occasionText} needs a small change`,
-    text: `Just a small thing — the organizer asked for a tweak before your bouquet can go up.${noteLine}\n\nYou can revise it here:\n${editUrl}${textFooter()}`,
+    text: `Just a small thing: the organizer asked for a tweak before your bouquet can go up.${noteLine}\n\nYou can revise it here:\n${editUrl}${textFooter()}`,
     html: layout(`
-      <p style="font-size:15px;line-height:1.6;margin:0 0 20px;">Just a small thing — the organizer asked for a tweak before your bouquet can go up.</p>
+      <p style="font-size:15px;line-height:1.6;margin:0 0 20px;">Just a small thing: the organizer asked for a tweak before your bouquet can go up.</p>
       ${noteHtml}
       <p style="text-align:center;margin:28px 0;">${button("Revise your bouquet", editUrl)}</p>
     `),

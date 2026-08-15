@@ -542,7 +542,7 @@ export default function BouquetBuilder({
             {mode === "sealed" && confirmingWithdraw && (
               <div className="text-center px-8">
                 <p className="text-sm" style={{ color: "#b0503f" }}>
-                  This removes your bouquet completely — are you sure?
+                  This removes your bouquet completely. Are you sure?
                 </p>
                 {error && (
                   <p className="text-sm mt-2" style={{ color: "#b0503f" }}>

@@ -37,7 +37,7 @@ const EXAMPLE_NOTES: ExampleNote[] = [
     occasion: "Congratulations",
     color: "green",
     from: "Sam",
-    message: "Congrats on the huge milestone — so proud of you.",
+    message: "Congrats on the huge milestone, so proud of you.",
     stems: [{ src: "/flowers2/marigold-orange.png", dx: 0, dy: -34, rot: 0, scale: 0.95 }],
   },
   {
@@ -72,7 +72,7 @@ const EXAMPLE_NOTES: ExampleNote[] = [
     occasion: "Just Because",
     color: "pink",
     from: "Riley",
-    message: "No reason needed — just thinking of you today.",
+    message: "No reason needed, just thinking of you today.",
     stems: [{ src: "/flowers2/tulip.png", dx: 0, dy: -34, rot: 0, scale: 0.95 }],
   },
 ];
@@ -156,7 +156,7 @@ function NoteCard({ note }: { note: ExampleNote }) {
             {note.message}
           </p>
           <p className="font-caveat font-bold" style={{ fontSize: 14, color: "#6b7d5c", marginTop: 8 }}>
-            — {note.from}
+            From {note.from}
           </p>
         </div>
       </div>

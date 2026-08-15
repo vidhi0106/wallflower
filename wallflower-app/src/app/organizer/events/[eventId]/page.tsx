@@ -102,7 +102,7 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
         iconBg={badgeBg}
         iconFg={badgeFg}
         title="Reveal date"
-        description="Revealed — the garden is live for anyone with the link."
+        description="Revealed: the garden is live for anyone with the link."
       >
         <></>
       </InfoCard>
@@ -116,7 +116,7 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
       iconFg={badgeFg}
       title="Reveal date"
       description={
-        revealDate ? `Set to auto-reveal ${revealDate.toLocaleString()}` : "Not set — trigger it manually when you're ready."
+        revealDate ? `Set to auto-reveal ${revealDate.toLocaleString()}` : "Not set. Trigger it manually when you're ready."
       }
     >
       <form action={reveal}>
@@ -148,7 +148,7 @@ function AutoApproveCard({ eventId, autoApprove }: { eventId: string; autoApprov
             <ToggleSwitch checked={autoApprove} action={setForEvent} />
           </div>
           <p className="text-xs mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
-            {autoApprove ? "On — new notes skip review and go straight to the wall." : "New notes wait in your review queue."}
+            {autoApprove ? "On: new notes skip review and go straight to the wall." : "New notes wait in your review queue."}
           </p>
         </div>
       </div>

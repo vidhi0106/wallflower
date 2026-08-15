@@ -32,7 +32,7 @@ export default async function OrganizerDashboard() {
         </h1>
         {events.length === 0 ? (
           <p className="text-sm mt-2" style={{ color: "#7c6a4e" }}>
-            No events yet — create one below.
+            No events yet. Create one below.
           </p>
         ) : (
           <ul className="mt-4 flex flex-col gap-2">

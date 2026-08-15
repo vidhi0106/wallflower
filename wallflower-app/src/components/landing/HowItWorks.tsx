@@ -16,7 +16,7 @@ const ICON_PROPS = {
 const STEPS = [
   {
     title: "Set up an event",
-    body: "Name them, name the day. Get a private link — that's it.",
+    body: "Name them, name the day. Get a private link, that's it.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="4" y="9" width="26" height="18" rx="2.5" />
@@ -51,7 +51,7 @@ const STEPS = [
   },
   {
     title: "The wall of wishes",
-    body: "Reveal it whenever — every bouquet blooms together, at once.",
+    body: "Reveal it whenever. Every bouquet blooms together, at once.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="4" y="4" width="10" height="10" rx="2" />

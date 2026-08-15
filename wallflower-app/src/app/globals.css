@@ -190,6 +190,11 @@ a:hover {
     grid-template-columns: repeat(2, 1fr);
     gap: 22px 14px;
   }
+  .landing-note-card {
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .landing-note-card:nth-child(1) { --wf-rot: -7deg; margin-top: 14px; }
   .landing-note-card:nth-child(2) { --wf-rot: 6deg; margin-top: -10px; }
   .landing-note-card:nth-child(3) { --wf-rot: 5deg; margin-top: -8px; }

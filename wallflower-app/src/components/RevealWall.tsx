@@ -282,7 +282,7 @@ export default function RevealWall({
           Blooming soon
         </div>
         <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
-          {recipientName}&rsquo;s garden is still growing — every bouquet stays tucked away until the
+          {recipientName}&rsquo;s garden is still growing. Every bouquet stays tucked away until the
           big reveal.
         </p>
         <div className="font-caveat font-bold text-xl mt-5" style={{ color: "#6b7d5c" }}>
@@ -309,7 +309,7 @@ export default function RevealWall({
       </div>
       {submissions.length === 0 ? (
         <p className="text-center text-sm mt-8" style={{ color: "#a8977a" }}>
-          No approved bouquets yet — check back soon.
+          No approved bouquets yet. Check back soon.
         </p>
       ) : (
         <div className="wf-wall-grid">
