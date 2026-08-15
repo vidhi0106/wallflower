@@ -46,10 +46,10 @@ export default function Footer() {
   return (
     <footer className="w-full">
       <div
-        className="w-full flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-6 px-6 py-10"
-        style={{ maxWidth: 1080, margin: "0 auto", background: "rgba(247, 239, 221, 0.5)", borderRadius: 24 }}
+        className="w-full grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-4 px-6 py-6"
+        style={{ maxWidth: 760, margin: "0 auto", background: "rgba(247, 239, 221, 0.5)", borderRadius: 24 }}
       >
-        <div className="text-center sm:text-left">
+        <div className="text-center sm:text-left justify-self-center sm:justify-self-start">
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
           </Link>
@@ -57,10 +57,12 @@ export default function Footer() {
             A little garden of notes, revealed all at once.
           </p>
         </div>
-        <FeedbackEnvelope />
+        <div className="justify-self-center">
+          <FeedbackEnvelope />
+        </div>
         <Link
           href="/login"
-          className="font-nunito font-bold no-underline inline-block"
+          className="font-nunito font-bold no-underline inline-block justify-self-center sm:justify-self-end"
           style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
         >
           Create an event
