@@ -31,7 +31,7 @@ function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typ
   };
 
   return (
-    <div className="hidden sm:block" style={containerStyle}>
+    <div style={containerStyle}>
       {flowers.map((f) => {
         const imgStyle: React.CSSProperties = {
           position: "absolute",
@@ -75,8 +75,10 @@ function FeedbackEnvelope() {
             overflow: "hidden",
           }}
         >
-          <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c", whiteSpace: "nowrap" }}>
-            Send feedback
+          <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c" }}>
+            Send
+            <br />
+            feedback
           </span>
         </div>
       </div>
@@ -99,10 +101,10 @@ export default function Footer() {
         <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
         <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
         <div
-          className="px-6 py-10 flex flex-col sm:flex-row sm:items-end justify-center gap-10"
+          className="px-6 py-10 flex flex-col items-center sm:flex-row sm:items-end justify-center gap-6 sm:gap-10"
           style={{ position: "relative", zIndex: 1 }}
         >
-          <div>
+          <div className="text-center sm:text-left">
             <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
               Wallflower
             </Link>
@@ -111,13 +113,25 @@ export default function Footer() {
             </p>
             <Link
               href="/login"
-              className="font-nunito font-bold no-underline inline-block mt-4"
+              className="font-nunito font-bold no-underline hidden sm:inline-block mt-4"
               style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
             >
               Create an event
             </Link>
           </div>
-          <FeedbackEnvelope />
+          <div className="flex sm:hidden items-end gap-4">
+            <Link
+              href="/login"
+              className="font-nunito font-bold no-underline inline-block"
+              style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+            >
+              Create an event
+            </Link>
+            <FeedbackEnvelope />
+          </div>
+          <div className="hidden sm:block">
+            <FeedbackEnvelope />
+          </div>
         </div>
       </div>
       <div style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
