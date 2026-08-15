@@ -47,7 +47,7 @@ export default function Footer() {
     <footer className="w-full">
       <div className="w-full" style={{ background: "rgba(247, 239, 221, 0.5)" }}>
         <div
-          className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 sm:gap-4 px-8 py-8"
+          className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-12 sm:gap-4 px-8 py-8"
           style={{ maxWidth: 760, margin: "0 auto" }}
         >
           <div className="text-center sm:text-left">
