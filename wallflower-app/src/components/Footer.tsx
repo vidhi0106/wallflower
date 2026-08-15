@@ -45,29 +45,31 @@ function FeedbackEnvelope() {
 export default function Footer() {
   return (
     <footer className="w-full">
-      <div
-        className="w-full flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 sm:gap-4 px-8 py-8"
-        style={{ background: "rgba(247, 239, 221, 0.5)" }}
-      >
-        <div className="text-center sm:text-left">
-          <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
-            Wallflower
-          </Link>
-          <p className="text-xs mt-2" style={{ color: "#a8977a" }}>
-            A little garden of notes, revealed all at once.
-          </p>
-          <Link
-            href="/login"
-            className="font-nunito font-bold no-underline inline-block mt-4"
-            style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
-          >
-            Create an event
-          </Link>
-          <p className="text-xs mt-4" style={{ color: "#a8977a" }}>
-            &copy; 2026 Vidhi Shah &middot; Built with Claude
-          </p>
+      <div className="w-full" style={{ background: "rgba(247, 239, 221, 0.5)" }}>
+        <div
+          className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 sm:gap-4 px-8 py-8"
+          style={{ maxWidth: 760, margin: "0 auto" }}
+        >
+          <div className="text-center sm:text-left">
+            <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
+              Wallflower
+            </Link>
+            <p className="text-xs mt-2" style={{ color: "#a8977a" }}>
+              A little garden of notes, revealed all at once.
+            </p>
+            <Link
+              href="/login"
+              className="font-nunito font-bold no-underline inline-block mt-4"
+              style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+            >
+              Create an event
+            </Link>
+            <p className="text-xs mt-4" style={{ color: "#a8977a" }}>
+              &copy; 2026 Vidhi Shah &middot; Built with Claude
+            </p>
+          </div>
+          <FeedbackEnvelope />
         </div>
-        <FeedbackEnvelope />
       </div>
     </footer>
   );
