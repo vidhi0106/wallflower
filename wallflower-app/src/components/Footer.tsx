@@ -45,7 +45,10 @@ function FeedbackEnvelope() {
 export default function Footer() {
   return (
     <footer className="w-full">
-      <div className="w-full" style={{ background: "rgba(247, 239, 221, 0.5)" }}>
+      <div
+        className="w-auto sm:w-full mx-5 sm:mx-0 rounded-[20px] sm:rounded-none"
+        style={{ background: "rgba(247, 239, 221, 0.5)" }}
+      >
         <div
           className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-12 sm:gap-4 px-8 py-8"
           style={{ maxWidth: 760, margin: "0 auto" }}

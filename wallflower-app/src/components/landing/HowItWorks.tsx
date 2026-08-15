@@ -86,10 +86,9 @@ export default function HowItWorks() {
   return (
     <section
       ref={ref}
-      className="w-full"
+      className="w-auto sm:w-full mx-5 sm:mx-auto"
       style={{
         maxWidth: 1080,
-        margin: "0 auto",
         padding: "40px 24px",
         background: "rgba(247, 239, 221, 0.7)",
         borderRadius: 24,
