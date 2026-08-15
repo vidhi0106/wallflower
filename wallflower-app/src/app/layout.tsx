@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Caveat, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Footer from "@/components/Footer";
+import { getBaseUrl } from "@/lib/wallflower/email";
 import "./globals.css";
 
 const caveat = Caveat({
@@ -17,6 +18,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getBaseUrl()),
   title: "Wallflower",
   description: "Build a bouquet and tuck a note into the garden.",
 };
