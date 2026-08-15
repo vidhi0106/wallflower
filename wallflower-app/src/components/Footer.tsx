@@ -6,14 +6,14 @@ function FeedbackEnvelope() {
       href="mailto:vidhishah0106@gmail.com?subject=Wallflower%20feedback"
       aria-label="Send feedback"
       className="wf-footer-envelope"
-      style={{ position: "relative", display: "block", width: 92, height: 70, "--wf-rot": "-7deg" } as React.CSSProperties}
+      style={{ position: "relative", display: "block", width: 74, height: 56, "--wf-rot": "-7deg" } as React.CSSProperties}
     >
       <img
         src="/envelope2/envelope-back.png"
         alt=""
         style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 1 }}
       />
-      <div style={{ position: "absolute", left: "50%", bottom: 32, width: "80%", transform: "translateX(-50%)", zIndex: 2 }}>
+      <div style={{ position: "absolute", left: "50%", bottom: 26, width: "80%", transform: "translateX(-50%)", zIndex: 2 }}>
         <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
         <div
           style={{
@@ -26,7 +26,7 @@ function FeedbackEnvelope() {
             overflow: "hidden",
           }}
         >
-          <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c" }}>
+          <span className="font-caveat font-bold" style={{ fontSize: 13, lineHeight: 1.15, color: "#4a3d2c" }}>
             Send
             <br />
             feedback
