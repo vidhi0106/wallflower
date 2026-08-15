@@ -216,7 +216,7 @@ export default function HeroEnvelope() {
                 textAlign: "center",
               }}
             >
-              <span className="font-caveat font-bold" style={{ fontSize: 12, lineHeight: 1.15, color: "#4a3d2c" }}>
+              <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c" }}>
                 With love
               </span>
             </div>
