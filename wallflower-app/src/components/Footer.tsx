@@ -47,7 +47,7 @@ export default function Footer() {
     <footer className="w-full">
       <div
         className="w-full flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8 sm:gap-4 px-8 py-8"
-        style={{ maxWidth: 760, margin: "0 auto", background: "rgba(247, 239, 221, 0.5)", borderRadius: 24 }}
+        style={{ background: "rgba(247, 239, 221, 0.5)" }}
       >
         <div className="text-center sm:text-left">
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
