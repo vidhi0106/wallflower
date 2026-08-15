@@ -46,25 +46,25 @@ export default function Footer() {
   return (
     <footer className="w-full">
       <div
-        className="w-full flex flex-row items-end justify-center gap-4 sm:gap-10"
-        style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 24px", background: "rgba(247, 239, 221, 0.5)", borderRadius: 24 }}
+        className="w-full flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-6 px-6 py-10"
+        style={{ maxWidth: 1080, margin: "0 auto" }}
       >
-        <div className="text-left max-w-[190px] sm:max-w-none">
+        <div className="text-center sm:text-left">
           <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
             Wallflower
           </Link>
-          <p className="text-xs mt-2 sm:whitespace-nowrap" style={{ color: "#a8977a" }}>
+          <p className="text-xs mt-2" style={{ color: "#a8977a" }}>
             A little garden of notes, revealed all at once.
           </p>
-          <Link
-            href="/login"
-            className="font-nunito font-bold no-underline inline-block mt-4"
-            style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
-          >
-            Create an event
-          </Link>
         </div>
         <FeedbackEnvelope />
+        <Link
+          href="/login"
+          className="font-nunito font-bold no-underline inline-block"
+          style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+        >
+          Create an event
+        </Link>
       </div>
 
       <div className="w-full mt-10" style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
