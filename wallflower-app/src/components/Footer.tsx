@@ -64,11 +64,13 @@ export default function Footer() {
             >
               Create an event
             </Link>
+          </div>
+          <div className="flex flex-col items-center sm:items-end">
+            <FeedbackEnvelope />
             <p className="text-xs mt-4" style={{ color: "#a8977a" }}>
               &copy; 2026 Vidhi Shah &middot; Built with Claude
             </p>
           </div>
-          <FeedbackEnvelope />
         </div>
       </div>
     </footer>
