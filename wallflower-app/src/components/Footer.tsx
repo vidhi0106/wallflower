@@ -101,37 +101,25 @@ export default function Footer() {
         <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
         <FooterFlowers side="right" flowers={RIGHT_FLOWERS} />
         <div
-          className="px-6 py-10 flex flex-col items-center sm:flex-row sm:items-end justify-center gap-6 sm:gap-10"
+          className="px-6 py-10 flex flex-row items-end justify-center gap-4 sm:gap-10"
           style={{ position: "relative", zIndex: 1 }}
         >
-          <div className="text-center sm:text-left">
+          <div className="text-left max-w-[190px] sm:max-w-none">
             <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
               Wallflower
             </Link>
-            <p className="text-xs mt-2 whitespace-nowrap" style={{ color: "#a8977a" }}>
+            <p className="text-xs mt-2 sm:whitespace-nowrap" style={{ color: "#a8977a" }}>
               A little garden of notes, revealed all at once.
             </p>
             <Link
               href="/login"
-              className="font-nunito font-bold no-underline hidden sm:inline-block mt-4"
+              className="font-nunito font-bold no-underline inline-block mt-4"
               style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
             >
               Create an event
             </Link>
           </div>
-          <div className="flex sm:hidden items-end gap-4">
-            <Link
-              href="/login"
-              className="font-nunito font-bold no-underline inline-block"
-              style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
-            >
-              Create an event
-            </Link>
-            <FeedbackEnvelope />
-          </div>
-          <div className="hidden sm:block">
-            <FeedbackEnvelope />
-          </div>
+          <FeedbackEnvelope />
         </div>
       </div>
       <div style={{ borderTop: "1px solid rgba(122,100,70,0.12)" }}>
