@@ -204,11 +204,23 @@ export default function HeroEnvelope() {
               }}
             />
           ))}
-          <img
-            src="/envelope2/note.png"
-            alt=""
-            style={{ position: "absolute", left: "50%", bottom: 16, width: "62%", transform: "translateX(-50%)", zIndex: 3 }}
-          />
+          <div style={{ position: "absolute", left: "50%", bottom: 28, width: "62%", transform: "translateX(-50%)", zIndex: 3 }}>
+            <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                justifyContent: "center",
+                padding: "8% 8% 0",
+                textAlign: "center",
+              }}
+            >
+              <span className="font-caveat font-bold" style={{ fontSize: 12, lineHeight: 1.15, color: "#4a3d2c" }}>
+                With love
+              </span>
+            </div>
+          </div>
           <img
             src="/envelope2/envelope-front.png"
             alt=""

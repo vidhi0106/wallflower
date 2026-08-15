@@ -183,6 +183,22 @@ a:hover {
 .landing-note-card:nth-child(4) { animation-delay: 0s; }
 .landing-note-card:nth-child(5) { animation-delay: 0.15s; }
 .landing-note-card:nth-child(6) { animation-delay: 0.25s; }
+@media (max-width: 859px) {
+  /* Only 4 of the 6 examples on small screens, tilted and offset in
+     alternating rows so the grid structure isn't obvious. */
+  .landing-notes {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 14px;
+  }
+  .landing-note-card:nth-child(1) { --wf-rot: -7deg; margin-top: 14px; }
+  .landing-note-card:nth-child(2) { --wf-rot: 6deg; margin-top: -10px; }
+  .landing-note-card:nth-child(3) { --wf-rot: 5deg; margin-top: -8px; }
+  .landing-note-card:nth-child(4) { --wf-rot: -6deg; margin-top: 16px; }
+  .landing-note-card:nth-child(5),
+  .landing-note-card:nth-child(6) {
+    display: none;
+  }
+}
 @media (min-width: 860px) {
   .landing-hero {
     position: relative;
