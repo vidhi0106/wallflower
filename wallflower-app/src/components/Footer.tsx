@@ -62,8 +62,8 @@ export default function Footer() {
             </p>
             <Link
               href="/login"
-              className="font-nunito font-bold no-underline inline-block mt-4"
-              style={{ background: "#6b7d5c", color: "#FBF6E9", borderRadius: 10, padding: "10px 20px", fontSize: 14 }}
+              className="font-nunito font-bold inline-block mt-4"
+              style={{ color: "#6b7d5c", fontSize: 14, textDecoration: "underline", textUnderlineOffset: 3 }}
             >
               Create an event
             </Link>
