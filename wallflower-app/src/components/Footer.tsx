@@ -91,7 +91,7 @@ export default function Footer() {
   return (
     <footer
       className="w-full"
-      style={{ position: "relative", background: "#f7efdd", borderTop: "1px solid rgba(122,100,70,0.15)", overflow: "visible" }}
+      style={{ position: "relative", background: "rgba(247, 239, 221, 0.5)", borderTop: "1px solid rgba(122,100,70,0.15)", overflow: "visible" }}
     >
       <div className="max-w-3xl mx-auto" style={{ position: "relative" }}>
         <FooterFlowers side="left" flowers={LEFT_FLOWERS} />
