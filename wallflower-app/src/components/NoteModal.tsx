@@ -143,7 +143,7 @@ export default function NoteModal({
         </div>
         <div
           className="font-caveat"
-          style={{ fontSize: 18, color: "#4a3d2c", marginTop: 12, lineHeight: 1.45, whiteSpace: "pre-wrap" }}
+          style={{ fontSize: 24, color: "#4a3d2c", marginTop: 12, lineHeight: 1.45, whiteSpace: "pre-wrap" }}
         >
           {note.noteText}
         </div>

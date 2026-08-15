@@ -145,7 +145,7 @@ function WallCard({
             <div
               ref={noteTextRef}
               className="font-caveat"
-              style={{ fontSize: 13, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, maxHeight: 128, overflow: "hidden" }}
+              style={{ fontSize: 24, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, maxHeight: 128, overflow: "hidden" }}
             >
               {submission.noteText}
             </div>
