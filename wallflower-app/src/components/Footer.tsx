@@ -1,25 +1,28 @@
 import Link from "next/link";
 
+// Each source PNG has a different amount of transparent padding below the
+// visible stem tip; `groundOffset` compensates per-image so every stem
+// actually touches the container's bottom edge instead of floating above it.
 const LEFT_FLOWERS = [
-  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 135, rot: -8 },
-  { src: "/flowers2/daisy-pink.png", offset: 22, height: 100, rot: -10 },
-  { src: "/flowers2/daisy-yellow.png", offset: 42, height: 195, rot: 4 },
-  { src: "/flowers2/lavender.png", offset: 68, height: 150, rot: 7 },
+  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 85, rot: -8, groundOffset: -10 },
+  { src: "/flowers2/daisy-pink.png", offset: 13, height: 62, rot: -10, groundOffset: -29 },
+  { src: "/flowers2/daisy-yellow.png", offset: 25, height: 120, rot: 4, groundOffset: -36 },
+  { src: "/flowers2/lavender.png", offset: 42, height: 95, rot: 7, groundOffset: -10 },
 ];
 
 const RIGHT_FLOWERS = [
-  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 125, rot: 8 },
-  { src: "/flowers2/cluster-pink-a.png", offset: 22, height: 105, rot: 10 },
-  { src: "/flowers2/daisy-yellow.png", offset: 42, height: 190, rot: -5 },
-  { src: "/flowers2/lavender.png", offset: 68, height: 145, rot: -7 },
+  { src: "/flowers2/hollyhock-pink.png", offset: 0, height: 80, rot: 8, groundOffset: -9 },
+  { src: "/flowers2/cluster-pink-a.png", offset: 13, height: 65, rot: 10, groundOffset: -10 },
+  { src: "/flowers2/daisy-yellow.png", offset: 25, height: 115, rot: -5, groundOffset: -35 },
+  { src: "/flowers2/lavender.png", offset: 42, height: 90, rot: -7, groundOffset: -10 },
 ];
 
 function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typeof LEFT_FLOWERS }) {
   const containerStyle: React.CSSProperties = {
     position: "absolute",
     bottom: 0,
-    width: 160,
-    height: 210,
+    width: 105,
+    height: 150,
     pointerEvents: "none",
     zIndex: 0,
     ...(side === "left" ? { left: 0 } : { right: 0 }),
@@ -30,7 +33,7 @@ function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typ
       {flowers.map((f) => {
         const imgStyle: React.CSSProperties = {
           position: "absolute",
-          bottom: -6,
+          bottom: f.groundOffset,
           height: f.height,
           width: "auto",
           transform: `rotate(${f.rot}deg)`,
