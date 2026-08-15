@@ -6,25 +6,21 @@ import Link from "next/link";
 // the stem grounded through rotation if that point is the real stem tip,
 // not an arbitrary spot inside leftover transparent margin.
 const LEFT_FLOWERS = [
-  { src: "/flowers2/footer/hollyhock-pink.png", offset: 0, height: 80, rot: -8 },
-  { src: "/flowers2/footer/daisy-pink.png", offset: 26, height: 55, rot: -10 },
-  { src: "/flowers2/footer/daisy-yellow.png", offset: 40, height: 110, rot: 4 },
-  { src: "/flowers2/footer/lavender.png", offset: 78, height: 90, rot: 7 },
+  { src: "/flowers2/footer/hollyhock-pink.png", offset: 0, height: 60, rot: -8 },
+  { src: "/flowers2/footer/daisy-yellow.png", offset: 26, height: 68, rot: 4 },
 ];
 
 const RIGHT_FLOWERS = [
-  { src: "/flowers2/footer/hollyhock-pink.png", offset: 0, height: 75, rot: 8 },
-  { src: "/flowers2/footer/cluster-pink-a.png", offset: 25, height: 55, rot: 10 },
-  { src: "/flowers2/footer/daisy-yellow.png", offset: 39, height: 105, rot: -5 },
-  { src: "/flowers2/footer/lavender.png", offset: 75, height: 85, rot: -7 },
+  { src: "/flowers2/footer/lavender.png", offset: 0, height: 62, rot: 7 },
+  { src: "/flowers2/footer/cluster-pink-a.png", offset: 24, height: 46, rot: 10 },
 ];
 
 function FooterFlowers({ side, flowers }: { side: "left" | "right"; flowers: typeof LEFT_FLOWERS }) {
   const containerStyle: React.CSSProperties = {
     position: "absolute",
     bottom: 0,
-    width: 130,
-    height: 120,
+    width: 70,
+    height: 75,
     pointerEvents: "none",
     zIndex: 0,
     ...(side === "left" ? { left: 0 } : { right: 0 }),
