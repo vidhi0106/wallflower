@@ -27,11 +27,11 @@ export default async function OrganizerDashboard() {
   return (
     <div className="flex flex-col gap-10">
       <section>
-        <h1 className="font-caveat font-bold text-2xl" style={{ color: "#4a3d2c" }}>
+        <h1 className="font-caveat font-bold text-[26px]" style={{ color: "#4a3d2c" }}>
           Your events
         </h1>
         {events.length === 0 ? (
-          <p className="text-sm mt-2" style={{ color: "#7c6a4e" }}>
+          <p className="text-[16px] mt-2" style={{ color: "#7c6a4e" }}>
             No events yet. Create one below.
           </p>
         ) : (
@@ -47,11 +47,11 @@ export default async function OrganizerDashboard() {
                   >
                     <span>
                       <strong>{event.recipientName}</strong>&rsquo;s {event.occasionText}
-                      <span className="text-xs ml-2" style={{ color: "#a8977a" }}>
+                      <span className="text-[14px] ml-2" style={{ color: "#a8977a" }}>
                         /e/{event.slug}
                       </span>
                     </span>
-                    <span className="text-xs" style={{ color: "#7c6a4e" }}>
+                    <span className="text-[14px]" style={{ color: "#7c6a4e" }}>
                       {event._count.submissions} submission{event._count.submissions === 1 ? "" : "s"}
                       {pending > 0 && <span style={{ color: "#b0503f" }}> · {pending} pending</span>}
                     </span>
@@ -64,7 +64,7 @@ export default async function OrganizerDashboard() {
       </section>
 
       <section>
-        <h2 className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
+        <h2 className="font-caveat font-bold text-[22px]" style={{ color: "#4a3d2c" }}>
           Create a new event
         </h2>
         <div className="mt-4">

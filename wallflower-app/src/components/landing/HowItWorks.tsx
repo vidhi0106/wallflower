@@ -94,7 +94,7 @@ export default function HowItWorks() {
         borderRadius: 24,
       }}
     >
-      <h2 className="font-caveat font-bold text-4xl text-left" style={{ color: "#4a3d2c" }}>
+      <h2 className="font-caveat font-bold text-[38px] text-left" style={{ color: "#4a3d2c" }}>
         How it works
       </h2>
       <div className="landing-steps mt-8">
@@ -110,10 +110,10 @@ export default function HowItWorks() {
             }}
           >
             <div className="landing-step-icon">{step.icon}</div>
-            <div className="font-nunito font-bold text-sm mt-3" style={{ color: "#4a3d2c" }}>
+            <div className="font-nunito font-bold text-[16px] mt-3" style={{ color: "#4a3d2c" }}>
               {i + 1}. {step.title}
             </div>
-            <p className="text-xs mt-1.5" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+            <p className="text-[14px] mt-1.5" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
               {step.body}
             </p>
           </div>

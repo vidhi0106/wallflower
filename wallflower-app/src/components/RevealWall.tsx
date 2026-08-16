@@ -138,14 +138,14 @@ function WallCard({
             transition: "opacity 0.35s ease, transform 0.35s ease",
           }}
         >
-          <div className="font-caveat font-bold" style={{ fontSize: 17, color: "#4a3d2c" }}>
+          <div className="font-caveat font-bold" style={{ fontSize: 19, color: "#4a3d2c" }}>
             {submission.contributorName}
           </div>
           <div style={{ position: "relative" }}>
             <div
               ref={noteTextRef}
               className="font-caveat"
-              style={{ fontSize: 24, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, maxHeight: 128, overflow: "hidden" }}
+              style={{ fontSize: 22, color: "#4a3d2c", marginTop: 6, lineHeight: 1.3, maxHeight: 128, overflow: "hidden" }}
             >
               {submission.noteText}
             </div>
@@ -173,7 +173,7 @@ function WallCard({
                     position: "absolute",
                     bottom: 2,
                     right: 0,
-                    fontSize: 10,
+                    fontSize: 12,
                     color: "#6b7d5c",
                     background: "transparent",
                     border: "none",
@@ -278,14 +278,14 @@ export default function RevealWall({
     return (
       <div className="text-center px-8 py-16 flex-1 flex flex-col items-center justify-center">
         <img src="/flowers2/tulip.png" alt="" style={{ height: 70, width: "auto", opacity: 0.9 }} />
-        <div className="font-caveat font-bold text-2xl mt-4" style={{ color: "#4a3d2c" }}>
+        <div className="font-caveat font-bold text-[26px] mt-4" style={{ color: "#4a3d2c" }}>
           Blooming soon
         </div>
-        <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+        <p className="mt-2.5 text-[16px]" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
           {recipientName}&rsquo;s garden is still growing. Every bouquet stays tucked away until the
           big reveal.
         </p>
-        <div className="font-caveat font-bold text-xl mt-5" style={{ color: "#6b7d5c" }}>
+        <div className="font-caveat font-bold text-[22px] mt-5" style={{ color: "#6b7d5c" }}>
           {formatCountdown(revealDate, now)}
         </div>
       </div>
@@ -295,10 +295,10 @@ export default function RevealWall({
   return (
     <div className="px-5 pb-10 pt-1.5 flex-1">
       <div className="text-center mt-0.5 mb-4">
-        <div className="font-caveat font-bold text-2xl" style={{ color: "#4a3d2c" }}>
+        <div className="font-caveat font-bold text-[26px]" style={{ color: "#4a3d2c" }}>
           {recipientName}&rsquo;s Garden
         </div>
-        <div className="text-xs mt-0.5" style={{ color: "#7c6a4e" }}>
+        <div className="text-[14px] mt-0.5" style={{ color: "#7c6a4e" }}>
           {occasionText} · {submissions.length} bouquet{submissions.length === 1 ? "" : "s"} tucked in
           {newCount > 0 && (
             <span className="font-nunito font-bold ml-2" style={{ color: "#6b7d5c" }}>
@@ -308,7 +308,7 @@ export default function RevealWall({
         </div>
       </div>
       {submissions.length === 0 ? (
-        <p className="text-center text-sm mt-8" style={{ color: "#a8977a" }}>
+        <p className="text-center text-[16px] mt-8" style={{ color: "#a8977a" }}>
           No approved bouquets yet. Check back soon.
         </p>
       ) : (

@@ -35,7 +35,7 @@ function ArrowButton({
         borderRadius: "50%",
         width: 44,
         height: 44,
-        fontSize: 22,
+        fontSize: 24,
         color: "#4a3d2c",
         cursor: "pointer",
         boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
@@ -131,19 +131,19 @@ export default function NoteModal({
             background: "transparent",
             border: "none",
             cursor: "pointer",
-            fontSize: 24,
+            fontSize: 26,
             lineHeight: 1,
             color: "#7c6a4e",
           }}
         >
           ×
         </button>
-        <div className="font-caveat font-bold" style={{ fontSize: 22, color: "#4a3d2c" }}>
+        <div className="font-caveat font-bold" style={{ fontSize: 24, color: "#4a3d2c" }}>
           {note.contributorName}
         </div>
         <div
           className="font-caveat"
-          style={{ fontSize: 24, color: "#4a3d2c", marginTop: 12, lineHeight: 1.45, whiteSpace: "pre-wrap" }}
+          style={{ fontSize: 22, color: "#4a3d2c", marginTop: 12, lineHeight: 1.45, whiteSpace: "pre-wrap" }}
         >
           {note.noteText}
         </div>

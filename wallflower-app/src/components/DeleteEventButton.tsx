@@ -26,7 +26,7 @@ export default function DeleteEventButton({
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="font-nunito font-bold text-sm"
+        className="font-nunito font-bold text-[16px]"
         style={{
           background: "transparent",
           color: "#b0503f",
@@ -43,7 +43,7 @@ export default function DeleteEventButton({
 
   return (
     <div>
-      <p className="text-sm" style={{ color: "#b0503f" }}>
+      <p className="text-[16px]" style={{ color: "#b0503f" }}>
         This permanently deletes the event and all {submissionCount} submission{submissionCount === 1 ? "" : "s"}. This
         can&rsquo;t be undone.
       </p>
@@ -52,7 +52,7 @@ export default function DeleteEventButton({
           type="button"
           onClick={handleDelete}
           disabled={isPending}
-          className="font-nunito font-bold text-sm flex items-center gap-1.5"
+          className="font-nunito font-bold text-[16px] flex items-center gap-1.5"
           style={{
             background: "#b0503f",
             color: "#fff",
@@ -69,7 +69,7 @@ export default function DeleteEventButton({
           type="button"
           onClick={() => setConfirming(false)}
           disabled={isPending}
-          className="font-nunito font-bold text-sm"
+          className="font-nunito font-bold text-[16px]"
           style={{
             background: "transparent",
             color: "#7c6a4e",

@@ -11,18 +11,18 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-sm mx-auto px-6 py-16">
-      <Link href="/" className="font-nunito text-xs no-underline sm:hidden" style={{ color: "#a8977a" }}>
+      <Link href="/" className="font-nunito text-[14px] no-underline sm:hidden" style={{ color: "#a8977a" }}>
         ← Back
       </Link>
-      <h1 className="font-caveat font-bold text-3xl text-center mt-6 sm:mt-0" style={{ color: "#4a3d2c" }}>
+      <h1 className="font-caveat font-bold text-[32px] text-center mt-6 sm:mt-0" style={{ color: "#4a3d2c" }}>
         Organizer sign in
       </h1>
-      <p className="text-sm text-center mt-2" style={{ color: "#7c6a4e" }}>
+      <p className="text-[16px] text-center mt-2" style={{ color: "#7c6a4e" }}>
         Enter your email and we&rsquo;ll send you a sign-in link.
       </p>
 
       {state.status === "sent" ? (
-        <div className="mt-8 text-sm" style={{ color: "#4a3d2c" }}>
+        <div className="mt-8 text-[16px]" style={{ color: "#4a3d2c" }}>
           <a
             href={state.signInUrl}
             className="block text-center font-nunito font-bold"
@@ -31,7 +31,7 @@ export default function LoginForm() {
               color: "#FBF6E9",
               borderRadius: 10,
               padding: 14,
-              fontSize: 15,
+              fontSize: 17,
               textDecoration: "none",
             }}
           >
@@ -52,14 +52,14 @@ export default function LoginForm() {
               border: "1px solid rgba(122,100,70,0.35)",
               borderRadius: 10,
               padding: "12px 14px",
-              fontSize: 15,
+              fontSize: 17,
               outline: "none",
               color: "#4a3d2c",
               background: "#FBF6E9",
             }}
           />
           {state.status === "error" && (
-            <p className="text-sm" style={{ color: "#b0503f" }}>
+            <p className="text-[16px]" style={{ color: "#b0503f" }}>
               {state.error}
             </p>
           )}
@@ -73,7 +73,7 @@ export default function LoginForm() {
               border: "none",
               borderRadius: 10,
               padding: 14,
-              fontSize: 15,
+              fontSize: 17,
               cursor: pending ? "default" : "pointer",
               opacity: pending ? 0.7 : 1,
             }}

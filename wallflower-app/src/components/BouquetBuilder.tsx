@@ -215,7 +215,7 @@ export default function BouquetBuilder({
     <div className="min-h-screen flex justify-center" style={{ color: "#4a3d2c" }}>
       <div className="wf-shell w-full flex flex-col">
         <div className="text-center px-6 pt-6 pb-1">
-          <div className="font-caveat font-bold text-[26px]" style={{ color: "#4a3d2c" }}>
+          <div className="font-caveat font-bold text-[28px]" style={{ color: "#4a3d2c" }}>
             For {event.recipientName}&rsquo;s {event.occasionText}
           </div>
         </div>
@@ -224,7 +224,7 @@ export default function BouquetBuilder({
           <div className="flex justify-center gap-2 px-6 pt-0.5 pb-2.5">
             <button
               onClick={() => setView("builder")}
-              className="font-nunito font-bold text-xs"
+              className="font-nunito font-bold text-[14px]"
               style={{
                 border: "none",
                 borderRadius: 999,
@@ -238,7 +238,7 @@ export default function BouquetBuilder({
             </button>
             <button
               onClick={() => setView("wall")}
-              className="font-nunito font-bold text-xs"
+              className="font-nunito font-bold text-[14px]"
               style={{
                 border: "none",
                 borderRadius: 999,
@@ -271,7 +271,7 @@ export default function BouquetBuilder({
           <div className="wf-envelope-col">
             {mode !== "sealed" && (
               <>
-                <div className="text-center text-xs px-6 pb-1" style={{ color: "#a8977a" }}>
+                <div className="text-center text-[14px] px-6 pb-1" style={{ color: "#a8977a" }}>
                   Choose your envelope color
                 </div>
                 <div className="flex gap-2.5 justify-center px-6 pb-2">
@@ -339,7 +339,7 @@ export default function BouquetBuilder({
                       overflow: "hidden",
                     }}
                   >
-                    <div className="font-caveat" style={{ fontSize: 20, lineHeight: 1.35, color: "#4a3d2c" }}>
+                    <div className="font-caveat" style={{ fontSize: 22, lineHeight: 1.35, color: "#4a3d2c" }}>
                       From {name}
                     </div>
                   </div>
@@ -355,7 +355,7 @@ export default function BouquetBuilder({
               {stems.length === 0 && mode === "building" && (
                 <div
                   className="font-caveat"
-                  style={{ position: "absolute", left: 0, right: 0, bottom: 180, textAlign: "center", color: "#a8977a", fontSize: 18, zIndex: 5 }}
+                  style={{ position: "absolute", left: 0, right: 0, bottom: 180, textAlign: "center", color: "#a8977a", fontSize: 20, zIndex: 5 }}
                 >
                   tap flowers below to begin
                 </div>
@@ -366,7 +366,7 @@ export default function BouquetBuilder({
           <div className="wf-form-col flex flex-col flex-1">
             {mode === "building" && (
               <>
-                <div className="flex justify-between px-6 pt-2 pb-0.5 text-xs mx-auto w-full box-border" style={{ maxWidth: 320, color: "#7c6a4e" }}>
+                <div className="flex justify-between px-6 pt-2 pb-0.5 text-[14px] mx-auto w-full box-border" style={{ maxWidth: 320, color: "#7c6a4e" }}>
                   <span className="flex items-center gap-1.5">
                     {stems.length} / {MAX_STEMS} stems
                     {attemptedSubmit && stems.length === 0 && (
@@ -375,7 +375,7 @@ export default function BouquetBuilder({
                       </span>
                     )}
                   </span>
-                  <button onClick={clearAll} className="bg-transparent border-none underline p-0 cursor-pointer" style={{ color: "#8a6a45", fontSize: 12 }}>
+                  <button onClick={clearAll} className="bg-transparent border-none underline p-0 cursor-pointer" style={{ color: "#8a6a45", fontSize: 14 }}>
                     clear
                   </button>
                 </div>
@@ -417,7 +417,7 @@ export default function BouquetBuilder({
                       padding: "20px 20px 16px",
                     }}
                   >
-                    <div className="font-caveat" style={{ fontSize: 19, color: "#7c6a4e", marginBottom: 4 }}>
+                    <div className="font-caveat" style={{ fontSize: 21, color: "#7c6a4e", marginBottom: 4 }}>
                       To {event.recipientName},
                     </div>
                     <textarea
@@ -432,8 +432,8 @@ export default function BouquetBuilder({
                         outline: "none",
                         resize: "none",
                         background: "transparent",
-                        fontSize: 24,
-                        lineHeight: "38px",
+                        fontSize: 22,
+                        lineHeight: "35px",
                         color: "#4a3d2c",
                         padding: 0,
                         boxSizing: "border-box",
@@ -450,7 +450,7 @@ export default function BouquetBuilder({
                         borderBottom: "1px solid rgba(122,100,70,0.35)",
                         background: "transparent",
                         padding: "8px 2px",
-                        fontSize: 19,
+                        fontSize: 21,
                         outline: "none",
                         color: "#4a3d2c",
                         marginTop: 6,
@@ -469,7 +469,7 @@ export default function BouquetBuilder({
                         borderBottom: "1px solid rgba(122,100,70,0.35)",
                         background: "transparent",
                         padding: "8px 2px",
-                        fontSize: 19,
+                        fontSize: 21,
                         outline: "none",
                         color: "#4a3d2c",
                         marginTop: 6,
@@ -479,7 +479,7 @@ export default function BouquetBuilder({
                   </div>
                 </div>
                 {error && (
-                  <div className="px-6 pt-3 text-sm" style={{ color: "#b0503f" }}>
+                  <div className="px-6 pt-3 text-[16px]" style={{ color: "#b0503f" }}>
                     {error}
                   </div>
                 )}
@@ -488,25 +488,25 @@ export default function BouquetBuilder({
 
             {mode === "sealed" && submission?.status === "denied" ? (
               <div className="text-center px-8 py-9">
-                <div className="font-caveat font-bold text-2xl" style={{ color: "#b0503f" }}>
+                <div className="font-caveat font-bold text-[26px]" style={{ color: "#b0503f" }}>
                   Needs a small change
                 </div>
                 {submission.denyNote && (
-                  <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+                  <p className="mt-2.5 text-[16px]" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
                     &ldquo;{submission.denyNote}&rdquo;
                   </p>
                 )}
-                <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+                <p className="mt-2.5 text-[16px]" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
                   Edit your bouquet below and send it again.
                 </p>
               </div>
             ) : (
               mode === "sealed" && (
                 <div className="text-center px-8 py-9">
-                  <div className="font-caveat font-bold text-2xl" style={{ color: "#6b7d5c" }}>
+                  <div className="font-caveat font-bold text-[26px]" style={{ color: "#6b7d5c" }}>
                     Sealed &amp; sent
                   </div>
-                  <p className="mt-2.5 text-sm" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
+                  <p className="mt-2.5 text-[16px]" style={{ color: "#7c6a4e", lineHeight: 1.5 }}>
                     Your note will be delivered to {event.recipientName} in {countdownText}.
                   </p>
                 </div>
@@ -524,7 +524,7 @@ export default function BouquetBuilder({
                     border: "1px solid #6b7d5c",
                     borderRadius: 10,
                     padding: 14,
-                    fontSize: 15,
+                    fontSize: 17,
                     cursor: "pointer",
                   }}
                 >
@@ -532,7 +532,7 @@ export default function BouquetBuilder({
                 </button>
                 <button
                   onClick={() => setConfirmingWithdraw(true)}
-                  className="w-full font-nunito text-xs mt-2.5 bg-transparent border-none underline cursor-pointer"
+                  className="w-full font-nunito text-[14px] mt-2.5 bg-transparent border-none underline cursor-pointer"
                   style={{ color: "#a8977a" }}
                 >
                   Withdraw your note
@@ -541,11 +541,11 @@ export default function BouquetBuilder({
             )}
             {mode === "sealed" && confirmingWithdraw && (
               <div className="text-center px-8">
-                <p className="text-sm" style={{ color: "#b0503f" }}>
+                <p className="text-[16px]" style={{ color: "#b0503f" }}>
                   This removes your bouquet completely. Are you sure?
                 </p>
                 {error && (
-                  <p className="text-sm mt-2" style={{ color: "#b0503f" }}>
+                  <p className="text-[16px] mt-2" style={{ color: "#b0503f" }}>
                     {error}
                   </p>
                 )}
@@ -553,7 +553,7 @@ export default function BouquetBuilder({
                   <button
                     onClick={withdraw}
                     disabled={withdrawing}
-                    className="font-nunito font-bold text-sm flex items-center gap-1.5"
+                    className="font-nunito font-bold text-[16px] flex items-center gap-1.5"
                     style={{
                       background: "#b0503f",
                       color: "#fff",
@@ -569,7 +569,7 @@ export default function BouquetBuilder({
                   <button
                     onClick={() => setConfirmingWithdraw(false)}
                     disabled={withdrawing}
-                    className="font-nunito font-bold text-sm"
+                    className="font-nunito font-bold text-[16px]"
                     style={{
                       background: "transparent",
                       color: "#7c6a4e",
@@ -590,7 +590,7 @@ export default function BouquetBuilder({
               {mode === "building" && (
                 <>
                   {attemptedSubmit && !canSend && (
-                    <div className="text-sm mb-2 flex items-center gap-1.5 font-nunito font-bold" style={{ color: "#b0503f" }}>
+                    <div className="text-[16px] mb-2 flex items-center gap-1.5 font-nunito font-bold" style={{ color: "#b0503f" }}>
                       <WarningIcon /> Add {joinList(missing)} to send your bouquet.
                     </div>
                   )}
@@ -604,7 +604,7 @@ export default function BouquetBuilder({
                       border: "none",
                       borderRadius: 10,
                       padding: 14,
-                      fontSize: 15,
+                      fontSize: 17,
                       cursor: sending ? "default" : "pointer",
                     }}
                   >

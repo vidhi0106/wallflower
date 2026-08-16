@@ -14,13 +14,13 @@ export default function CopyRow({ label, value }: { label?: string; value: strin
   return (
     <div>
       {label && (
-        <p className="text-xs mb-1.5 font-nunito" style={{ color: "#8a7c63" }}>
+        <p className="text-[14px] mb-1.5 font-nunito" style={{ color: "#8a7c63" }}>
           {label}
         </p>
       )}
       <div className="flex gap-2">
         <div
-          className="flex-1 min-w-0 text-sm truncate font-nunito"
+          className="flex-1 min-w-0 text-[16px] truncate font-nunito"
           style={{
             background: "#faf7f0",
             border: "1px solid #e8e0cf",
@@ -34,7 +34,7 @@ export default function CopyRow({ label, value }: { label?: string; value: strin
         <button
           type="button"
           onClick={copy}
-          className="font-nunito font-bold text-sm"
+          className="font-nunito font-bold text-[16px]"
           style={{
             background: "#5b7553",
             color: "#fff",

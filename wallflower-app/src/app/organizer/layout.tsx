@@ -13,10 +13,10 @@ export default async function OrganizerLayout({ children }: { children: React.Re
         className="flex items-center justify-between px-6 py-4"
         style={{ background: "#EFEAE0", borderBottom: "1px solid rgba(122,100,70,0.15)" }}
       >
-        <Link href="/" className="font-caveat font-bold text-xl" style={{ color: "#4a3d2c" }}>
+        <Link href="/" className="font-caveat font-bold text-[22px]" style={{ color: "#4a3d2c" }}>
           Wallflower
         </Link>
-        <div className="flex items-center gap-4 text-sm" style={{ color: "#7c6a4e" }}>
+        <div className="flex items-center gap-4 text-[16px]" style={{ color: "#7c6a4e" }}>
           <span>{organizer.email}</span>
           <form action={logout}>
             <button type="submit" className="underline cursor-pointer bg-transparent border-none p-0" style={{ color: "#8a6a45" }}>

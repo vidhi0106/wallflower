@@ -13,7 +13,7 @@ function FeedbackEnvelope() {
         alt=""
         style={{ position: "absolute", left: "50%", bottom: 0, width: "100%", transform: "translateX(-50%)", zIndex: 1 }}
       />
-      <div style={{ position: "absolute", left: "50%", bottom: 26, width: "80%", transform: "translateX(-50%)", zIndex: 2 }}>
+      <div style={{ position: "absolute", left: "50%", bottom: 30, width: "80%", transform: "translateX(-50%)", zIndex: 2 }}>
         <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
         <div
           style={{
@@ -21,12 +21,12 @@ function FeedbackEnvelope() {
             inset: 0,
             display: "flex",
             justifyContent: "center",
-            padding: "16% 6% 0",
+            padding: "6% 6% 0",
             textAlign: "center",
             overflow: "hidden",
           }}
         >
-          <span className="font-caveat font-bold" style={{ fontSize: 13, lineHeight: 1.15, color: "#4a3d2c" }}>
+          <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c" }}>
             Send
             <br />
             feedback
@@ -54,23 +54,23 @@ export default function Footer() {
           style={{ maxWidth: 760, margin: "0 auto" }}
         >
           <div className="text-center sm:text-left">
-            <Link href="/" className="font-caveat font-bold text-2xl no-underline" style={{ color: "#4a3d2c" }}>
+            <Link href="/" className="font-caveat font-bold text-[26px] no-underline" style={{ color: "#4a3d2c" }}>
               Wallflower
             </Link>
-            <p className="text-xs mt-2" style={{ color: "#a8977a" }}>
+            <p className="text-[14px] mt-2" style={{ color: "#a8977a" }}>
               A little garden of notes, revealed all at once.
             </p>
             <Link
               href="/login"
               className="font-nunito font-bold inline-block mt-4"
-              style={{ color: "#6b7d5c", fontSize: 14, textDecoration: "underline", textUnderlineOffset: 3 }}
+              style={{ color: "#6b7d5c", fontSize: 16, textDecoration: "underline", textUnderlineOffset: 3 }}
             >
               Create an event
             </Link>
           </div>
           <div className="flex flex-col items-center sm:items-end">
             <FeedbackEnvelope />
-            <p className="text-xs mt-4" style={{ color: "#a8977a" }}>
+            <p className="text-[14px] mt-4" style={{ color: "#a8977a" }}>
               &copy; 2026 Vidhi Shah &middot; Built with Claude
             </p>
           </div>

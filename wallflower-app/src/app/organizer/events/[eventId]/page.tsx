@@ -81,10 +81,10 @@ function InfoCard({
           {icon}
         </IconBadge>
         <div className="flex-1">
-          <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+          <div className="font-nunito font-bold text-[16px]" style={{ color: ink }}>
             {title}
           </div>
-          <p className="text-xs mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
+          <p className="text-[14px] mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
             {description}
           </p>
           <div className="mt-3">{children}</div>
@@ -122,7 +122,7 @@ function RevealCard({ eventId, status, revealDate }: { eventId: string; status: 
       <form action={reveal}>
         <SubmitButton
           pendingLabel="Revealing…"
-          className="font-nunito font-bold text-xs"
+          className="font-nunito font-bold text-[14px]"
           style={{ background: green, color: "#fff", border: "none", borderRadius: 8, padding: "7px 14px" }}
         >
           Reveal now
@@ -142,12 +142,12 @@ function AutoApproveCard({ eventId, autoApprove }: { eventId: string; autoApprov
         </IconBadge>
         <div className="flex-1">
           <div className="flex items-center justify-between gap-3">
-            <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+            <div className="font-nunito font-bold text-[16px]" style={{ color: ink }}>
               Auto-approve
             </div>
             <ToggleSwitch checked={autoApprove} action={setForEvent} />
           </div>
-          <p className="text-xs mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
+          <p className="text-[14px] mt-1" style={{ color: inkMuted, lineHeight: 1.5 }}>
             {autoApprove ? "On: new notes skip review and go straight to the wall." : "New notes wait in your review queue."}
           </p>
         </div>
@@ -170,7 +170,7 @@ function Avatar({ name }: { name: string }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: 14,
+        fontSize: 16,
         flexShrink: 0,
       }}
     >
@@ -188,7 +188,7 @@ function DecisionButtons({ submissionId }: { submissionId: string }) {
         <SubmitButton
           formAction={approve}
           pendingLabel="Approving…"
-          className="font-nunito font-bold text-sm flex items-center gap-1.5"
+          className="font-nunito font-bold text-[16px] flex items-center gap-1.5"
           style={{ background: green, color: "#fff", border: "none", borderRadius: 10, padding: "9px 14px" }}
         >
           <CheckIcon size={15} /> Approve
@@ -196,7 +196,7 @@ function DecisionButtons({ submissionId }: { submissionId: string }) {
         <SubmitButton
           formAction={deny}
           pendingLabel="Denying…"
-          className="font-nunito font-bold text-sm flex items-center gap-1.5"
+          className="font-nunito font-bold text-[16px] flex items-center gap-1.5"
           style={{ background: "#fff", color: "#b0503f", border: "1px solid #b0503f", borderRadius: 10, padding: "9px 14px" }}
         >
           <TrashIcon size={15} /> Deny
@@ -206,7 +206,7 @@ function DecisionButtons({ submissionId }: { submissionId: string }) {
         name="note"
         rows={2}
         placeholder="Optional note if denying…"
-        className="w-full text-xs font-nunito"
+        className="w-full text-[14px] font-nunito"
         style={{ border: `1px solid ${cardBorder}`, borderRadius: 8, padding: "8px 10px", resize: "none", color: ink, background: "#faf7f0" }}
       />
     </form>
@@ -234,17 +234,17 @@ function SubmissionRow({
           <div className="flex gap-3 min-w-0">
             <Avatar name={submission.contributorName} />
             <div className="min-w-0">
-              <div className="font-nunito font-bold text-sm" style={{ color: ink }}>
+              <div className="font-nunito font-bold text-[16px]" style={{ color: ink }}>
                 {submission.contributorName}
               </div>
-              <div className="text-xs" style={{ color: inkMuted }}>
+              <div className="text-[14px]" style={{ color: inkMuted }}>
                 {submission.contributorEmail}
               </div>
-              <p className="text-sm mt-2" style={{ color: ink }}>
+              <p className="text-[16px] mt-2" style={{ color: ink }}>
                 {submission.noteText}
               </p>
               {bouquet && (
-                <div className="text-xs mt-2" style={{ color: inkMuted }}>
+                <div className="text-[14px] mt-2" style={{ color: inkMuted }}>
                   {bouquet.color} envelope • {bouquet.flowerIds.length} flower{bouquet.flowerIds.length === 1 ? "" : "s"}
                 </div>
               )}
@@ -259,7 +259,7 @@ function SubmissionRow({
 
 function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <h2 className="font-nunito font-bold text-lg flex items-center gap-2.5" style={{ color: ink }}>
+    <h2 className="font-nunito font-bold text-[20px] flex items-center gap-2.5" style={{ color: ink }}>
       <span
         style={{
           width: 28,
@@ -311,18 +311,18 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/organizer" className="font-nunito text-xs" style={{ color: inkMuted, textDecoration: "none" }}>
+        <Link href="/organizer" className="font-nunito text-[14px]" style={{ color: inkMuted, textDecoration: "none" }}>
           ← Back to all events
         </Link>
         <div className="flex items-center justify-between flex-wrap gap-3 mt-2">
-          <h1 className="font-nunito font-bold text-2xl" style={{ color: ink }}>
+          <h1 className="font-nunito font-bold text-[26px]" style={{ color: ink }}>
             {event.recipientName}&rsquo;s {event.occasionText}
           </h1>
           <a
             href={wallUrl}
             target="_blank"
             rel="noreferrer"
-            className="font-nunito font-bold text-sm flex items-center gap-1.5"
+            className="font-nunito font-bold text-[16px] flex items-center gap-1.5"
             style={{ background: green, color: "#fff", borderRadius: 10, padding: "9px 16px", textDecoration: "none" }}
           >
             View Wall →
@@ -350,10 +350,10 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
             <LinkIcon size={18} />
           </IconBadge>
           <div>
-            <div className="font-nunito font-bold text-base" style={{ color: ink }}>
+            <div className="font-nunito font-bold text-[18px]" style={{ color: ink }}>
               Share this wall
             </div>
-            <p className="text-xs mt-0.5" style={{ color: inkMuted }}>
+            <p className="text-[14px] mt-0.5" style={{ color: inkMuted }}>
               Invite others to add a bouquet and a note.
             </p>
           </div>
@@ -380,10 +380,10 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
             <LockIcon size={18} />
           </IconBadge>
           <div className="flex-1 min-w-0">
-            <div className="font-nunito font-bold text-base" style={{ color: ink }}>
+            <div className="font-nunito font-bold text-[18px]" style={{ color: ink }}>
               Private link (only for you)
             </div>
-            <p className="text-xs mt-0.5" style={{ color: inkMuted }}>
+            <p className="text-[14px] mt-0.5" style={{ color: inkMuted }}>
               This private link shows everyone&rsquo;s full notes, not just names.
             </p>
             <div className="mt-3">
@@ -396,7 +396,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
       <section className="flex flex-col gap-3">
         <SectionHeading icon={<ClipboardIcon size={18} />}>Pending review ({pending.length})</SectionHeading>
         {pending.length === 0 ? (
-          <p className="text-sm" style={{ color: inkMuted }}>
+          <p className="text-[16px]" style={{ color: inkMuted }}>
             Nothing waiting on you.
           </p>
         ) : (
@@ -411,7 +411,7 @@ export default async function EventReviewPage(props: PageProps<"/organizer/event
       <section className="flex flex-col gap-3">
         <SectionHeading icon={<CheckCircleIcon size={18} />}>Approved ({approved.length})</SectionHeading>
         {approved.length === 0 ? (
-          <p className="text-sm" style={{ color: inkMuted }}>
+          <p className="text-[16px]" style={{ color: inkMuted }}>
             None yet.
           </p>
         ) : (

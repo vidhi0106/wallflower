@@ -124,7 +124,7 @@ function NoteCard({ note }: { note: ExampleNote }) {
           <div style={{ position: "absolute", left: "50%", bottom: "22%", width: "72%", transform: "translateX(-50%)", zIndex: 3 }}>
             <img src="/envelope2/note.png" alt="" style={{ width: "100%", display: "block" }} />
             <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", padding: "20% 6% 0", textAlign: "center" }}>
-              <span className="font-caveat font-bold" style={{ fontSize: 14, lineHeight: 1.15, color: "#4a3d2c" }}>
+              <span className="font-caveat font-bold" style={{ fontSize: 16, lineHeight: 1.15, color: "#4a3d2c" }}>
                 {note.occasion}
               </span>
             </div>
@@ -152,10 +152,10 @@ function NoteCard({ note }: { note: ExampleNote }) {
             justifyContent: "center",
           }}
         >
-          <p className="font-caveat" style={{ fontSize: 16, lineHeight: 1.3, color: "#4a3d2c", margin: 0 }}>
+          <p className="font-caveat" style={{ fontSize: 18, lineHeight: 1.3, color: "#4a3d2c", margin: 0 }}>
             {note.message}
           </p>
-          <p className="font-caveat font-bold" style={{ fontSize: 14, color: "#6b7d5c", marginTop: 8 }}>
+          <p className="font-caveat font-bold" style={{ fontSize: 16, color: "#6b7d5c", marginTop: 8 }}>
             From {note.from}
           </p>
         </div>
@@ -216,7 +216,7 @@ export default function HeroEnvelope() {
                 textAlign: "center",
               }}
             >
-              <span className="font-caveat font-bold" style={{ fontSize: 15, lineHeight: 1.15, color: "#4a3d2c" }}>
+              <span className="font-caveat font-bold" style={{ fontSize: 17, lineHeight: 1.15, color: "#4a3d2c" }}>
                 With love
               </span>
             </div>
@@ -228,10 +228,10 @@ export default function HeroEnvelope() {
           />
         </div>
 
-        <h1 className="font-caveat font-bold text-3xl text-center mt-6">
+        <h1 className="font-caveat font-bold text-[32px] text-center mt-6">
           Share a garden of notes
         </h1>
-        <p className="text-sm text-center mt-3" style={{ color: "#7c6a4e", lineHeight: 1.6, maxWidth: 320 }}>
+        <p className="text-[16px] text-center mt-3" style={{ color: "#7c6a4e", lineHeight: 1.6, maxWidth: 320 }}>
           Everyone tucks in a bouquet and a note. Hidden until you reveal it all at once.
         </p>
 
@@ -246,13 +246,13 @@ export default function HeroEnvelope() {
             color: "#FBF6E9",
             borderRadius: 10,
             padding: 14,
-            fontSize: 15,
+            fontSize: 17,
           }}
         >
           Create an event
         </a>
 
-        <p className="text-xs text-center mt-4" style={{ color: "#a8977a" }}>
+        <p className="text-[14px] text-center mt-4" style={{ color: "#a8977a" }}>
           Got a link from a friend? Use it to tuck in your own bouquet.
         </p>
       </div>

@@ -6,7 +6,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex justify-center relative">
       <Link
         href="/"
-        className="hidden sm:block font-nunito text-xs no-underline absolute"
+        className="hidden sm:block font-nunito text-[14px] no-underline absolute"
         style={{ color: "#a8977a", left: 64, top: 64 }}
       >
         ← Back
